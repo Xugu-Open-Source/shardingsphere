@@ -88,7 +88,7 @@ public final class ColumnMetaDataLoader {
         // TODO consider add a getDialectDelimeter() interface in parse module
         String delimiterLeft;
         String delimiterRight;
-        if ("MySQL".equals(databaseType) || "MariaDB".equals(databaseType)) {
+        if ("MySQL".equals(databaseType) || "MariaDB".equals(databaseType) || "XuGu".equals(databaseType) || "CAE".equals(databaseType)) {
             delimiterLeft = "`";
             delimiterRight = "`";
         } else if ("Oracle".equals(databaseType) || "PostgreSQL".equals(databaseType) || "H2".equals(databaseType) || "SQL92".equals(databaseType)) {
