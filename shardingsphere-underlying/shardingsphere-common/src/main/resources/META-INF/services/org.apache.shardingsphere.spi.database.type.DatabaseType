@@ -22,3 +22,5 @@ org.apache.shardingsphere.underlying.common.database.type.dialect.PostgreSQLData
 org.apache.shardingsphere.underlying.common.database.type.dialect.OracleDatabaseType
 org.apache.shardingsphere.underlying.common.database.type.dialect.SQLServerDatabaseType
 org.apache.shardingsphere.underlying.common.database.type.dialect.H2DatabaseType
+org.apache.shardingsphere.underlying.common.database.type.dialect.XuGuDatabaseType
+org.apache.shardingsphere.underlying.common.database.type.dialect.CAEDatabaseType

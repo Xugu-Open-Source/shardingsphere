@@ -51,6 +51,40 @@ public final class DataSourceConfigurationTest {
         assertThat(actual.getProperties().get("password").toString(), is("root"));
         assertNull(actual.getProperties().get("loginTimeout"));
     }
+
+    @Test
+    public void assertGetDataSourceConfigurationForXuGu() throws SQLException {
+        HikariDataSource actualDataSource = new HikariDataSource();
+        actualDataSource.setDriverClassName("com.xugu.cloudjdbc.Driver");
+        actualDataSource.setJdbcUrl("jdbc:xugu://127.0.0.1:5138/db");
+        actualDataSource.setUsername("GUEST");
+        actualDataSource.setPassword("GUEST");
+        actualDataSource.setLoginTimeout(1);
+        DataSourceConfiguration actual = DataSourceConfiguration.getDataSourceConfiguration(actualDataSource);
+        assertThat(actual.getDataSourceClassName(), is(HikariDataSource.class.getName()));
+        assertThat(actual.getProperties().get("driverClassName").toString(), is("com.xugu.cloudjdbc.Driver"));
+        assertThat(actual.getProperties().get("jdbcUrl").toString(), is("jdbc:xugu://127.0.0.1:5138/db"));
+        assertThat(actual.getProperties().get("username").toString(), is("GUEST"));
+        assertThat(actual.getProperties().get("password").toString(), is("GUEST"));
+        assertNull(actual.getProperties().get("loginTimeout"));
+    }
+
+    @Test
+    public void assertGetDataSourceConfigurationForCAE() throws SQLException {
+        HikariDataSource actualDataSource = new HikariDataSource();
+        actualDataSource.setDriverClassName("com.xugu.cloudjdbc.Driver");
+        actualDataSource.setJdbcUrl("jdbc:cae://127.0.0.1:5138/db");
+        actualDataSource.setUsername("root");
+        actualDataSource.setPassword("root");
+        actualDataSource.setLoginTimeout(1);
+        DataSourceConfiguration actual = DataSourceConfiguration.getDataSourceConfiguration(actualDataSource);
+        assertThat(actual.getDataSourceClassName(), is(HikariDataSource.class.getName()));
+        assertThat(actual.getProperties().get("driverClassName").toString(), is("com.xugu.cloudjdbc.Driver"));
+        assertThat(actual.getProperties().get("jdbcUrl").toString(), is("jdbc:cae://127.0.0.1:5138/db"));
+        assertThat(actual.getProperties().get("username").toString(), is("root"));
+        assertThat(actual.getProperties().get("password").toString(), is("root"));
+        assertNull(actual.getProperties().get("loginTimeout"));
+    }
     
     @Test
     public void assertCreateDataSource() {
@@ -66,6 +100,42 @@ public final class DataSourceConfigurationTest {
         HikariDataSource actual = (HikariDataSource) dataSourceConfig.createDataSource();
         assertThat(actual.getDriverClassName(), is("org.h2.Driver"));
         assertThat(actual.getJdbcUrl(), is("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false;MODE=MySQL"));
+        assertThat(actual.getUsername(), is("root"));
+        assertThat(actual.getPassword(), is("root"));
+    }
+
+    @Test
+    public void assertCreateDataSourceForCAE() {
+        Map<String, Object> properties = new HashMap<>();
+        properties.put("driverClassName", "com.xugu.cloudjdbc.Driver");
+        properties.put("jdbcUrl", "jdbc:cae://127.0.0.1:5138/db");
+        properties.put("username", "GUEST");
+        properties.put("password", "GUEST");
+        properties.put("loginTimeout", "5000");
+        properties.put("test", "test");
+        DataSourceConfiguration dataSourceConfig = new DataSourceConfiguration(HikariDataSource.class.getName());
+        dataSourceConfig.getProperties().putAll(properties);
+        HikariDataSource actual = (HikariDataSource) dataSourceConfig.createDataSource();
+        assertThat(actual.getDriverClassName(), is("com.xugu.cloudjdbc.Driver"));
+        assertThat(actual.getJdbcUrl(), is("jdbc:cae://127.0.0.1:5138/db"));
+        assertThat(actual.getUsername(), is("GUEST"));
+        assertThat(actual.getPassword(), is("GUEST"));
+    }
+
+    @Test
+    public void assertCreateDataSourceForXuGu() {
+        Map<String, Object> properties = new HashMap<>();
+        properties.put("driverClassName", "com.xugu.cloudjdbc.Driver");
+        properties.put("jdbcUrl", "jdbc:xugu://127.0.0.1:5138/db");
+        properties.put("username", "root");
+        properties.put("password", "root");
+        properties.put("loginTimeout", "5000");
+        properties.put("test", "test");
+        DataSourceConfiguration dataSourceConfig = new DataSourceConfiguration(HikariDataSource.class.getName());
+        dataSourceConfig.getProperties().putAll(properties);
+        HikariDataSource actual = (HikariDataSource) dataSourceConfig.createDataSource();
+        assertThat(actual.getDriverClassName(), is("com.xugu.cloudjdbc.Driver"));
+        assertThat(actual.getJdbcUrl(), is("jdbc:xugu://127.0.0.1:5138/db"));
         assertThat(actual.getUsername(), is("root"));
         assertThat(actual.getPassword(), is("root"));
     }
@@ -88,6 +158,44 @@ public final class DataSourceConfigurationTest {
         assertThat(actual.getProperties().get("jdbcUrl"), is(actual.getProperties().get("url")));
         assertThat(actual.getProperties().get("username"), is(actual.getProperties().get("user")));
     }
+
+    @Test
+    public void assertAddAliasForXuGu() {
+        HikariDataSource actualDataSource = new HikariDataSource();
+        actualDataSource.setDriverClassName("com.xugu.cloudjdbc.Driver");
+        actualDataSource.setJdbcUrl("jdbc:xugu://127.0.0.1:5138/db");
+        actualDataSource.setUsername("GUEST");
+        actualDataSource.setPassword("GUEST");
+        DataSourceConfiguration actual = DataSourceConfiguration.getDataSourceConfiguration(actualDataSource);
+        actual.addAlias("url", "jdbcUrl");
+        actual.addAlias("user", "username");
+        assertThat(actual.getDataSourceClassName(), is(HikariDataSource.class.getName()));
+        assertThat(actual.getProperties().get("driverClassName").toString(), is("com.xugu.cloudjdbc.Driver"));
+        assertThat(actual.getProperties().get("jdbcUrl").toString(), is("jdbc:xugu://127.0.0.1:5138/db"));
+        assertThat(actual.getProperties().get("username").toString(), is("GUEST"));
+        assertThat(actual.getProperties().get("password").toString(), is("GUEST"));
+        assertThat(actual.getProperties().get("jdbcUrl"), is(actual.getProperties().get("url")));
+        assertThat(actual.getProperties().get("username"), is(actual.getProperties().get("user")));
+    }
+
+    @Test
+    public void assertAddAliasForCAE() {
+        HikariDataSource actualDataSource = new HikariDataSource();
+        actualDataSource.setDriverClassName("com.xugu.cloudjdbc.Driver");
+        actualDataSource.setJdbcUrl("jdbc:cae://127.0.0.1:5138/db");
+        actualDataSource.setUsername("root");
+        actualDataSource.setPassword("root");
+        DataSourceConfiguration actual = DataSourceConfiguration.getDataSourceConfiguration(actualDataSource);
+        actual.addAlias("url", "jdbcUrl");
+        actual.addAlias("user", "username");
+        assertThat(actual.getDataSourceClassName(), is(HikariDataSource.class.getName()));
+        assertThat(actual.getProperties().get("driverClassName").toString(), is("com.xugu.cloudjdbc.Driver"));
+        assertThat(actual.getProperties().get("jdbcUrl").toString(), is("jdbc:cae://127.0.0.1:5138/db"));
+        assertThat(actual.getProperties().get("username").toString(), is("root"));
+        assertThat(actual.getProperties().get("password").toString(), is("root"));
+        assertThat(actual.getProperties().get("jdbcUrl"), is(actual.getProperties().get("url")));
+        assertThat(actual.getProperties().get("username"), is(actual.getProperties().get("user")));
+    }
     
     @Test
     public void assertGetDataSourceConfigurationWithConnectionInitSqls() throws SQLException {
@@ -101,6 +209,48 @@ public final class DataSourceConfigurationTest {
         assertThat(actual.getDataSourceClassName(), is(BasicDataSource.class.getName()));
         assertThat(actual.getProperties().get("driverClassName").toString(), is("org.h2.Driver"));
         assertThat(actual.getProperties().get("url").toString(), is("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false;MODE=MySQL"));
+        assertThat(actual.getProperties().get("username").toString(), is("root"));
+        assertThat(actual.getProperties().get("password").toString(), is("root"));
+        assertNull(actual.getProperties().get("loginTimeout"));
+        assertThat(actual.getProperties().get("connectionInitSqls"), instanceOf(List.class));
+        List<String> actualConnectionInitSql = (List<String>) actual.getProperties().get("connectionInitSqls");
+        assertThat(actualConnectionInitSql, hasItem("set names utf8mb4;"));
+        assertThat(actualConnectionInitSql, hasItem("set names utf8;"));
+    }
+
+    @Test
+    public void assertGetDataSourceConfigurationWithConnectionInitSqlsForXuGu() throws SQLException {
+        BasicDataSource actualDataSource = new BasicDataSource();
+        actualDataSource.setDriverClassName("com.xugu.cloudjdbc.Driver");
+        actualDataSource.setUrl("jdbc:xugu://127.0.0.1:5138/db");
+        actualDataSource.setUsername("GUEST");
+        actualDataSource.setPassword("GUEST");
+        actualDataSource.setConnectionInitSqls(Arrays.asList("set names utf8mb4;", "set names utf8;"));
+        DataSourceConfiguration actual = DataSourceConfiguration.getDataSourceConfiguration(actualDataSource);
+        assertThat(actual.getDataSourceClassName(), is(BasicDataSource.class.getName()));
+        assertThat(actual.getProperties().get("driverClassName").toString(), is("com.xugu.cloudjdbc.Driver"));
+        assertThat(actual.getProperties().get("url").toString(), is("jdbc:xugu://127.0.0.1:5138/db"));
+        assertThat(actual.getProperties().get("username").toString(), is("GUEST"));
+        assertThat(actual.getProperties().get("password").toString(), is("GUEST"));
+        assertNull(actual.getProperties().get("loginTimeout"));
+        assertThat(actual.getProperties().get("connectionInitSqls"), instanceOf(List.class));
+        List<String> actualConnectionInitSql = (List<String>) actual.getProperties().get("connectionInitSqls");
+        assertThat(actualConnectionInitSql, hasItem("set names utf8mb4;"));
+        assertThat(actualConnectionInitSql, hasItem("set names utf8;"));
+    }
+
+    @Test
+    public void assertGetDataSourceConfigurationWithConnectionInitSqlsForCAE() throws SQLException {
+        BasicDataSource actualDataSource = new BasicDataSource();
+        actualDataSource.setDriverClassName("com.xugu.cloudjdbc.Driver");
+        actualDataSource.setUrl("jdbc:cae://127.0.0.1:5138/db");
+        actualDataSource.setUsername("root");
+        actualDataSource.setPassword("root");
+        actualDataSource.setConnectionInitSqls(Arrays.asList("set names utf8mb4;", "set names utf8;"));
+        DataSourceConfiguration actual = DataSourceConfiguration.getDataSourceConfiguration(actualDataSource);
+        assertThat(actual.getDataSourceClassName(), is(BasicDataSource.class.getName()));
+        assertThat(actual.getProperties().get("driverClassName").toString(), is("com.xugu.cloudjdbc.Driver"));
+        assertThat(actual.getProperties().get("url").toString(), is("jdbc:cae://127.0.0.1:5138/db"));
         assertThat(actual.getProperties().get("username").toString(), is("root"));
         assertThat(actual.getProperties().get("password").toString(), is("root"));
         assertNull(actual.getProperties().get("loginTimeout"));

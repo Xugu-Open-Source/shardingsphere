@@ -29,6 +29,16 @@ public final class DatabaseTypesTest {
     public void assertGetActualDatabaseType() {
         assertThat(DatabaseTypes.getActualDatabaseType("MySQL").getName(), is("MySQL"));
     }
+
+    @Test
+    public void assertGetActualDatabaseTypeForXuGu() {
+        assertThat(DatabaseTypes.getActualDatabaseType("XuGu").getName(), is("XuGu"));
+    }
+
+    @Test
+    public void assertGetActualDatabaseTypeForCAE() {
+        assertThat(DatabaseTypes.getActualDatabaseType("CAE").getName(), is("CAE"));
+    }
     
     @Test(expected = ShardingSphereException.class)
     public void assertGetActualDatabaseTypeWithNotExistedDatabaseType() {
@@ -39,6 +49,16 @@ public final class DatabaseTypesTest {
     public void assertGetTrunkDatabaseTypeWithTrunkDatabaseType() {
         assertThat(DatabaseTypes.getTrunkDatabaseType("MySQL").getName(), is("MySQL"));
     }
+
+    @Test
+    public void assertGetTrunkDatabaseTypeWithTrunkDatabaseTypeForXuGu() {
+        assertThat(DatabaseTypes.getTrunkDatabaseType("XuGu").getName(), is("MySQL"));
+    }
+
+    @Test
+    public void assertGetTrunkDatabaseTypeWithTrunkDatabaseTypeForCAE() {
+        assertThat(DatabaseTypes.getTrunkDatabaseType("CAE").getName(), is("MySQL"));
+    }
     
     @Test
     public void assertGetTrunkDatabaseTypeWithBranchDatabaseType() {
@@ -48,6 +68,16 @@ public final class DatabaseTypesTest {
     @Test
     public void assertGetDatabaseTypeByStandardURL() {
         assertThat(DatabaseTypes.getDatabaseTypeByURL("jdbc:mysql://localhost:3306/test").getName(), is("MySQL"));
+    }
+
+    @Test
+    public void assertGetDatabaseTypeByStandardURLForXuGu() {
+        assertThat(DatabaseTypes.getDatabaseTypeByURL("jdbc:xugu://localhost:5138/db_0").getName(), is("XuGu"));
+    }
+
+    @Test
+    public void assertGetDatabaseTypeByStandardURLForCAE() {
+        assertThat(DatabaseTypes.getDatabaseTypeByURL("jdbc:cae://localhost:5135/test").getName(), is("CAE"));
     }
     
     @Test
