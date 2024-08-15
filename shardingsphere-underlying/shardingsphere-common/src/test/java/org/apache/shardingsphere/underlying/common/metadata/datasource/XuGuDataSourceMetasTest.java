@@ -10,7 +10,6 @@ import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 
 public class XuGuDataSourceMetasTest {
@@ -37,6 +36,6 @@ public class XuGuDataSourceMetasTest {
 
     @Test
     public void assertGetActualSchemaNameForShardingRuleForXuGu() {
-        assertNull(dataSourceMetas.getDataSourceMetaData("ds_0").getSchema());
+        assertNotNull(dataSourceMetas.getDataSourceMetaData("ds_0").getSchema());
     }
 }
