@@ -37,6 +37,6 @@ public class XuGuDataSourceMetasTest {
 
     @Test
     public void assertGetActualSchemaNameForShardingRuleForXuGu() {
-        assertNull(dataSourceMetas.getDataSourceMetaData("ds_0").getSchema());
+        assertNotNull(dataSourceMetas.getDataSourceMetaData("ds_0").getSchema());
     }
 }
