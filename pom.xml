@@ -102,7 +102,8 @@
         <mssql.version>6.1.7.jre8-preview</mssql.version>
         <mariadb-java-client.version>2.4.2</mariadb-java-client.version>
         <bytebuddy.version>1.11.18</bytebuddy.version>
-        
+        <xugu.version>12.3.0</xugu.version>
+
         <elasticjob.version>3.0.1</elasticjob.version>
         
         <calcite.version>1.27.0</calcite.version>
@@ -421,6 +422,12 @@
                 <groupId>com.microsoft.sqlserver</groupId>
                 <artifactId>mssql-jdbc</artifactId>
                 <version>${mssql.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.xugudb</groupId>
+                <artifactId>xugu-jdbc</artifactId>
+                <version>${xugu.version}</version>
                 <scope>provided</scope>
             </dependency>
             
