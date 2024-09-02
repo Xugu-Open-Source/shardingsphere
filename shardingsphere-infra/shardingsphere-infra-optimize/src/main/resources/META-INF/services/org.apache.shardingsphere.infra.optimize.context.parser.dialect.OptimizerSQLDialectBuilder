@@ -23,3 +23,5 @@ org.apache.shardingsphere.infra.optimize.context.parser.dialect.impl.OpenGaussOp
 org.apache.shardingsphere.infra.optimize.context.parser.dialect.impl.SQLServerOptimizerBuilder
 org.apache.shardingsphere.infra.optimize.context.parser.dialect.impl.OracleOptimizerBuilder
 org.apache.shardingsphere.infra.optimize.context.parser.dialect.impl.SQL92OptimizerBuilder
+org.apache.shardingsphere.infra.optimize.context.parser.dialect.impl.XuGuOptimizerBuilder
+org.apache.shardingsphere.infra.optimize.context.parser.dialect.impl.CAEOptimizerBuilder
