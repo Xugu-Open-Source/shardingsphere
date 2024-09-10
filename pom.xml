@@ -29,7 +29,7 @@
     <packaging>pom</packaging>
     <name>${project.artifactId}</name>
     <description>Build criterion and ecosystem above multi-model databases</description>
-    
+
     <modules>
         <module>shardingsphere-spi</module>
         <module>shardingsphere-sql-parser</module>
@@ -46,7 +46,7 @@
         <module>shardingsphere-agent</module>
         
         <module>shardingsphere-test</module>
-        
+
         <module>shardingsphere-distribution</module>
     </modules>
     
@@ -78,7 +78,7 @@
         <netty.version>4.1.73.Final</netty.version>
         
         <javax.transaction.version>1.1</javax.transaction.version>
-        
+
         <zookeeper.version>3.6.0</zookeeper.version>
         <curator.version>5.1.0</curator.version>
         <jetcd.version>0.5.0</jetcd.version>
@@ -97,7 +97,7 @@
         <zipkin-reporter.version>2.16.2</zipkin-reporter.version>
         <opentelemetry.version>1.3.0</opentelemetry.version>
         <opentelemetry-autoconfigure.version>1.3.0-alpha</opentelemetry-autoconfigure.version>
-        
+
         <slf4j.version>1.7.7</slf4j.version>
         <logback.version>1.2.10</logback.version>
         
@@ -109,7 +109,8 @@
         <mariadb-java-client.version>2.4.2</mariadb-java-client.version>
         <h2.version>1.4.196</h2.version>
         <mssql.version>6.1.7.jre8-preview</mssql.version>
-        
+        <xugu.version>12.3.0</xugu.version>
+
         <hikari-cp.version>3.4.2</hikari-cp.version>
         <commons-dbcp2.version>2.2.0</commons-dbcp2.version>
         
@@ -205,7 +206,7 @@
                 <artifactId>groovy</artifactId>
                 <version>${groovy.version}</version>
             </dependency>
-            
+
             <dependency>
                 <groupId>javax.xml.bind</groupId>
                 <artifactId>jaxb-api</artifactId>
@@ -232,7 +233,7 @@
                 <artifactId>javax.activation-api</artifactId>
                 <version>${activation-api.version}</version>
             </dependency>
-            
+
             <dependency>
                 <groupId>org.apache.calcite</groupId>
                 <artifactId>calcite-core</artifactId>
@@ -533,7 +534,7 @@
                 <version>${opentelemetry.version}</version>
                 <scope>test</scope>
             </dependency>
-            
+
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
@@ -581,6 +582,13 @@
                 <version>${mariadb-java-client.version}</version>
                 <scope>test</scope>
             </dependency>
+            <dependency>
+                <groupId>com.xugudb</groupId>
+                <artifactId>xugu-jdbc</artifactId>
+                <version>${xugu.version}</version>
+                <scope>provided</scope>
+            </dependency>
+
             <dependency>
                 <groupId>org.opengauss</groupId>
                 <artifactId>opengauss-jdbc</artifactId>
@@ -677,19 +685,19 @@
                     </exclusion>
                 </exclusions>
             </dependency>
-            
+
             <dependency>
                 <groupId>org.freemarker</groupId>
                 <artifactId>freemarker</artifactId>
                 <version>${freemarker.version}</version>
             </dependency>
-            
+
             <dependency>
                 <groupId>com.github.ben-manes.caffeine</groupId>
                 <artifactId>caffeine</artifactId>
                 <version>${caffeine.version}</version>
             </dependency>
-            
+
             <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>listenablefuture</artifactId>
@@ -1281,7 +1289,7 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
-    
+
     <mailingLists>
         <mailingList>
             <name>ShardingSphere Developer List</name>
@@ -1290,14 +1298,14 @@
             <post>dev@shardingsphere.apache.org</post>
         </mailingList>
     </mailingLists>
-    
+
     <scm>
         <connection>scm:git:https://github.com/apache/shardingsphere.git</connection>
         <developerConnection>scm:git:https://github.com/apache/shardingsphere.git</developerConnection>
         <url>https://github.com/apache/shardingsphere.git</url>
         <tag>5.1.2</tag>
     </scm>
-    
+
     <profiles>
         <profile>
             <id>jdk11+</id>
