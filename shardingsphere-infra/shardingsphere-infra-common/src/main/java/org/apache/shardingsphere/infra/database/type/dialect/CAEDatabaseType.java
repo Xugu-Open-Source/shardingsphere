@@ -27,12 +27,14 @@ import org.apache.shardingsphere.sql.parser.sql.common.constant.QuoteCharacter;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * Database type of CAE.
  */
 @Getter
-public class CAEDatabaseType implements BranchDatabaseType {
+public final class CAEDatabaseType implements BranchDatabaseType {
 
     @Override
     public String getName() {
@@ -57,5 +59,20 @@ public class CAEDatabaseType implements BranchDatabaseType {
     @Override
     public DatabaseType getTrunkDatabaseType() {
         return DatabaseTypeRegistry.getActualDatabaseType("MySQL");
+    }
+
+    @Override
+    public Optional<String> getDataSourceClassName() {
+        return Optional.of("com.cae.pool.DBDataSource");
+    }
+
+    @Override
+    public Map<String, Collection<String>> getSystemDatabaseSchemaMap() {
+        return Collections.emptyMap();
+    }
+
+    @Override
+    public Collection<String> getSystemSchemas() {
+        return Collections.emptyList();
     }
 }
