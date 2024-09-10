@@ -17,8 +17,6 @@
 
 package org.apache.shardingsphere.infra.database.type.dialect;
 
-import lombok.Getter;
-import org.apache.shardingsphere.infra.database.metadata.DataSourceMetaData;
 import org.apache.shardingsphere.infra.database.metadata.dialect.CAEDataSourceMetaData;
 import org.apache.shardingsphere.infra.database.type.BranchDatabaseType;
 import org.apache.shardingsphere.infra.database.type.DatabaseType;
@@ -33,7 +31,6 @@ import java.util.Optional;
 /**
  * Database type of CAE.
  */
-@Getter
 public final class CAEDatabaseType implements BranchDatabaseType {
 
     @Override
@@ -52,7 +49,7 @@ public final class CAEDatabaseType implements BranchDatabaseType {
     }
 
     @Override
-    public DataSourceMetaData getDataSourceMetaData(final String url, final String username) {
+    public CAEDataSourceMetaData getDataSourceMetaData(final String url, final String username) {
         return new CAEDataSourceMetaData(url, username);
     }
 
