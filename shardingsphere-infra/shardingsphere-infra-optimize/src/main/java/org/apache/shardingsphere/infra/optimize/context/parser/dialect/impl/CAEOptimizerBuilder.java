@@ -26,7 +26,7 @@ import org.apache.shardingsphere.infra.optimize.context.parser.dialect.Optimizer
 import java.util.Properties;
 
 /**
- * Optimizer properties builder for XuGu.
+ * Optimizer properties builder for CAE.
  */
 public class CAEOptimizerBuilder implements OptimizerSQLDialectBuilder {
     @Override
