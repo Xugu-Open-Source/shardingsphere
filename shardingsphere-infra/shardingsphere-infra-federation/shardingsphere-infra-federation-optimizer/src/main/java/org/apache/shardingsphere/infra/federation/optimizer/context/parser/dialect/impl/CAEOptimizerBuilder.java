@@ -29,6 +29,7 @@ import java.util.Properties;
  * Optimizer properties builder for CAE.
  */
 public class CAEOptimizerBuilder implements OptimizerSQLDialectBuilder {
+    
     @Override
     public Properties build() {
         Properties result = new Properties();
@@ -37,7 +38,7 @@ public class CAEOptimizerBuilder implements OptimizerSQLDialectBuilder {
         result.setProperty(CalciteConnectionProperty.FUN.camelName(), SqlLibrary.MYSQL.fun);
         return result;
     }
-
+    
     @Override
     public String getType() {
         return "CAE";

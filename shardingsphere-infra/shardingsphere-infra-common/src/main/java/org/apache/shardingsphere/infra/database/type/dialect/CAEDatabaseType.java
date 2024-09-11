@@ -20,7 +20,7 @@ package org.apache.shardingsphere.infra.database.type.dialect;
 import org.apache.shardingsphere.infra.database.metadata.dialect.CAEDataSourceMetaData;
 import org.apache.shardingsphere.infra.database.type.BranchDatabaseType;
 import org.apache.shardingsphere.infra.database.type.DatabaseType;
-import org.apache.shardingsphere.infra.database.type.DatabaseTypeRegistry;
+import org.apache.shardingsphere.infra.database.type.DatabaseTypeFactory;
 import org.apache.shardingsphere.sql.parser.sql.common.constant.QuoteCharacter;
 
 import java.util.Collection;
@@ -32,44 +32,44 @@ import java.util.Optional;
  * Database type of CAE.
  */
 public final class CAEDatabaseType implements BranchDatabaseType {
-
-    @Override
-    public String getName() {
-        return "CAE";
-    }
-
+    
     @Override
     public QuoteCharacter getQuoteCharacter() {
         return QuoteCharacter.BACK_QUOTE;
     }
-
+    
     @Override
     public Collection<String> getJdbcUrlPrefixes() {
-        return Collections.singleton(String.format("jdbc:%s:", getName().toLowerCase()));
+        return Collections.singleton(String.format("jdbc:%s:", getType().toLowerCase()));
     }
-
+    
     @Override
     public CAEDataSourceMetaData getDataSourceMetaData(final String url, final String username) {
         return new CAEDataSourceMetaData(url, username);
     }
-
+    
     @Override
     public DatabaseType getTrunkDatabaseType() {
-        return DatabaseTypeRegistry.getActualDatabaseType("MySQL");
+        return DatabaseTypeFactory.getInstance("MySQL");
     }
-
+    
     @Override
     public Optional<String> getDataSourceClassName() {
         return Optional.of("com.cae.pool.DBDataSource");
     }
-
+    
     @Override
     public Map<String, Collection<String>> getSystemDatabaseSchemaMap() {
         return Collections.emptyMap();
     }
-
+    
     @Override
     public Collection<String> getSystemSchemas() {
         return Collections.emptyList();
+    }
+    
+    @Override
+    public String getType() {
+        return "XuGu";
     }
 }

@@ -29,21 +29,21 @@ import java.util.Properties;
  */
 @Getter
 public class XuGuDataSourceMetaData implements DataSourceMetaData {
-
+    
     private static final int DEFAULT_PORT = 5138;
-
+    
     private final String hostname;
-
+    
     private final int port;
-
+    
     private final String catalog;
-
+    
     private final String schema;
-
+    
     private final Properties queryProperties;
-
+    
     private final Properties defaultQueryProperties = new Properties();
-
+    
     public XuGuDataSourceMetaData(final String url, final String username) {
         JdbcUrl jdbcUrl = new StandardJdbcUrlParser().parse(url);
         hostname = jdbcUrl.getHostname();
@@ -53,7 +53,7 @@ public class XuGuDataSourceMetaData implements DataSourceMetaData {
         queryProperties = jdbcUrl.getQueryProperties();
         buildDefaultQueryProperties();
     }
-
+    
     private void buildDefaultQueryProperties() {
         defaultQueryProperties.setProperty("SSL", "NSSL");
         defaultQueryProperties.setProperty("time_zone", "GMT-8:00");

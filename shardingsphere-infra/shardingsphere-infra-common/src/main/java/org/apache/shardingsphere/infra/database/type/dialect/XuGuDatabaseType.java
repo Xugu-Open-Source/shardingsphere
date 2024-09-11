@@ -20,7 +20,7 @@ package org.apache.shardingsphere.infra.database.type.dialect;
 import org.apache.shardingsphere.infra.database.metadata.dialect.XuGuDataSourceMetaData;
 import org.apache.shardingsphere.infra.database.type.BranchDatabaseType;
 import org.apache.shardingsphere.infra.database.type.DatabaseType;
-import org.apache.shardingsphere.infra.database.type.DatabaseTypeRegistry;
+import org.apache.shardingsphere.infra.database.type.DatabaseTypeFactory;
 import org.apache.shardingsphere.sql.parser.sql.common.constant.QuoteCharacter;
 
 import java.util.Collection;
@@ -32,44 +32,44 @@ import java.util.Optional;
  * Database type of XuGu.
  */
 public final class XuGuDatabaseType implements BranchDatabaseType {
-
-    @Override
-    public String getName() {
-        return "XuGu";
-    }
-
+    
     @Override
     public QuoteCharacter getQuoteCharacter() {
         return QuoteCharacter.BACK_QUOTE;
     }
-
+    
     @Override
     public Collection<String> getJdbcUrlPrefixes() {
-        return Collections.singleton(String.format("jdbc:%s:", getName().toLowerCase()));
+        return Collections.singleton(String.format("jdbc:%s:", getType().toLowerCase()));
     }
-
+    
     @Override
     public XuGuDataSourceMetaData getDataSourceMetaData(final String url, final String username) {
         return new XuGuDataSourceMetaData(url, username);
     }
-
+    
     @Override
     public DatabaseType getTrunkDatabaseType() {
-        return DatabaseTypeRegistry.getActualDatabaseType("MySQL");
+        return DatabaseTypeFactory.getInstance("MySQL");
     }
-
+    
     @Override
     public Optional<String> getDataSourceClassName() {
         return Optional.of("com.xugu.pool.XgDataSource");
     }
-
+    
     @Override
     public Map<String, Collection<String>> getSystemDatabaseSchemaMap() {
         return Collections.emptyMap();
     }
-
+    
     @Override
     public Collection<String> getSystemSchemas() {
         return Collections.emptyList();
+    }
+    
+    @Override
+    public String getType() {
+        return "XuGu";
     }
 }
