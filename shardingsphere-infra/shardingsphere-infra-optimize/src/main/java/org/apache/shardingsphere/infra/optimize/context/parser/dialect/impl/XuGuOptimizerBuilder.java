@@ -28,7 +28,7 @@ import java.util.Properties;
 /**
  * Optimizer properties builder for XuGu.
  */
-public class XuGuOptimizerBuilder implements OptimizerSQLDialectBuilder {
+public final class XuGuOptimizerBuilder implements OptimizerSQLDialectBuilder {
     @Override
     public Properties build() {
         Properties result = new Properties();
@@ -40,6 +40,6 @@ public class XuGuOptimizerBuilder implements OptimizerSQLDialectBuilder {
 
     @Override
     public String getType() {
-        return "xugu";
+        return "XuGu";
     }
 }
