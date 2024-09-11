@@ -70,6 +70,6 @@ public final class CAEDatabaseType implements BranchDatabaseType {
     
     @Override
     public String getType() {
-        return "XuGu";
+        return "CAE";
     }
 }
