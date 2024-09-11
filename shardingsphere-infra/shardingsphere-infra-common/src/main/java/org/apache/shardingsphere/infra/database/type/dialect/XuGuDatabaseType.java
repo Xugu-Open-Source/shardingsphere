@@ -26,7 +26,6 @@ import org.apache.shardingsphere.sql.parser.sql.common.constant.QuoteCharacter;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * Database type of XuGu.
@@ -51,11 +50,6 @@ public final class XuGuDatabaseType implements BranchDatabaseType {
     @Override
     public DatabaseType getTrunkDatabaseType() {
         return DatabaseTypeFactory.getInstance("MySQL");
-    }
-    
-    @Override
-    public Optional<String> getDataSourceClassName() {
-        return Optional.of("com.xugu.pool.XgDataSource");
     }
     
     @Override
