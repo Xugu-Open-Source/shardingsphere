@@ -15,13 +15,13 @@
  * limitations under the License.
  */
 
-package org.apache.shardingsphere.sqlfederation.optimizer.context.parser.dialect.impl;
+package org.apache.shardingsphere.sqlfederation.compiler.context.parser.dialect.impl;
 
 import org.apache.calcite.config.CalciteConnectionProperty;
 import org.apache.calcite.config.Lex;
 import org.apache.calcite.sql.fun.SqlLibrary;
 import org.apache.calcite.sql.validate.SqlConformanceEnum;
-import org.apache.shardingsphere.sqlfederation.optimizer.context.parser.dialect.OptimizerSQLDialectBuilder;
+import org.apache.shardingsphere.sqlfederation.compiler.context.parser.dialect.OptimizerSQLDialectBuilder;
 
 import java.util.Properties;
 

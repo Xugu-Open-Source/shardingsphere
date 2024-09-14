@@ -49,7 +49,7 @@ public final class DatabaseTypeChecker {
     private static volatile boolean isChecked;
     
     static {
-        Arrays.asList("MySQL", "PostgreSQL", "openGauss", "Oracle", "SQLServer", "H2", "MariaDB")
+        Arrays.asList("MySQL", "PostgreSQL", "openGauss", "Oracle", "SQLServer", "H2", "MariaDB", "XuGu", "CAE")
                 .forEach(each -> TypedSPILoader.findService(DatabaseType.class, each).ifPresent(SUPPORTED_STORAGE_TYPES::add));
     }
     
