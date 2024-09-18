@@ -111,14 +111,15 @@
         <h2.version>2.2.224</h2.version>
         <mssql.version>6.1.7.jre8-preview</mssql.version>
         <hbase.client.version>1.7.1</hbase.client.version>
-        
+        <xugu.version>12.3.0</xugu.version>
+
         <hikari-cp.version>4.0.3</hikari-cp.version>
         
         <junit.version>5.10.0</junit.version>
         <hamcrest.version>2.2</hamcrest.version>
         <mockito.version>4.11.0</mockito.version>
         <awaitility.version>4.2.0</awaitility.version>
-        
+
         <protobuf-java.version>3.21.12</protobuf-java.version>
         
         <!-- 3rd party library plugin versions -->
@@ -549,6 +550,12 @@
                 <scope>test</scope>
             </dependency>
             <dependency>
+                <groupId>com.xugudb</groupId>
+                <artifactId>xugu-jdbc</artifactId>
+                <version>${xugu.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
                 <groupId>org.opengauss</groupId>
                 <artifactId>opengauss-jdbc</artifactId>
                 <version>${opengauss.version}</version>
@@ -566,7 +573,7 @@
                 <version>${hikari-cp.version}</version>
                 <scope>test</scope>
             </dependency>
-            
+
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter-api</artifactId>
@@ -695,7 +702,7 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-collections4</artifactId>
         </dependency>
-        
+
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -908,7 +915,7 @@
                         </transformers>
                     </configuration>
                 </plugin>
-                
+
                 <!-- Report plugins -->
                 <plugin>
                     <artifactId>maven-javadoc-plugin</artifactId>
