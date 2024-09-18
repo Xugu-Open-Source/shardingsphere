@@ -123,7 +123,11 @@ public enum SystemSchemaBuilderRule {
                     "pg_ts_dict", "pg_ts_parser", "pg_ts_template", "pg_type", "pg_user", "pg_user_mapping", "pg_user_mappings", "pg_views"))),
     
     POSTGRESQL_SHARDING_SPHERE("PostgreSQL", "shardingsphere", new HashSet<>(Arrays.asList("sharding_table_statistics", "cluster_information"))),
-    
+
+    XUGU_SHARDING_SPHERE("XuGu", "shardingsphere", new HashSet<>(Arrays.asList("sharding_table_statistics", "cluster_information"))),
+
+    CAE_SHARDING_SPHERE("CAE", "shardingsphere", new HashSet<>(Arrays.asList("sharding_table_statistics", "cluster_information"))),
+
     OPEN_GAUSS_INFORMATION_SCHEMA("openGauss", "information_schema",
             new HashSet<>(Arrays.asList("_pg_foreign_data_wrappers", "_pg_foreign_servers", "_pg_foreign_table_columns", "_pg_foreign_tables", "_pg_user_mappings", "administrable_role_authorizations",
                     "applicable_roles", "attributes", "character_sets",

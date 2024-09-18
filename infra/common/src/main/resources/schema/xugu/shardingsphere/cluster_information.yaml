@@ -15,10 +15,13 @@
 # limitations under the License.
 #
 
-org.apache.shardingsphere.sqlfederation.compiler.context.parser.dialect.impl.H2OptimizerBuilder
-org.apache.shardingsphere.sqlfederation.compiler.context.parser.dialect.impl.MySQLOptimizerBuilder
-org.apache.shardingsphere.sqlfederation.compiler.context.parser.dialect.impl.PostgreSQLOptimizerBuilder
-org.apache.shardingsphere.sqlfederation.compiler.context.parser.dialect.impl.OpenGaussOptimizerBuilder
-org.apache.shardingsphere.sqlfederation.compiler.context.parser.dialect.impl.SQLServerOptimizerBuilder
-org.apache.shardingsphere.sqlfederation.compiler.context.parser.dialect.impl.OracleOptimizerBuilder
-org.apache.shardingsphere.sqlfederation.compiler.context.parser.dialect.impl.SQL92OptimizerBuilder
+name: cluster_information
+
+columns:
+  version:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: version
+    primaryKey: false
+    visible: true
