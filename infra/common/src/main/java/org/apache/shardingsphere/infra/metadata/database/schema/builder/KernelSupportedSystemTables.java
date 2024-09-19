@@ -44,7 +44,11 @@ public enum KernelSupportedSystemTables {
             "pg_tablespace", "pg_trigger", "pg_namespace", "pg_roles"))),
     
     POSTGRESQL_SHARDING_SPHERE("PostgreSQL", "shardingsphere", new HashSet<>(Arrays.asList("sharding_table_statistics", "cluster_information"))),
-    
+
+    XUGU_SHARDING_SPHERE("XuGu", "shardingsphere", new HashSet<>(Arrays.asList("sharding_table_statistics", "cluster_information"))),
+
+    CAE_SHARDING_SPHERE("CAE", "shardingsphere", new HashSet<>(Arrays.asList("sharding_table_statistics", "cluster_information"))),
+
     OPEN_GAUSS_INFORMATION_SCHEMA("openGauss", "information_schema", Collections.emptySet()),
     
     OPEN_GAUSS_PG_CATALOG("openGauss", "pg_catalog", new HashSet<>(Arrays.asList("pg_class", "pg_namespace", "pg_database", "pg_roles", "pg_tables", "pg_tablespace"))),

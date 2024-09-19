@@ -64,7 +64,7 @@ class RowCountTokenGeneratorTest {
         when(selectStatementContext.isSameGroupByAndOrderByItems()).thenReturn(Boolean.FALSE);
         RowCountTokenGenerator rowCountTokenGenerator = new RowCountTokenGenerator();
         RowCountToken rowCountToken = rowCountTokenGenerator.generateSQLToken(selectStatementContext);
-        assertThat(rowCountToken.toString(), is(String.valueOf(Integer.MAX_VALUE)));
+        assertThat(rowCountToken.toString(), is(String.valueOf(999999999)));
         when(selectStatementContext.isSameGroupByAndOrderByItems()).thenReturn(Boolean.TRUE);
         rowCountToken = rowCountTokenGenerator.generateSQLToken(selectStatementContext);
         assertThat(rowCountToken.toString(), is(String.valueOf(testOffsetSegmentValue + testRowCountSegmentValue)));
