@@ -30,6 +30,6 @@ class CAEDatabaseTypeTest {
     
     @Test
     void assertGetJdbcUrlPrefixes() {
-        assertThat(TypedSPILoader.getService(DatabaseType.class, "XuGu").getJdbcUrlPrefixes(), is(Collections.singleton("jdbc:xugu:")));
+        assertThat(TypedSPILoader.getService(DatabaseType.class, "CAE").getJdbcUrlPrefixes(), is(Collections.singleton("jdbc:cae:")));
     }
 }
