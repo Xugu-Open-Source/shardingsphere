@@ -64,7 +64,7 @@ class ShardingRowCountTokenGeneratorTest {
         when(selectStatementContext.isSameGroupByAndOrderByItems()).thenReturn(Boolean.FALSE);
         ShardingRowCountTokenGenerator shardingRowCountTokenGenerator = new ShardingRowCountTokenGenerator();
         RowCountToken rowCountToken = shardingRowCountTokenGenerator.generateSQLToken(selectStatementContext);
-        assertThat(rowCountToken.toString(), is(String.valueOf(Integer.MAX_VALUE)));
+        assertThat(rowCountToken.toString(), is(String.valueOf(999999999)));
         when(selectStatementContext.isSameGroupByAndOrderByItems()).thenReturn(Boolean.TRUE);
         rowCountToken = shardingRowCountTokenGenerator.generateSQLToken(selectStatementContext);
         assertThat(rowCountToken.toString(), is(String.valueOf(testOffsetSegmentValue + testRowCountSegmentValue)));

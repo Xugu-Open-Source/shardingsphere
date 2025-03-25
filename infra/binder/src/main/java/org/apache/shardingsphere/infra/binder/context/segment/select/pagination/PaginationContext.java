@@ -147,7 +147,7 @@ public final class PaginationContext {
      */
     public long getRevisedRowCount(final SelectStatementContext selectStatementContext) {
         if (isMaxRowCount(selectStatementContext)) {
-            return Integer.MAX_VALUE;
+            return 999999999;
         }
         return rowCountSegment instanceof LimitValueSegment ? actualOffset + actualRowCount : actualRowCount;
     }
