@@ -41,6 +41,7 @@ import org.apache.shardingsphere.infra.binder.segment.table.TablesContext;
 import org.apache.shardingsphere.infra.binder.statement.CommonSQLStatementContext;
 import org.apache.shardingsphere.infra.binder.type.TableAvailable;
 import org.apache.shardingsphere.infra.binder.type.WhereAvailable;
+import org.apache.shardingsphere.infra.database.type.dialect.MySQLDatabaseType;
 import org.apache.shardingsphere.infra.metadata.database.ShardingSphereDatabase;
 import org.apache.shardingsphere.infra.metadata.database.schema.decorator.model.ShardingSphereSchema;
 import org.apache.shardingsphere.infra.util.exception.ShardingSpherePreconditions;
@@ -227,7 +228,17 @@ public final class SelectStatementContext extends CommonSQLStatementContext<Sele
     private void setIndexForAggregationProjection(final Map<String, Integer> columnLabelIndexMap) {
         for (AggregationProjection each : projectionsContext.getAggregationProjections()) {
             String columnLabel = SQLUtil.getExactlyValue(each.getColumnLabel());
-            Preconditions.checkState(columnLabelIndexMap.containsKey(columnLabel), "Can't find index: %s, please add alias for aggregate selections", each);
+            try {
+                Preconditions.checkState(columnLabelIndexMap.containsKey(columnLabel), "Can't find index: %s, please add alias for aggregate selections", each);
+            } catch (IllegalStateException e) {
+                // xugu 走 mysql 语法解析，count( * ) 在数据库预处理返回是count(*)
+                if (each.getDatabaseType() instanceof MySQLDatabaseType) {
+                    columnLabel = columnLabel.replaceAll("\\s+", "");
+                    Preconditions.checkState(columnLabelIndexMap.containsKey(columnLabel), "Can't find index: %s, please add alias for aggregate selections", each);
+                } else {
+                    throw new IllegalStateException(e);
+                }
+            }
             each.setIndex(columnLabelIndexMap.get(columnLabel));
             for (AggregationProjection derived : each.getDerivedAggregationProjections()) {
                 String derivedColumnLabel = SQLUtil.getExactlyValue(derived.getColumnLabel());
