@@ -1,0 +1,164 @@
+#
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+name: user_constraints
+type: VIEW
+columns:
+  db_id:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: DB_ID
+    nullable: false
+    primaryKey: false
+    unsigned: true
+    visible: true
+  table_id:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: TABLE_ID
+    nullable: false
+    primaryKey: false
+    unsigned: true
+    visible: true
+  ref_table_id:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: REF_TABLE_ID
+    nullable: true
+    primaryKey: false
+    unsigned: true
+    visible: true
+  cons_name:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: CONS_NAME
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  cons_type:
+    caseSensitive: false
+    dataType: 1
+    generated: false
+    name: CONS_TYPE
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  match_type:
+    caseSensitive: false
+    dataType: 1
+    generated: false
+    name: MATCH_TYPE
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  deferrable:
+    caseSensitive: false
+    dataType: 16
+    generated: false
+    name: DEFERRABLE
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  initdeferred:
+    caseSensitive: false
+    dataType: 16
+    generated: false
+    name: INITDEFERRED
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  DEFINE:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: DEFINE
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  update_action:
+    caseSensitive: false
+    dataType: 1
+    generated: false
+    name: UPDATE_ACTION
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  delete_action:
+    caseSensitive: false
+    dataType: 1
+    generated: false
+    name: DELETE_ACTION
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  enable:
+    caseSensitive: false
+    dataType: 16
+    generated: false
+    name: ENABLE
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  valid:
+    caseSensitive: false
+    dataType: 16
+    generated: false
+    name: VALID
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  is_sys:
+    caseSensitive: false
+    dataType: 16
+    generated: false
+    name: IS_SYS
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  reserved1:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: RESERVED1
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  reserved2:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: RESERVED2
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true

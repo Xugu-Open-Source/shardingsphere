@@ -30,6 +30,7 @@
         <module>sql92</module>
         <module>postgresql</module>
         <module>mysql</module>
+        <module>xugu</module>
         <module>oracle</module>
         <module>sqlserver</module>
         <module>opengauss</module>

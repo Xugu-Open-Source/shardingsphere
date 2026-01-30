@@ -32,6 +32,7 @@ public final class XuGuSystemDatabase implements DialectSystemDatabase {
     private static final Map<String, Collection<String>> SYSTEM_DATABASE_SCHEMA_MAP = new HashMap<>();
     
     static {
+        SYSTEM_DATABASE_SCHEMA_MAP.put("sysdba", Collections.singleton("sysdba"));
         SYSTEM_DATABASE_SCHEMA_MAP.put("shardingsphere", Collections.singleton("shardingsphere"));
     }
     

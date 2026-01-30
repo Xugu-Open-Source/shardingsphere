@@ -49,6 +49,11 @@
         </dependency>
         <dependency>
             <groupId>org.apache.shardingsphere</groupId>
+            <artifactId>shardingsphere-proxy-backend-xugu</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.shardingsphere</groupId>
             <artifactId>shardingsphere-proxy-backend-postgresql</artifactId>
             <version>${project.version}</version>
         </dependency>

@@ -34,10 +34,10 @@ public final class XuGuDatabaseType implements DatabaseType {
         return Collections.singleton(String.format("jdbc:%s:", getType().toLowerCase()));
     }
     
-    @Override
-    public Optional<DatabaseType> getTrunkDatabaseType() {
-        return Optional.of(TypedSPILoader.getService(DatabaseType.class, "MySQL"));
-    }
+    // @Override
+    // public Optional<DatabaseType> getTrunkDatabaseType() {
+    //     return Optional.of(TypedSPILoader.getService(DatabaseType.class, "MySQL"));
+    // }
     
     @Override
     public String getType() {

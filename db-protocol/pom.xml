@@ -31,6 +31,7 @@
         <module>core</module>
         <module>postgresql</module>
         <module>mysql</module>
+        <module>xugu</module>
         <module>opengauss</module>
     </modules>
 </project>
