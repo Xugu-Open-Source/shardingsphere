@@ -72,3 +72,192 @@ columns:
     primaryKey: false
     unsigned: false
     visible: true
+  is_hide:
+    caseSensitive: false
+    dataType: 16
+    generated: false
+    name: IS_HIDE
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  deleted:
+    caseSensitive: false
+    dataType: 16
+    generated: false
+    name: DELETED
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  varying:
+    caseSensitive: false
+    dataType: 16
+    generated: false
+    name: VARYING
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  not_null:
+    caseSensitive: false
+    dataType: 16
+    generated: false
+    name: NOT_NULL
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  is_serial:
+    caseSensitive: false
+    dataType: 16
+    generated: false
+    name: IS_SERIAL
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  serial_id:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: SERIAL_ID
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  timestamp_t:
+    caseSensitive: false
+    dataType: 1
+    generated: false
+    name: TIMESTAMP_T
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  collator:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: COLLATOR
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  DEF_VAL:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: DEF_VAL
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  domain_id:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: DOMAIN_ID
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  is_virtual:
+    caseSensitive: false
+    dataType: 16
+    generated: false
+    name: IS_VIRTUAL
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  comments:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: COMMENTS
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  repet_rate:
+    caseSensitive: false
+    dataType: 8
+    generated: false
+    name: REPET_RATE
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  dispersion:
+    caseSensitive: false
+    dataType: 8
+    generated: false
+    name: DISPERSION
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  max_val:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: MAX_VAL
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  min_val:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: MIN_VAL
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  histogram:
+    caseSensitive: false
+    dataType: -1
+    generated: false
+    name: HISTOGRAM
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  ana_flag:
+    caseSensitive: false
+    dataType: -6
+    generated: false
+    name: ANA_FLAG
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  on_null:
+    caseSensitive: false
+    dataType: -6
+    generated: false
+    name: ON_NULL
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  non_null_rate:
+    caseSensitive: false
+    dataType: 8
+    generated: false
+    name: NON_NULL_RATE
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  reserved3:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: RESERVED3
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true

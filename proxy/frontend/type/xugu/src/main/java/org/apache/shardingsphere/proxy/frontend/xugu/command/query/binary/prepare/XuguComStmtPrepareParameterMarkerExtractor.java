@@ -43,7 +43,7 @@ import java.util.stream.Collectors;
  * Parameter marker extractor for MySQL COM_STMT_PREPARE.
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class MySQLComStmtPrepareParameterMarkerExtractor {
+public final class XuguComStmtPrepareParameterMarkerExtractor {
     
     /**
      * TODO Support more statements and syntax.

@@ -41,7 +41,7 @@ import org.apache.shardingsphere.infra.binder.context.statement.CommonSQLStateme
 import org.apache.shardingsphere.infra.binder.context.type.TableAvailable;
 import org.apache.shardingsphere.infra.binder.context.type.WhereAvailable;
 import org.apache.shardingsphere.infra.binder.context.type.WithAvailable;
-import org.apache.shardingsphere.infra.database.mysql.type.MySQLDatabaseType;
+import org.apache.shardingsphere.infra.database.xugu.type.XuGuDatabaseType;
 import org.apache.shardingsphere.infra.exception.core.ShardingSpherePreconditions;
 import org.apache.shardingsphere.infra.exception.dialect.exception.syntax.database.NoDatabaseSelectedException;
 import org.apache.shardingsphere.infra.exception.dialect.exception.syntax.database.UnknownDatabaseException;
@@ -288,17 +288,11 @@ public final class SelectStatementContext extends CommonSQLStatementContext impl
     private void setIndexForAggregationProjection(final Map<String, Integer> columnLabelIndexMap) {
         for (AggregationProjection each : projectionsContext.getAggregationProjections()) {
             String columnLabel = SQLUtils.getExactlyValue(each.getAlias().map(IdentifierValue::getValue).orElse(each.getColumnName()));
-            try {
-                Preconditions.checkState(columnLabelIndexMap.containsKey(columnLabel), "Can't find index: %s, please add alias for aggregate selections", each);
-            } catch (IllegalStateException e) {
-                // xugu 走 mysql 语法解析，count( * ) 在数据库预处理返回是count(*)
-                if (each.getDatabaseType() instanceof MySQLDatabaseType) {
-                    columnLabel = columnLabel.replaceAll("\\s+", "");
-                    Preconditions.checkState(columnLabelIndexMap.containsKey(columnLabel), "Can't find index: %s, please add alias for aggregate selections", each);
-                } else {
-                    throw new IllegalStateException(e);
-                }
+            // count( * ) 在 xugudb 数据库预处理返回是count(*)，等待数据库升级
+            if (!columnLabelIndexMap.containsKey(columnLabel) && each.getDatabaseType() instanceof XuGuDatabaseType) {
+                columnLabel = columnLabel.replaceAll("\\s+", "");
             }
+            Preconditions.checkState(columnLabelIndexMap.containsKey(columnLabel), "Can't find index: %s, please add alias for aggregate selections", each);
             each.setIndex(columnLabelIndexMap.get(columnLabel));
             for (AggregationProjection derived : each.getDerivedAggregationProjections()) {
                 String derivedColumnLabel = SQLUtils.getExactlyValue(derived.getAlias().map(IdentifierValue::getValue).orElse(each.getColumnName()));

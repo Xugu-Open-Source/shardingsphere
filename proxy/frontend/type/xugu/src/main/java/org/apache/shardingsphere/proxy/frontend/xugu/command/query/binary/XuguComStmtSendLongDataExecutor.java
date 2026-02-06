@@ -30,7 +30,7 @@ import java.util.Collections;
  * COM_STMT_SEND_LONG_DATA command executor for MySQL.
  */
 @RequiredArgsConstructor
-public final class MySQLComStmtSendLongDataExecutor implements CommandExecutor {
+public final class XuguComStmtSendLongDataExecutor implements CommandExecutor {
     
     private final XuguComStmtSendLongDataPacket packet;
     
@@ -38,7 +38,7 @@ public final class MySQLComStmtSendLongDataExecutor implements CommandExecutor {
     
     @Override
     public Collection<DatabasePacket> execute() {
-        MySQLServerPreparedStatement preparedStatement = connectionSession.getServerPreparedStatementRegistry().getPreparedStatement(packet.getStatementId());
+        XuguServerPreparedStatement preparedStatement = connectionSession.getServerPreparedStatementRegistry().getPreparedStatement(packet.getStatementId());
         preparedStatement.getLongData().put(packet.getParamId(), packet.getData());
         return Collections.emptyList();
     }

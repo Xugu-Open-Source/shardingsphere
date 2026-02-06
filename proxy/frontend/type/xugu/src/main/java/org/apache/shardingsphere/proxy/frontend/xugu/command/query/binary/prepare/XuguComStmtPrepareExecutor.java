@@ -49,8 +49,8 @@ import org.apache.shardingsphere.proxy.backend.context.ProxyContext;
 import org.apache.shardingsphere.proxy.backend.session.ConnectionSession;
 import org.apache.shardingsphere.proxy.frontend.command.executor.CommandExecutor;
 import org.apache.shardingsphere.proxy.frontend.xugu.command.ServerStatusFlagCalculator;
-import org.apache.shardingsphere.proxy.frontend.xugu.command.query.binary.MySQLServerPreparedStatement;
-import org.apache.shardingsphere.proxy.frontend.xugu.command.query.binary.MySQLStatementIdGenerator;
+import org.apache.shardingsphere.proxy.frontend.xugu.command.query.binary.XuguServerPreparedStatement;
+import org.apache.shardingsphere.proxy.frontend.xugu.command.query.binary.XuguStatementIdGenerator;
 import org.apache.shardingsphere.sql.parser.statement.core.segment.generic.ParameterMarkerSegment;
 import org.apache.shardingsphere.sql.parser.statement.core.statement.AbstractSQLStatement;
 import org.apache.shardingsphere.sql.parser.statement.core.statement.SQLStatement;
@@ -67,7 +67,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * COM_STMT_PREPARE command executor for MySQL.
  */
 @RequiredArgsConstructor
-public final class MySQLComStmtPrepareExecutor implements CommandExecutor {
+public final class XuguComStmtPrepareExecutor implements CommandExecutor {
     
     private static final int MAX_PARAMETER_COUNT = 65535;
     
@@ -82,13 +82,13 @@ public final class MySQLComStmtPrepareExecutor implements CommandExecutor {
         SQLParserRule sqlParserRule = metaDataContexts.getMetaData().getGlobalRuleMetaData().getSingleRule(SQLParserRule.class);
         DatabaseType databaseType = TypedSPILoader.getService(DatabaseType.class, "XuGu");
         SQLStatement sqlStatement = sqlParserRule.getSQLParserEngine(databaseType).parse(packet.getSQL(), true);
-        if (!MySQLComStmtPrepareChecker.isAllowedStatement(sqlStatement)) {
+        if (!XuguComStmtPrepareChecker.isAllowedStatement(sqlStatement)) {
             throw new UnsupportedPreparedStatementException();
         }
         SQLStatementContext sqlStatementContext = new SQLBindEngine(ProxyContext.getInstance().getContextManager().getMetaDataContexts().getMetaData(),
                 connectionSession.getCurrentDatabaseName(), packet.getHintValueContext()).bind(sqlStatement, Collections.emptyList());
-        int statementId = MySQLStatementIdGenerator.getInstance().nextStatementId(connectionSession.getConnectionId());
-        MySQLServerPreparedStatement serverPreparedStatement = new MySQLServerPreparedStatement(packet.getSQL(), sqlStatementContext, packet.getHintValueContext(), new CopyOnWriteArrayList<>());
+        int statementId = XuguStatementIdGenerator.getInstance().nextStatementId(connectionSession.getConnectionId());
+        XuguServerPreparedStatement serverPreparedStatement = new XuguServerPreparedStatement(packet.getSQL(), sqlStatementContext, packet.getHintValueContext(), new CopyOnWriteArrayList<>());
         connectionSession.getServerPreparedStatementRegistry().addPreparedStatement(statementId, serverPreparedStatement);
         return createPackets(sqlStatementContext, statementId, serverPreparedStatement);
     }
@@ -102,7 +102,7 @@ public final class MySQLComStmtPrepareExecutor implements CommandExecutor {
         }
     }
     
-    private Collection<DatabasePacket> createPackets(final SQLStatementContext sqlStatementContext, final int statementId, final MySQLServerPreparedStatement serverPreparedStatement) {
+    private Collection<DatabasePacket> createPackets(final SQLStatementContext sqlStatementContext, final int statementId, final XuguServerPreparedStatement serverPreparedStatement) {
         Collection<DatabasePacket> result = new LinkedList<>();
         Collection<Projection> projections = getProjections(sqlStatementContext);
         int parameterCount = sqlStatementContext.getSqlStatement().getParameterCount();
@@ -126,9 +126,9 @@ public final class MySQLComStmtPrepareExecutor implements CommandExecutor {
     }
     
     private Collection<XuguPacket> createParameterColumnDefinition41Packets(final SQLStatementContext sqlStatementContext, final int characterSet,
-                                                                            final MySQLServerPreparedStatement serverPreparedStatement) {
+                                                                            final XuguServerPreparedStatement serverPreparedStatement) {
         List<ShardingSphereColumn> columnsOfParameterMarkers =
-                MySQLComStmtPrepareParameterMarkerExtractor.findColumnsOfParameterMarkers(sqlStatementContext.getSqlStatement(), getSchema(sqlStatementContext));
+                XuguComStmtPrepareParameterMarkerExtractor.findColumnsOfParameterMarkers(sqlStatementContext.getSqlStatement(), getSchema(sqlStatementContext));
         Collection<ParameterMarkerSegment> parameterMarkerSegments = ((AbstractSQLStatement) sqlStatementContext.getSqlStatement()).getParameterMarkerSegments();
         Collection<XuguPacket> result = new ArrayList<>(parameterMarkerSegments.size());
         Collection<Integer> paramColumnDefinitionFlags = new ArrayList<>(parameterMarkerSegments.size());

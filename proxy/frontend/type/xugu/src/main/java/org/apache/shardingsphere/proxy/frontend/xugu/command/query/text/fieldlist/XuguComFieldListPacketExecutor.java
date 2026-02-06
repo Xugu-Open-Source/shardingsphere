@@ -51,7 +51,7 @@ import java.util.LinkedList;
  * COM_FIELD_LIST packet executor for MySQL.
  */
 @RequiredArgsConstructor
-public final class MySQLComFieldListPacketExecutor implements CommandExecutor {
+public final class XuguComFieldListPacketExecutor implements CommandExecutor {
     
     private static final String SQL = "SHOW COLUMNS FROM %s FROM %s";
     

@@ -26,7 +26,7 @@ import org.apache.shardingsphere.proxy.backend.session.ConnectionSession;
 import org.apache.shardingsphere.proxy.frontend.authentication.AuthenticationEngine;
 import org.apache.shardingsphere.proxy.frontend.xugu.authentication.XuguAuthenticationEngine;
 import org.apache.shardingsphere.proxy.frontend.xugu.command.XuguCommandExecuteEngine;
-import org.apache.shardingsphere.proxy.frontend.xugu.command.query.binary.MySQLStatementIdGenerator;
+import org.apache.shardingsphere.proxy.frontend.xugu.command.query.binary.XuguStatementIdGenerator;
 import org.apache.shardingsphere.proxy.frontend.netty.FrontendChannelInboundHandler;
 import org.apache.shardingsphere.proxy.frontend.spi.DatabaseProtocolFrontendEngine;
 
@@ -49,7 +49,7 @@ public final class XuguFrontendEngine implements DatabaseProtocolFrontendEngine 
     
     @Override
     public void release(final ConnectionSession connectionSession) {
-        MySQLStatementIdGenerator.getInstance().unregisterConnection(connectionSession.getConnectionId());
+        XuguStatementIdGenerator.getInstance().unregisterConnection(connectionSession.getConnectionId());
     }
     
     @Override

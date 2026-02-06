@@ -26,6 +26,7 @@ import org.apache.shardingsphere.proxy.backend.xugu.handler.admin.executor.sysdb
 import org.apache.shardingsphere.sql.parser.statement.core.segment.generic.table.SimpleTableSegment;
 import org.apache.shardingsphere.sql.parser.statement.core.statement.dml.SelectStatement;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,7 +36,7 @@ import java.util.Optional;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class XuguSysdbaSchemaExecutorFactory {
     
-    private static final String SCHEMATA_TABLE = "SCHEMATA";
+    private static final String[] SCHEMATA_TABLE = new String[]{"all_schemas", "dba_schemas", "user_schemas"};
     
     /**
      * Create executor.
@@ -50,7 +51,7 @@ public final class XuguSysdbaSchemaExecutorFactory {
             return Optional.empty();
         }
         String tableName = ((SimpleTableSegment) sqlStatement.getFrom().get()).getTableName().getIdentifier().getValue();
-        if (SCHEMATA_TABLE.equalsIgnoreCase(tableName)) {
+        if (Arrays.stream(SCHEMATA_TABLE).anyMatch(e -> e.equalsIgnoreCase(tableName))) {
             return Optional.of(new SelectSysdbaSchemataExecutor(sqlStatement, sql, parameters));
         }
         if (SystemSchemaManager.isSystemTable("xugu", "sysdba", tableName)) {

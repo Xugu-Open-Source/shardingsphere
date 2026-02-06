@@ -45,7 +45,7 @@ import org.apache.shardingsphere.proxy.backend.session.ConnectionSession;
 import org.apache.shardingsphere.proxy.frontend.command.executor.QueryCommandExecutor;
 import org.apache.shardingsphere.proxy.frontend.command.executor.ResponseType;
 import org.apache.shardingsphere.proxy.frontend.xugu.command.ServerStatusFlagCalculator;
-import org.apache.shardingsphere.proxy.frontend.xugu.command.query.binary.MySQLServerPreparedStatement;
+import org.apache.shardingsphere.proxy.frontend.xugu.command.query.binary.XuguServerPreparedStatement;
 import org.apache.shardingsphere.proxy.frontend.xugu.command.query.builder.ResponsePacketBuilder;
 
 import java.sql.SQLException;
@@ -57,7 +57,7 @@ import java.util.List;
  * COM_STMT_EXECUTE command executor for MySQL.
  */
 @RequiredArgsConstructor
-public final class MySQLComStmtExecuteExecutor implements QueryCommandExecutor {
+public final class XuguComStmtExecuteExecutor implements QueryCommandExecutor {
     
     private final XuguComStmtExecutePacket packet;
     
@@ -70,7 +70,7 @@ public final class MySQLComStmtExecuteExecutor implements QueryCommandExecutor {
     
     @Override
     public Collection<DatabasePacket> execute() throws SQLException {
-        MySQLServerPreparedStatement preparedStatement = updateAndGetPreparedStatement();
+        XuguServerPreparedStatement preparedStatement = updateAndGetPreparedStatement();
         List<Object> params = packet.readParameters(preparedStatement.getParameterTypes(), preparedStatement.getLongData().keySet(), preparedStatement.getParameterColumnDefinitionFlags());
         preparedStatement.getLongData().forEach(params::set);
         SQLStatementContext sqlStatementContext = preparedStatement.getSqlStatementContext();
@@ -85,8 +85,8 @@ public final class MySQLComStmtExecuteExecutor implements QueryCommandExecutor {
         return responseHeader instanceof QueryResponseHeader ? processQuery((QueryResponseHeader) responseHeader) : processUpdate((UpdateResponseHeader) responseHeader);
     }
     
-    private MySQLServerPreparedStatement updateAndGetPreparedStatement() {
-        MySQLServerPreparedStatement result = connectionSession.getServerPreparedStatementRegistry().getPreparedStatement(packet.getStatementId());
+    private XuguServerPreparedStatement updateAndGetPreparedStatement() {
+        XuguServerPreparedStatement result = connectionSession.getServerPreparedStatementRegistry().getPreparedStatement(packet.getStatementId());
         if (XuguNewParametersBoundFlag.PARAMETER_TYPE_EXIST == packet.getNewParametersBoundFlag()) {
             result.getParameterTypes().clear();
             result.getParameterTypes().addAll(packet.getNewParameterTypes());

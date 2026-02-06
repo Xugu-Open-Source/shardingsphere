@@ -38,14 +38,14 @@ import org.apache.shardingsphere.proxy.frontend.xugu.command.admin.XuguComResetC
 import org.apache.shardingsphere.proxy.frontend.xugu.command.admin.XuguComSetOptionExecutor;
 import org.apache.shardingsphere.proxy.frontend.xugu.command.admin.initdb.XuguComInitDbExecutor;
 import org.apache.shardingsphere.proxy.frontend.xugu.command.admin.ping.XuguComPingExecutor;
-import org.apache.shardingsphere.proxy.frontend.xugu.command.admin.quit.MySQLComQuitExecutor;
+import org.apache.shardingsphere.proxy.frontend.xugu.command.admin.quit.XuguComQuitExecutor;
 import org.apache.shardingsphere.proxy.frontend.xugu.command.generic.XuguUnsupportedCommandExecutor;
-import org.apache.shardingsphere.proxy.frontend.xugu.command.query.binary.MySQLComStmtSendLongDataExecutor;
-import org.apache.shardingsphere.proxy.frontend.xugu.command.query.binary.close.MySQLComStmtCloseExecutor;
-import org.apache.shardingsphere.proxy.frontend.xugu.command.query.binary.execute.MySQLComStmtExecuteExecutor;
-import org.apache.shardingsphere.proxy.frontend.xugu.command.query.binary.prepare.MySQLComStmtPrepareExecutor;
-import org.apache.shardingsphere.proxy.frontend.xugu.command.query.binary.reset.MySQLComStmtResetExecutor;
-import org.apache.shardingsphere.proxy.frontend.xugu.command.query.text.fieldlist.MySQLComFieldListPacketExecutor;
+import org.apache.shardingsphere.proxy.frontend.xugu.command.query.binary.XuguComStmtSendLongDataExecutor;
+import org.apache.shardingsphere.proxy.frontend.xugu.command.query.binary.close.XuguComStmtCloseExecutor;
+import org.apache.shardingsphere.proxy.frontend.xugu.command.query.binary.execute.XuguComStmtExecuteExecutor;
+import org.apache.shardingsphere.proxy.frontend.xugu.command.query.binary.prepare.XuguComStmtPrepareExecutor;
+import org.apache.shardingsphere.proxy.frontend.xugu.command.query.binary.reset.XuguComStmtResetExecutor;
+import org.apache.shardingsphere.proxy.frontend.xugu.command.query.text.fieldlist.XuguComFieldListPacketExecutor;
 import org.apache.shardingsphere.proxy.frontend.xugu.command.query.text.query.XuguComQueryPacketExecutor;
 
 import java.sql.SQLException;
@@ -75,25 +75,25 @@ public final class XuguCommandExecutorFactory {
         }
         switch (commandPacketType) {
             case COM_QUIT:
-                return new MySQLComQuitExecutor();
+                return new XuguComQuitExecutor();
             case COM_INIT_DB:
                 return new XuguComInitDbExecutor((XuguComInitDbPacket) commandPacket, connectionSession);
             case COM_FIELD_LIST:
-                return new MySQLComFieldListPacketExecutor((XuguComFieldListPacket) commandPacket, connectionSession);
+                return new XuguComFieldListPacketExecutor((XuguComFieldListPacket) commandPacket, connectionSession);
             case COM_QUERY:
                 return new XuguComQueryPacketExecutor((XuguComQueryPacket) commandPacket, connectionSession);
             case COM_PING:
                 return new XuguComPingExecutor(connectionSession);
             case COM_STMT_PREPARE:
-                return new MySQLComStmtPrepareExecutor((XuguComStmtPreparePacket) commandPacket, connectionSession);
+                return new XuguComStmtPrepareExecutor((XuguComStmtPreparePacket) commandPacket, connectionSession);
             case COM_STMT_EXECUTE:
-                return new MySQLComStmtExecuteExecutor((XuguComStmtExecutePacket) commandPacket, connectionSession);
+                return new XuguComStmtExecuteExecutor((XuguComStmtExecutePacket) commandPacket, connectionSession);
             case COM_STMT_SEND_LONG_DATA:
-                return new MySQLComStmtSendLongDataExecutor((XuguComStmtSendLongDataPacket) commandPacket, connectionSession);
+                return new XuguComStmtSendLongDataExecutor((XuguComStmtSendLongDataPacket) commandPacket, connectionSession);
             case COM_STMT_RESET:
-                return new MySQLComStmtResetExecutor((XuguComStmtResetPacket) commandPacket, connectionSession);
+                return new XuguComStmtResetExecutor((XuguComStmtResetPacket) commandPacket, connectionSession);
             case COM_STMT_CLOSE:
-                return new MySQLComStmtCloseExecutor((XuguComStmtClosePacket) commandPacket, connectionSession);
+                return new XuguComStmtCloseExecutor((XuguComStmtClosePacket) commandPacket, connectionSession);
             case COM_SET_OPTION:
                 return new XuguComSetOptionExecutor((XuguComSetOptionPacket) commandPacket, connectionSession);
             case COM_RESET_CONNECTION:

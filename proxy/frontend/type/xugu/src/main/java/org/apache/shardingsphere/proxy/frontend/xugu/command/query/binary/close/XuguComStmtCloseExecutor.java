@@ -15,33 +15,30 @@
  * limitations under the License.
  */
 
-package org.apache.shardingsphere.proxy.frontend.xugu.command.query.binary.reset;
+package org.apache.shardingsphere.proxy.frontend.xugu.command.query.binary.close;
 
 import lombok.RequiredArgsConstructor;
-import org.apache.shardingsphere.db.protocol.xugu.packet.command.query.binary.reset.XuguComStmtResetPacket;
-import org.apache.shardingsphere.db.protocol.xugu.packet.generic.XuguOKPacket;
+import org.apache.shardingsphere.db.protocol.xugu.packet.command.query.binary.close.XuguComStmtClosePacket;
 import org.apache.shardingsphere.db.protocol.packet.DatabasePacket;
 import org.apache.shardingsphere.proxy.backend.session.ConnectionSession;
 import org.apache.shardingsphere.proxy.frontend.command.executor.CommandExecutor;
-import org.apache.shardingsphere.proxy.frontend.xugu.command.ServerStatusFlagCalculator;
-import org.apache.shardingsphere.proxy.frontend.xugu.command.query.binary.MySQLServerPreparedStatement;
 
 import java.util.Collection;
 import java.util.Collections;
 
 /**
- * COM_STMT_RESET command executor for MySQL.
+ * COM_STMT_CLOSE command executor for MySQL.
  */
 @RequiredArgsConstructor
-public final class MySQLComStmtResetExecutor implements CommandExecutor {
+public final class XuguComStmtCloseExecutor implements CommandExecutor {
     
-    private final XuguComStmtResetPacket packet;
+    private final XuguComStmtClosePacket packet;
     
     private final ConnectionSession connectionSession;
     
     @Override
     public Collection<DatabasePacket> execute() {
-        connectionSession.getServerPreparedStatementRegistry().<MySQLServerPreparedStatement>getPreparedStatement(packet.getStatementId()).getLongData().clear();
-        return Collections.singleton(new XuguOKPacket(ServerStatusFlagCalculator.calculateFor(connectionSession, true)));
+        connectionSession.getServerPreparedStatementRegistry().removePreparedStatement(packet.getStatementId());
+        return Collections.emptyList();
     }
 }

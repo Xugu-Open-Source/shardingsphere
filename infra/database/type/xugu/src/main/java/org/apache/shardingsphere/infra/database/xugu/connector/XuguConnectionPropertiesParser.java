@@ -40,7 +40,7 @@ public final class XuguConnectionPropertiesParser implements ConnectionPropertie
                 null == catalog ? jdbcUrl.getDatabase() : catalog, currentSchema == null ? username : currentSchema,
                 jdbcUrl.getQueryProperties(), buildDefaultQueryProperties());
     }
-
+    
     private Properties buildDefaultQueryProperties() {
         Properties result = new Properties();
         result.setProperty("useSSL", Boolean.FALSE.toString());

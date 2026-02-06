@@ -46,17 +46,25 @@ import java.util.stream.Stream;
  */
 public final class SelectSysdbaSchemataExecutor extends DefaultDatabaseMetaDataExecutor {
     
+    public static final String DB_ID = "DB_ID";
+    
+    public static final String SCHEMA_ID = "SCHEMA_ID";
+    
+    public static final String USER_ID = "USER_ID";
+    
     public static final String SCHEMA_NAME = "SCHEMA_NAME";
     
-    public static final String DEFAULT_CHARACTER_SET_NAME = "DEFAULT_CHARACTER_SET_NAME";
+    public static final String COMMENTS = "COMMENTS";
     
-    public static final String DEFAULT_COLLATION_NAME = "DEFAULT_COLLATION_NAME";
+    public static final String IS_SYS = "IS_SYS";
     
-    public static final String CATALOG_NAME = "CATALOG_NAME";
+    public static final String REG_MODIFY = "REG_MODIFY";
     
-    public static final String SQL_PATH = "SQL_PATH";
+    public static final String STO_ZONE = "STO_ZONE";
     
-    public static final String DEFAULT_ENCRYPTION = "DEFAULT_ENCRYPTION";
+    public static final String RESERVED2 = "RESERVED2";
+    
+    public static final String RESERVED3 = "RESERVED3";
     
     private static final Collection<String> SCHEMA_WITHOUT_DATA_SOURCE = new LinkedHashSet<>();
     
@@ -113,7 +121,7 @@ public final class SelectSysdbaSchemataExecutor extends DefaultDatabaseMetaDataE
     private Map<String, String> getTheDefaultRowData() {
         Collection<ProjectionSegment> projections = sqlStatement.getProjections().getProjections();
         if (projections.stream().anyMatch(ShorthandProjectionSegment.class::isInstance)) {
-            return Stream.of(CATALOG_NAME, SCHEMA_NAME, DEFAULT_CHARACTER_SET_NAME, DEFAULT_COLLATION_NAME, SQL_PATH, DEFAULT_ENCRYPTION)
+            return Stream.of(DB_ID, SCHEMA_ID, USER_ID, SCHEMA_NAME, COMMENTS, IS_SYS, REG_MODIFY, STO_ZONE, RESERVED2, RESERVED3)
                     .collect(Collectors.toMap(each -> each, each -> "", (oldValue, currentValue) -> oldValue, LinkedHashMap::new));
         }
         return getDefaultRowsFromProjections(projections);

@@ -123,7 +123,7 @@
         
         <postgresql.version>42.7.2</postgresql.version>
         <mysql-connector-java.version>8.3.0</mysql-connector-java.version>
-        <xugu-jdbc.version>12.3.5</xugu-jdbc.version>
+        <xugu-jdbc.version>12.3.7</xugu-jdbc.version>
         <mssql.version>6.1.7.jre8-preview</mssql.version>
         <h2.version>2.2.224</h2.version>
         <opengauss.version>3.1.0-og</opengauss.version>

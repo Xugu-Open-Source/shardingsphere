@@ -25,6 +25,7 @@ import org.apache.calcite.sql.dialect.MysqlSqlDialect;
 import org.apache.calcite.sql.dialect.OracleSqlDialect;
 import org.apache.shardingsphere.sqlfederation.optimizer.sql.dialect.CustomMySQLSQLDialect;
 import org.apache.shardingsphere.sqlfederation.optimizer.sql.dialect.CustomPostgreSQLSQLDialect;
+import org.apache.shardingsphere.sqlfederation.optimizer.sql.dialect.CustomXuguSQLDialect;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,6 +41,7 @@ public final class SQLDialectFactory {
     static {
         SQL_DIALECTS_REGISTRY.put("H2", CustomMySQLSQLDialect.DEFAULT);
         SQL_DIALECTS_REGISTRY.put("MySQL", CustomMySQLSQLDialect.DEFAULT);
+        SQL_DIALECTS_REGISTRY.put("XuGu", CustomXuguSQLDialect.DEFAULT);
         SQL_DIALECTS_REGISTRY.put("MariaDB", CustomMySQLSQLDialect.DEFAULT);
         SQL_DIALECTS_REGISTRY.put("Oracle", OracleSqlDialect.DEFAULT);
         SQL_DIALECTS_REGISTRY.put("SQLServer", MssqlSqlDialect.DEFAULT);

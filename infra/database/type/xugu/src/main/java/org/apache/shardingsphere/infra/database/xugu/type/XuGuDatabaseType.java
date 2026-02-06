@@ -18,11 +18,9 @@
 package org.apache.shardingsphere.infra.database.xugu.type;
 
 import org.apache.shardingsphere.infra.database.core.type.DatabaseType;
-import org.apache.shardingsphere.infra.spi.type.typed.TypedSPILoader;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Optional;
 
 /**
  * Database type of XuGu.
@@ -33,11 +31,6 @@ public final class XuGuDatabaseType implements DatabaseType {
     public Collection<String> getJdbcUrlPrefixes() {
         return Collections.singleton(String.format("jdbc:%s:", getType().toLowerCase()));
     }
-    
-    // @Override
-    // public Optional<DatabaseType> getTrunkDatabaseType() {
-    //     return Optional.of(TypedSPILoader.getService(DatabaseType.class, "MySQL"));
-    // }
     
     @Override
     public String getType() {

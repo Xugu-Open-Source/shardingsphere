@@ -22,59 +22,55 @@ import org.apache.shardingsphere.transaction.xa.jta.connection.XAConnectionWrapp
 
 import javax.sql.XAConnection;
 import javax.sql.XADataSource;
-import java.lang.reflect.Method;
+import java.lang.reflect.Constructor;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
 
 /**
- * XA connection wrapper for Oracle.
+ * XA connection wrapper for xugu.
  */
 public final class XuguXAConnectionWrapper implements XAConnectionWrapper {
-
+    
     private Class<Connection> jdbcConnectionClass;
-
-    private Method xaConnectionCreatorMethod;
-
+    
+    private Constructor<?> xaConnectionConstructor;
+    
     @Override
     public XAConnection wrap(final XADataSource xaDataSource, final Connection connection) throws SQLException {
-        return createXAConnection(xaDataSource, connection.unwrap(jdbcConnectionClass));
+        return createXAConnection(connection.unwrap(jdbcConnectionClass));
     }
-
+    
     @Override
     public void init(final Properties props) {
         loadReflection();
     }
-
+    
     private void loadReflection() {
         jdbcConnectionClass = getJDBCConnectionClass();
-        xaConnectionCreatorMethod = getXAConnectionCreatorMethod();
+        xaConnectionConstructor = getXAConnectionConstructor();
     }
-
+    
     @SuppressWarnings("unchecked")
     @SneakyThrows(ReflectiveOperationException.class)
     private Class<Connection> getJDBCConnectionClass() {
         return (Class<Connection>) Class.forName("com.xugu.cloudjdbc.Connection");
     }
-
+    
     @SneakyThrows(ReflectiveOperationException.class)
-    private Method getXAConnectionCreatorMethod() {
-        Method result = getXADataSourceClass().getDeclaredMethod("getXAConnection");
-        result.setAccessible(true);
-        return result;
+    private Constructor<?> getXAConnectionConstructor() {
+        // return Class.forName("com.xugu.xa.XAConnectionImp").getConstructor(Connection.class);
+        // 等待驱动修复
+        Constructor<?> constructor = Class.forName("com.xugu.xa.XAConnectionImp").getDeclaredConstructor(Connection.class);
+        constructor.setAccessible(true);
+        return constructor;
     }
-
-    @SuppressWarnings("unchecked")
+    
     @SneakyThrows(ReflectiveOperationException.class)
-    private Class<XADataSource> getXADataSourceClass() {
-        return (Class<XADataSource>) Class.forName("com.xugu.xa.XADatasourceImp");
+    private XAConnection createXAConnection(final Connection connection) {
+        return (XAConnection) xaConnectionConstructor.newInstance(connection);
     }
-
-    @SneakyThrows(ReflectiveOperationException.class)
-    private XAConnection createXAConnection(final XADataSource xaDataSource, final Connection connection) {
-        return (XAConnection) xaConnectionCreatorMethod.invoke(xaDataSource, connection);
-    }
-
+    
     @Override
     public String getDatabaseType() {
         return "XuGu";

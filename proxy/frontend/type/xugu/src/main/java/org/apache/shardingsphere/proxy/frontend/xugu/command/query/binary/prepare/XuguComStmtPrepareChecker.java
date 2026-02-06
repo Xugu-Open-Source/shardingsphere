@@ -86,7 +86,7 @@ import java.util.HashSet;
  * @see <a href="https://dev.mysql.com/doc/refman/5.7/en/sql-prepared-statements.html">SQL Syntax Allowed in Prepared Statements</a>
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class MySQLComStmtPrepareChecker {
+public final class XuguComStmtPrepareChecker {
     
     private static final Collection<Class<?>> ALLOWED_SQL_STATEMENTS = new HashSet<>();
     

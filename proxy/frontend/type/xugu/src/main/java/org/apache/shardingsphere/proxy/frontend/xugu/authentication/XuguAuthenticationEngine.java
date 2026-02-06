@@ -52,7 +52,7 @@ import org.apache.shardingsphere.proxy.backend.context.ProxyContext;
 import org.apache.shardingsphere.proxy.frontend.authentication.AuthenticationEngine;
 import org.apache.shardingsphere.proxy.frontend.connection.ConnectionIdGenerator;
 import org.apache.shardingsphere.proxy.frontend.xugu.authentication.authenticator.XuguAuthenticatorType;
-import org.apache.shardingsphere.proxy.frontend.xugu.command.query.binary.MySQLStatementIdGenerator;
+import org.apache.shardingsphere.proxy.frontend.xugu.command.query.binary.XuguStatementIdGenerator;
 import org.apache.shardingsphere.proxy.frontend.xugu.ssl.XuguSSLRequestHandler;
 import org.apache.shardingsphere.proxy.frontend.ssl.ProxySSLContext;
 
@@ -83,7 +83,7 @@ public final class XuguAuthenticationEngine implements AuthenticationEngine {
             context.pipeline().addFirst(XuguSSLRequestHandler.class.getSimpleName(), new XuguSSLRequestHandler());
         }
         context.writeAndFlush(new XuguHandshakePacket(result, sslEnabled, authPluginData));
-        MySQLStatementIdGenerator.getInstance().registerConnection(result);
+        XuguStatementIdGenerator.getInstance().registerConnection(result);
         return result;
     }
     

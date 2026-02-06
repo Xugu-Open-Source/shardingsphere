@@ -22,3 +22,4 @@ org.apache.shardingsphere.sqlfederation.optimizer.context.parser.dialect.impl.Op
 org.apache.shardingsphere.sqlfederation.optimizer.context.parser.dialect.impl.SQLServerOptimizerBuilder
 org.apache.shardingsphere.sqlfederation.optimizer.context.parser.dialect.impl.OracleOptimizerBuilder
 org.apache.shardingsphere.sqlfederation.optimizer.context.parser.dialect.impl.SQL92OptimizerBuilder
+org.apache.shardingsphere.sqlfederation.optimizer.context.parser.dialect.impl.XuguOptimizerBuilder

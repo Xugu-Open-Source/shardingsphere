@@ -35,7 +35,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 @RequiredArgsConstructor
 @Getter
-public final class MySQLServerPreparedStatement implements ServerPreparedStatement {
+public final class XuguServerPreparedStatement implements ServerPreparedStatement {
     
     private final String sql;
     

@@ -17,7 +17,7 @@
 
 grammar BaseRule;
 
-import Comments, Symbol, Keyword, MySQLKeyword, Literals;
+import Comments, Symbol, Keyword, XuguKeyword, Literals;
 
 parameterMarker
     : QUESTION_
@@ -1144,6 +1144,7 @@ castType
     | (castTypeName = NCHAR | castTypeName = NATIONAL_CHAR) fieldLength?
     | castTypeName = (SIGNED | SIGNED_INT | SIGNED_INTEGER)
     | castTypeName = (UNSIGNED | UNSIGNED_INT | UNSIGNED_INTEGER)
+    | castTypeName = (INTEGER | INT | BIGINT)
     | castTypeName = DATE
     | castTypeName = TIME typeDatetimePrecision?
     | castTypeName = DATETIME typeDatetimePrecision?

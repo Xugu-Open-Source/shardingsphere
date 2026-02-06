@@ -15,30 +15,22 @@
  * limitations under the License.
  */
 
-package org.apache.shardingsphere.proxy.frontend.xugu.command.query.binary.close;
+package org.apache.shardingsphere.proxy.frontend.xugu.command.admin.quit;
 
-import lombok.RequiredArgsConstructor;
-import org.apache.shardingsphere.db.protocol.xugu.packet.command.query.binary.close.XuguComStmtClosePacket;
+import org.apache.shardingsphere.db.protocol.xugu.packet.generic.XuguOKPacket;
 import org.apache.shardingsphere.db.protocol.packet.DatabasePacket;
-import org.apache.shardingsphere.proxy.backend.session.ConnectionSession;
 import org.apache.shardingsphere.proxy.frontend.command.executor.CommandExecutor;
 
 import java.util.Collection;
 import java.util.Collections;
 
 /**
- * COM_STMT_CLOSE command executor for MySQL.
+ * COM_QUIT executor for MySQL.
  */
-@RequiredArgsConstructor
-public final class MySQLComStmtCloseExecutor implements CommandExecutor {
-    
-    private final XuguComStmtClosePacket packet;
-    
-    private final ConnectionSession connectionSession;
+public final class XuguComQuitExecutor implements CommandExecutor {
     
     @Override
     public Collection<DatabasePacket> execute() {
-        connectionSession.getServerPreparedStatementRegistry().removePreparedStatement(packet.getStatementId());
-        return Collections.emptyList();
+        return Collections.singleton(new XuguOKPacket(0));
     }
 }

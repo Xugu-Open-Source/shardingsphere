@@ -36,7 +36,7 @@ import org.apache.shardingsphere.db.protocol.xugu.packet.command.query.text.fiel
 import org.apache.shardingsphere.db.protocol.xugu.packet.command.query.text.query.XuguComQueryPacket;
 import org.apache.shardingsphere.db.protocol.xugu.payload.XuguPacketPayload;
 import org.apache.shardingsphere.proxy.backend.session.ConnectionSession;
-import org.apache.shardingsphere.proxy.frontend.xugu.command.query.binary.MySQLServerPreparedStatement;
+import org.apache.shardingsphere.proxy.frontend.xugu.command.query.binary.XuguServerPreparedStatement;
 
 /**
  * Command packet factory for MySQL.
@@ -66,7 +66,7 @@ public final class XuguCommandPacketFactory {
             case COM_STMT_PREPARE:
                 return new XuguComStmtPreparePacket(payload);
             case COM_STMT_EXECUTE:
-                MySQLServerPreparedStatement serverPreparedStatement =
+                XuguServerPreparedStatement serverPreparedStatement =
                         connectionSession.getServerPreparedStatementRegistry().getPreparedStatement(payload.getByteBuf().getIntLE(payload.getByteBuf().readerIndex()));
                 return new XuguComStmtExecutePacket(payload, serverPreparedStatement.getSqlStatementContext().getSqlStatement().getParameterCount());
             case COM_STMT_SEND_LONG_DATA:
