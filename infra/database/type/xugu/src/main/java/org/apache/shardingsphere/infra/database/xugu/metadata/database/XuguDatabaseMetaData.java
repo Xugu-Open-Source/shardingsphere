@@ -157,11 +157,6 @@ public final class XuguDatabaseMetaData implements DialectDatabaseMetaData {
     }
     
     @Override
-    public boolean isInstanceConnectionAvailable() {
-        return true;
-    }
-    
-    @Override
     public String getDatabaseType() {
         return "XuGu";
     }
