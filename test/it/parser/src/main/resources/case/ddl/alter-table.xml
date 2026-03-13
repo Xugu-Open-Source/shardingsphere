@@ -349,6 +349,21 @@
             </column-definition>
         </add-column>
     </alter-table>
+
+    <alter-table sql-case-id="alter_table_add_columns_integer_type_xugu">
+        <table name="t_order" start-index="12" stop-index="18" />
+        <add-column>
+            <column-definition type="INTEGER" start-index="25" stop-index="39">
+                <column name="column4" />
+            </column-definition>
+            <column-definition type="INT" start-index="42" stop-index="52">
+                <column name="column5" />
+            </column-definition>
+            <column-definition type="SMALLINT" start-index="55" stop-index="70">
+                <column name="column6" />
+            </column-definition>
+        </add-column>
+    </alter-table>
     
     <alter-table sql-case-id="alter_table_add_columns_integer_type">
         <table name="t_order" start-index="12" stop-index="18" />
@@ -1151,6 +1166,21 @@
         </add-column>
         <add-column>
             <column-definition type="VARCHAR" start-index="66" stop-index="84">
+                <column name="column6" />
+            </column-definition>
+        </add-column>
+    </alter-table>
+
+    <alter-table sql-case-id="alter_table_add_columns_xugu">
+        <table name="t_order" start-index="12" stop-index="18" />
+        <add-column>
+            <column-definition type="VARCHAR2" start-index="25" stop-index="44">
+                <column name="column4" />
+            </column-definition>
+            <column-definition type="VARCHAR2" start-index="47" stop-index="66">
+                <column name="column5" />
+            </column-definition>
+            <column-definition type="VARCHAR2" start-index="69" stop-index="88">
                 <column name="column6" />
             </column-definition>
         </add-column>

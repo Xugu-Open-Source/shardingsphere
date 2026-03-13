@@ -303,6 +303,10 @@ CLIENT
     : C L I E N T
     ;
 
+CLOB
+    : C L O B
+    ;
+
 CLONE
     : C L O N E
     ;
@@ -393,6 +397,10 @@ CONSISTENT
 
 CONSTRAINT
     : C O N S T R A I N T
+    ;
+
+CONSTRAINTS
+    : C O N S T R A I N T S
     ;
 
 CONSTRAINT_CATALOG
@@ -1015,6 +1023,10 @@ IDENTIFIED
     : I D E N T I F I E D
     ;
 
+IDENTITY
+    : I D E N T I T Y
+    ;
+
 IF
     : I F
     ;
@@ -1171,6 +1183,10 @@ ITERATE
     : I T E R A T E
     ;
 
+JOB
+    : J O B
+    ;
+
 JOIN
     : J O I N
     ;
@@ -1185,6 +1201,10 @@ JSON_TABLE
 
 JSON_VALUE
     : J S O N UL_ V A L U E
+    ;
+
+KEEP
+    : K E E P
     ;
 
 KEY
@@ -1671,6 +1691,10 @@ NOT
     : N O T
     ;
 
+NOTNULL
+    : N O T N U L L
+    ;
+
 NOWAIT
     : N O W A I T
     ;
@@ -1711,12 +1735,24 @@ NVARCHAR
     : N V A R C H A R
     ;
 
+NVARCHAR2
+    : N V A R C H A R [2]
+    ;
+
+OBJECT
+    : O B J E C T
+    ;
+
 OF
     : O F
     ;
 
 OFF
     : O F F
+    ;
+
+OFFLINE
+    : O F F L I N E
     ;
 
 OFFSET
@@ -1737,6 +1773,10 @@ ON
 
 ONE
     : O N E
+    ;
+
+ONLINE
+    : O N L I N E
     ;
 
 ONLY
@@ -1809,6 +1849,10 @@ OVER
 
 OWNER
     : O W N E R
+    ;
+
+PACKAGE
+    : P A C K A G E
     ;
 
 PACK_KEYS
@@ -2009,6 +2053,10 @@ REAL
 
 REBUILD
     : R E B U I L D
+    ;
+
+RECOMPILE
+    : R E C O M P I L E
     ;
 
 RECOVER
@@ -2333,6 +2381,10 @@ SENSITIVE
 
 SEPARATOR
     : S E P A R A T O R
+    ;
+
+SEQUENCE
+    : S E Q U E N C E
     ;
 
 SERIAL
@@ -2977,6 +3029,10 @@ VARBINARY
 
 VARCHAR
     : V A R C H A R
+    ;
+
+VARCHAR2
+    : V A R C H A R [2]
     ;
 
 VARCHARACTER

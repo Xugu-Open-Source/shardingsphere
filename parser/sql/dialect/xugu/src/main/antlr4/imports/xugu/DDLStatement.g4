@@ -31,6 +31,22 @@ alterStatement
     | alterServer
     ;
 
+comment
+    : COMMENT ON (
+    | COLUMN (tableName | viewName) DOT_ columnName
+    | PROCEDURE procedureName
+    | SEQUENCE sequenceName
+    | TRIGGER triggerName
+    | PACKAGE packageName
+    | JOB jobName
+    | OBJECT objectName
+    | DATABASE databaseName
+    | SCHEMA schemaName
+    | TABLE tableName
+    | VIEW viewName
+    ) IS string_
+    ;
+
 createTable
     : CREATE TEMPORARY? TABLE ifNotExists? tableName (createDefinitionClause? createTableOptions? partitionClause? duplicateAsQueryExpression? startTransaction? | createLikeClause)
     ;
@@ -85,7 +101,7 @@ alterCommandList
     ;
 
 alterList
-    : (alterListItem | createTableOptionsSpaceSeparated) (COMMA_ (alterListItem | alterCommandsModifier| createTableOptionsSpaceSeparated))*
+    : (alterListItem | createTableOptionsSpaceSeparated) (COMMA_? (alterListItem | alterCommandsModifier| createTableOptionsSpaceSeparated))*
     ;
 
 createTableOptionsSpaceSeparated
@@ -93,14 +109,17 @@ createTableOptionsSpaceSeparated
     ;
 
 alterListItem
-    : ADD COLUMN? (columnDefinition place? | LP_ tableElementList RP_)  # addColumn
+    : ADD COLUMN? (columnDefinition place? | LP_? tableElementList RP_?)  # addColumn
     | ADD tableConstraintDef  # addTableConstraint
     | CHANGE COLUMN? columnInternalRef=identifier columnDefinition place?  # changeColumn
     | MODIFY COLUMN? columnInternalRef=identifier fieldDefinition place?   # modifyColumn
-    | DROP (COLUMN? columnInternalRef=identifier restrict? | FOREIGN KEY columnInternalRef=identifier | PRIMARY KEY | keyOrIndex indexName | CHECK identifier | CONSTRAINT identifier)  # alterTableDrop
+    | DROP (COLUMN? identifier (COMMA_ identifier)* restrict?
+            | FOREIGN KEY columnInternalRef=identifier | PRIMARY KEY | keyOrIndex indexName
+            | CHECK constraintInternalRef=identifier | CONSTRAINT constraintInternalRef=identifier)  # alterTableDrop
     | DISABLE KEYS  # disableKeys
     | ENABLE KEYS   # enableKeys
     | ALTER COLUMN? columnInternalRef=identifier (SET DEFAULT (LP_ expr RP_| literals)| SET visibility | DROP DEFAULT) # alterColumn
+    | (ALTER | MODIFY) COLUMN? LP_? (alterColumnItem | identifier fieldDefinition) (COMMA_ (alterColumnItem | identifier fieldDefinition))* RP_? restrict? # alterColumn
     | ALTER INDEX indexName visibility  # alterIndex
     | ALTER CHECK constraintName constraintEnforcement  # alterCheck
     | ALTER CONSTRAINT constraintName constraintEnforcement # alterConstraint
@@ -110,6 +129,19 @@ alterListItem
     | CONVERT TO charset charsetName collateClause?  # alterConvert
     | FORCE  # alterTableForce
     | ORDER BY alterOrderList  # alterTableOrder
+    ;
+
+alterColumnItem
+    : columnInternalRef=identifier ( SET? DEFAULT defaultOnNull ? expr | alterColumnType )
+    ;
+
+defaultOnNull
+    : ON NULL (FOR INSERT (ONLY | AND UPDATE))?
+    ;
+
+alterColumnType
+    : DROP (DEFAULT | NOT NULL | NOTNULL)
+    | SET (NOT? NULL | NOTNULL)
     ;
 
 alterOrderList
@@ -143,23 +175,41 @@ standaloneAlterCommands
     : DISCARD TABLESPACE
     | IMPORT TABLESPACE
     | alterPartition
+    | alterConstraints
+    | alterCache
+    | OWNER TO username
     | (SECONDARY_LOAD | SECONDARY_UNLOAD)
     ;
 
 alterPartition
     : ADD PARTITION noWriteToBinLog? (partitionDefinitions | PARTITIONS NUMBER_)
-    | DROP PARTITION identifierList
+    | ADD partitionDefinition
+    | SET PARTITION identifierList (ONLINE | OFFLINE)
+    | DROP PARTITION identifierList (REBUILD GLOBAL INDEX)?
     | REBUILD PARTITION noWriteToBinLog? allOrPartitionNameList
     | OPTIMIZE PARTITION noWriteToBinLog? allOrPartitionNameList noWriteToBinLog?
     | ANALYZE PARTITION noWriteToBinLog? allOrPartitionNameList
     | CHECK PARTITION allOrPartitionNameList checkType*
     | REPAIR PARTITION noWriteToBinLog? allOrPartitionNameList repairType*
     | COALESCE PARTITION noWriteToBinLog? NUMBER_
-    | TRUNCATE PARTITION allOrPartitionNameList
+    | TRUNCATE PARTITION allOrPartitionNameList (REBUILD GLOBAL INDEX)?
     | REORGANIZE PARTITION noWriteToBinLog? (identifierList INTO partitionDefinitions)?
     | EXCHANGE PARTITION identifier WITH TABLE tableName withValidation?
     | DISCARD PARTITION allOrPartitionNameList TABLESPACE
     | IMPORT PARTITION allOrPartitionNameList TABLESPACE
+    ;
+
+alterConstraints
+    : (ENABLE | DISABLE) (CONSTRAINT constraintName (COMMA_ constraintName)* ((KEEP | DROP) INDEX)? restrict | operation (COMMA_ operation)*)
+    | DROP CONSTRAINT constraintName (COMMA_ constraintName)* ((KEEP | DROP) INDEX)? restrict
+    ;
+
+operation
+    : SELECT | INSERT | UPDATE | DELETE | EXECUTE | REFERENCES | ALTER | DROP | INDEX | TRIGGER
+    ;
+
+alterCache
+    : SET CACHE (BY LP_ columnInternalRef=identifier ( COMMA_ identifier )* RP_ | OFF)
     ;
 
 constraintClause
@@ -176,7 +226,7 @@ tableElement
     ;
 
 restrict
-    : RESTRICT | CASCADE
+    : RESTRICT | CASCADE | CASCADE CONSTRAINTS
     ;
 
 fulltextIndexOption
@@ -190,6 +240,7 @@ dropTable
 
 dropIndex
     : DROP INDEX indexName (ON tableName)? algorithmOptionAndLockOption?
+    | DROP INDEX ifExists? tableName DOT_ indexName
     ;
 
 algorithmOptionAndLockOption
@@ -338,6 +389,7 @@ alterView
       VIEW viewName (LP_ columnNames RP_)?
       AS select
       (WITH (CASCADED | LOCAL)? CHECK OPTION)?
+    | ALTER VIEW viewName RECOMPILE
     ;
 
 dropView
@@ -446,13 +498,17 @@ fieldDefinition
 
 columnAttribute
     : NOT? NULL
+    | SET ( NOT? NULL | NOTNULL )
     | NOT SECONDARY
-    | value = DEFAULT (literals | now | LP_ expr RP_)
+    | value = DEFAULT (literals | now | LP_? expr RP_?)
     | value = ON UPDATE now
     | value = AUTO_INCREMENT
+    | value = IDENTITY (LP_ NUMBER_ COMMA_ NUMBER_ RP_)?
     | value = SERIAL DEFAULT VALUE
-    | PRIMARY? value = KEY
-    | value = UNIQUE KEY?
+    | constraintClause? PRIMARY? value = KEY
+    | constraintClause? value = UNIQUE KEY?
+    | constraintClause? value = FOREIGN KEY indexName? referenceDefinition
+    | constraintClause? value = NOT NULL
     | value = COMMENT string_
     | collateClause
     | value = COLUMN_FORMAT columnFormat
@@ -477,7 +533,7 @@ generatedOption
     ;
 
 referenceDefinition
-    : REFERENCES tableName keyParts (MATCH FULL | MATCH PARTIAL | MATCH SIMPLE)? onUpdateDelete?
+    : REFERENCES tableName keyParts? (MATCH FULL | MATCH PARTIAL | MATCH SIMPLE)? onUpdateDelete?
     ;
 
 onUpdateDelete

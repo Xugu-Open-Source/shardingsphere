@@ -22,6 +22,7 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.misc.Interval;
 import org.apache.shardingsphere.sql.parser.api.ASTNode;
 import org.apache.shardingsphere.sql.parser.api.visitor.statement.type.DDLStatementVisitor;
+import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.AddColumnContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.AddTableConstraintContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.AlterAlgorithmOptionContext;
@@ -150,6 +151,7 @@ import org.apache.shardingsphere.sql.parser.statement.core.segment.generic.table
 import org.apache.shardingsphere.sql.parser.statement.core.statement.SQLStatement;
 import org.apache.shardingsphere.sql.parser.statement.core.value.collection.CollectionValue;
 import org.apache.shardingsphere.sql.parser.statement.core.value.identifier.IdentifierValue;
+import org.apache.shardingsphere.sql.parser.statement.oracle.ddl.OracleCommentStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguAlterDatabaseStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguAlterEventStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguAlterFunctionStatement;
@@ -440,14 +442,18 @@ public final class XuguDDLStatementVisitor extends XuguStatementVisitor implemen
     
     private Optional<AlterDefinitionSegment> getDropItemDefinitionSegment(final AlterListContext alterListContext, final AlterTableDropContext alterTableDrop) {
         if (null != alterTableDrop.CHECK() || null != alterTableDrop.CONSTRAINT()) {
-            ConstraintSegment constraint = new ConstraintSegment(alterTableDrop.identifier().getStart().getStartIndex(), alterTableDrop.identifier().getStop().getStopIndex(),
-                    (IdentifierValue) visit(alterTableDrop.identifier()));
+            ConstraintSegment constraint = new ConstraintSegment(alterTableDrop.constraintInternalRef.start.getStartIndex(), alterTableDrop.constraintInternalRef.stop.getStopIndex(),
+                    (IdentifierValue) visit(alterTableDrop.constraintInternalRef));
             return Optional.of(new DropConstraintDefinitionSegment(alterListContext.getStart().getStartIndex(), alterListContext.getStop().getStopIndex(), constraint));
         }
         if (null == alterTableDrop.KEY() && null == alterTableDrop.keyOrIndex()) {
-            ColumnSegment column = new ColumnSegment(alterTableDrop.columnInternalRef.start.getStartIndex(), alterTableDrop.columnInternalRef.stop.getStopIndex(),
-                    (IdentifierValue) visit(alterTableDrop.columnInternalRef));
-            return Optional.of(new DropColumnDefinitionSegment(alterTableDrop.getStart().getStartIndex(), alterTableDrop.getStop().getStopIndex(), Collections.singleton(column)));
+            Collection<ColumnSegment> columns = new LinkedList<>();
+            for (IdentifierContext columnCtx : alterTableDrop.identifier()) {
+                ColumnSegment column = new ColumnSegment(columnCtx.getStart().getStartIndex(), columnCtx.getStop().getStopIndex(),
+                        (IdentifierValue) visit(columnCtx));
+                columns.add(column);
+            }
+            return Optional.of(new DropColumnDefinitionSegment(alterTableDrop.getStart().getStartIndex(), alterTableDrop.getStop().getStopIndex(), columns));
         }
         if (null != alterTableDrop.keyOrIndex()) {
             return Optional.of(
@@ -1052,5 +1058,18 @@ public final class XuguDDLStatementVisitor extends XuguStatementVisitor implemen
     @Override
     public ASTNode visitDeallocate(final DeallocateContext ctx) {
         return new XuguDeallocateStatement();
+    }
+
+    @Override
+    public ASTNode visitComment(final XuguStatementParser.CommentContext ctx) {
+        OracleCommentStatement result = new OracleCommentStatement();
+        if (null != ctx.tableName()) {
+            result.setTable((SimpleTableSegment) visit(ctx.tableName()));
+        }
+        if (null != ctx.columnName()) {
+            result.setColumn((ColumnSegment) visit(ctx.columnName()));
+        }
+        result.setComment(new IdentifierValue(ctx.string_().getText()));
+        return result;
     }
 }

@@ -681,6 +681,10 @@ databaseName
     : identifier
     ;
 
+schemaName
+    : identifier
+    ;
+
 databaseNames
     : databaseName (COMMA_ databaseName)*
     ;
@@ -750,6 +754,22 @@ functionName
     ;
 
 procedureName
+    : (owner DOT_)? identifier
+    ;
+
+packageName
+    : identifier (DOT_ identifier)?
+    ;
+
+jobName
+    : identifier (DOT_ identifier)?
+    ;
+
+objectName
+    : identifier (DOT_ identifier)?
+    ;
+
+sequenceName
     : (owner DOT_)? identifier
     ;
 
@@ -1271,24 +1291,26 @@ orderByItem
 dataType
     : dataTypeName = (INTEGER | INT | TINYINT | SMALLINT | MIDDLEINT | MEDIUMINT | BIGINT) fieldLength? fieldOptions?
     | (dataTypeName = REAL | dataTypeName = DOUBLE PRECISION?) precision? fieldOptions?
-    | dataTypeName = (FLOAT | DECIMAL | DEC | NUMERIC | FIXED) (fieldLength | precision)? fieldOptions?
+    | dataTypeName = (FLOAT | DECIMAL | DEC | NUMERIC | NUMBER | FIXED) (fieldLength | precision)? fieldOptions?
     | dataTypeName = BIT fieldLength?
     | dataTypeName = (BOOL | BOOLEAN)
     | dataTypeName = CHAR fieldLength? charsetWithOptBinary?
     | (dataTypeName = NCHAR | dataTypeName = NATIONAL_CHAR) fieldLength? BINARY?
     | dataTypeName = (SIGNED | SIGNED_INT | SIGNED_INTEGER)
     | dataTypeName = BINARY fieldLength?
-    | (dataTypeName = CHAR_VARYING | dataTypeName = CHARACTER_VARYING | dataTypeName = VARCHAR) fieldLength charsetWithOptBinary?
-    | (dataTypeName = NATIONAL VARCHAR | dataTypeName = NVARCHAR | dataTypeName = NCHAR VARCHAR | dataTypeName = NATIONAL_CHAR_VARYING | dataTypeName = NCHAR VARYING) fieldLength BINARY?
+    | (dataTypeName = CHAR_VARYING | dataTypeName = CHARACTER_VARYING | dataTypeName = VARCHAR | dataTypeName = VARCHAR2) fieldLength? charsetWithOptBinary?
+    | (dataTypeName = NATIONAL VARCHAR | dataTypeName = NVARCHAR | dataTypeName = NVARCHAR2| dataTypeName = NCHAR VARCHAR | dataTypeName = NATIONAL_CHAR_VARYING | dataTypeName = NCHAR VARYING) fieldLength BINARY?
     | dataTypeName = VARBINARY fieldLength?
     | dataTypeName = YEAR fieldLength? fieldOptions?
     | dataTypeName = DATE
-    | dataTypeName = TIME typeDatetimePrecision?
+    | dataTypeName = TIME typeDatetimePrecision? | TIME WITH TIME ZONE
     | dataTypeName = (UNSIGNED | UNSIGNED_INT | UNSIGNED_INTEGER)
-    | dataTypeName = TIMESTAMP typeDatetimePrecision?
-    | dataTypeName = DATETIME typeDatetimePrecision?
+    | dataTypeName = TIMESTAMP typeDatetimePrecision? | TIMESTAMP WITH TIME ZONE
+    | dataTypeName = DATETIME typeDatetimePrecision? | DATETIME WITH TIME ZONE
+    | dataTypeName = INTERVAL YEAR | INTERVAL MONTH | INTERVAL DAY | INTERVAL HOUR | INTERVAL MINUTE | INTERVAL SECOND | INTERVAL YEAR TO MONTH | INTERVAL DAY TO HOUR
+                    | INTERVAL DAY TO MINUTE | INTERVAL DAY TO SECOND | INTERVAL HOUR TO MINUTE | INTERVAL HOUR TO SECOND | INTERVAL MINUTE TO SECOND
     | dataTypeName = TINYBLOB
-    | dataTypeName = BLOB fieldLength?
+    | dataTypeName = BLOB fieldLength? | CLOB
     | dataTypeName = (MEDIUMBLOB | LONGBLOB)
     | dataTypeName = LONG VARBINARY
     | dataTypeName = (LONG_CHAR_VARYING | LONG_VARCHAR)? charsetWithOptBinary?
