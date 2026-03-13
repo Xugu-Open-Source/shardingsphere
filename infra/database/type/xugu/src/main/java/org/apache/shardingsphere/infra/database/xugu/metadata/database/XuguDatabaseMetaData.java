@@ -145,7 +145,7 @@ public final class XuguDatabaseMetaData implements DialectDatabaseMetaData {
     @Override
     public String getSchema(final Connection connection) {
         try {
-            return Optional.ofNullable(connection.getMetaData().getUserName()).map(String::toUpperCase).orElse(null);
+            return Optional.ofNullable(connection.getSchema()).map(String::toUpperCase).orElse(null);
         } catch (final SQLException ignored) {
             return null;
         }

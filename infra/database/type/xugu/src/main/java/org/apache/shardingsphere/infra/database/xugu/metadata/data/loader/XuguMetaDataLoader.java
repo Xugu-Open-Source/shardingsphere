@@ -49,42 +49,53 @@ import java.util.stream.Collectors;
 
 /**
  * Meta data loader for XuguDB.
+ * 无dba权限判断入口，暂使用 all_* 视图查询
  */
 public final class XuguMetaDataLoader implements DialectMetaDataLoader {
-    
+
     private static final String TABLE_META_DATA_SQL_NO_ORDER =
             "SELECT s.schema_name, t.TABLE_NAME, c.COL_NAME, c.NOT_NULL, c.TYPE_NAME, c.COL_NO, c.IS_HIDE ,c.IS_SERIAL, c.COLLATOR FROM ALL_COLUMNS AS c "
                     + "join ALL_TABLES AS t on t.table_id = c.table_id "
                     + "JOIN ALL_SCHEMAS AS s on t.schema_id = s.schema_id "
                     + "WHERE s.schema_name = ?";
-    
+
+    private static final String VIEW_META_DATA_SQL_NO_ORDER =
+                "SELECT s.schema_name, v.VIEW_NAME, c.COL_NAME, null as NOT_NULL, c.TYPE_NAME, c.COL_NO, null as IS_HIDE ,null as IS_SERIAL, null as COLLATOR FROM ALL_VIEW_COLUMNS AS c "
+                        + "join ALL_VIEWS AS v on v.VIEW_ID = c.VIEW_ID "
+                        + "JOIN ALL_SCHEMAS AS s on v.schema_id = s.schema_id "
+                        + "WHERE s.schema_name = ?";
+
     private static final String ORDER_BY_COLUMN_ID = " ORDER BY COL_NO";
-    
+
     private static final String TABLE_META_DATA_SQL = TABLE_META_DATA_SQL_NO_ORDER + ORDER_BY_COLUMN_ID;
-    
+
+    private static final String VIEW_META_DATA_SQL = VIEW_META_DATA_SQL_NO_ORDER + ORDER_BY_COLUMN_ID;
+
     private static final String TABLE_META_DATA_SQL_IN_TABLES = TABLE_META_DATA_SQL_NO_ORDER + " AND t.TABLE_NAME IN (%s)" + ORDER_BY_COLUMN_ID;
-    
-    private static final String VIEW_META_DATA_SQL = "SELECT v.VIEW_NAME FROM ALL_VIEWS AS v JOIN ALL_SCHEMAS as s on v.schema_id = s.schema_id WHERE s.schema_name = ? AND v.VIEW_NAME IN (%s)";
-    
+
+    private static final String VIEW_META_DATA_SQL_IN_VIEWS = VIEW_META_DATA_SQL_NO_ORDER + " AND v.VIEW_NAME IN (%s)" + ORDER_BY_COLUMN_ID;
+
+    private static final String VIEW_NAME_SQL = "SELECT v.VIEW_NAME FROM ALL_VIEWS AS v JOIN ALL_SCHEMAS as s on v.schema_id = s.schema_id WHERE s.schema_name = ? AND v.VIEW_NAME IN (%s)";
+
     private static final String INDEX_META_DATA_SQL = "SELECT s.schema_name,t.TABLE_NAME,i.INDEX_NAME,IS_UNIQUE FROM ALL_INDEXES AS i "
             + "JOIN ALL_TABLES AS t ON i.table_id = t.table_id "
             + "JOIN ALL_SCHEMAS AS s on t.schema_id = s.schema_id "
             + "WHERE s.schema_name = ? AND t.TABLE_NAME IN (%s)";
-    
+
     private static final String PRIMARY_KEY_META_DATA_SQL = "SELECT s.schema_name, t.table_name, cs.define FROM ALL_CONSTRAINTS AS cs "
             + "JOIN all_tables AS t ON cs.table_id = t.table_id "
             + "JOIN ALL_SCHEMAS AS s ON t.schema_id = s.schema_id "
             + "WHERE cs.CONS_TYPE = 'p' AND s.schema_name = '%s'";
-    
+
     private static final String PRIMARY_KEY_META_DATA_SQL_IN_TABLES = PRIMARY_KEY_META_DATA_SQL + " AND t.TABLE_NAME IN (%s)";
-    
+
     private static final String INDEX_COLUMN_META_DATA_SQL = "SELECT i.KEYS FROM ALL_INDEXES AS i "
             + "JOIN ALL_TABLES AS t ON i.table_id = t.table_id "
             + "JOIN ALL_SCHEMAS AS s on t.schema_id = s.schema_id "
             + "WHERE s.schema_name = ? AND t.TABLE_NAME = ? AND i.INDEX_NAME = ?";
-    
+
     private static final int MAX_EXPRESSION_SIZE = 1000;
-    
+
     @Override
     public Collection<SchemaMetaData> load(final MetaDataLoaderMaterial material) throws SQLException {
         Collection<TableMetaData> tableMetaDataList = new LinkedList<>();
@@ -93,7 +104,7 @@ public final class XuguMetaDataLoader implements DialectMetaDataLoader {
         }
         return Collections.singletonList(new SchemaMetaData(material.getDefaultSchemaName(), tableMetaDataList));
     }
-    
+
     private Collection<TableMetaData> getTableMetaDataList(final Connection connection, final String schema, final Collection<String> tableNames) throws SQLException {
         Collection<String> viewNames = new LinkedList<>();
         Map<String, Collection<ColumnMetaData>> columnMetaDataMap = new HashMap<>(tableNames.size(), 1F);
@@ -110,24 +121,24 @@ public final class XuguMetaDataLoader implements DialectMetaDataLoader {
         }
         return result;
     }
-    
+
     private Collection<String> loadViewNames(final Connection connection, final Collection<String> tables, final String schema) throws SQLException {
         Collection<String> result = new LinkedList<>();
-        try (PreparedStatement preparedStatement = connection.prepareStatement(getViewMetaDataSQL(tables))) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(getViewNameSQL(tables))) {
             preparedStatement.setString(1, schema);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
-                    result.add(resultSet.getString(1));
+                    result.add(resultSet.getString("VIEW_NAME"));
                 }
             }
         }
         return result;
     }
-    
-    private String getViewMetaDataSQL(final Collection<String> tableNames) {
-        return String.format(VIEW_META_DATA_SQL, tableNames.stream().map(each -> String.format("'%s'", each)).collect(Collectors.joining(",")));
+
+    private String getViewNameSQL(final Collection<String> tableNames) {
+        return String.format(VIEW_NAME_SQL, tableNames.stream().map(each -> String.format("'%s'", each)).collect(Collectors.joining(",")));
     }
-    
+
     private Map<String, Collection<ColumnMetaData>> loadColumnMetaDataMap(final Connection connection, final Collection<String> tables, final String schema) throws SQLException {
         Map<String, Collection<ColumnMetaData>> result = new HashMap<>(tables.size(), 1F);
         try (PreparedStatement preparedStatement = connection.prepareStatement(getTableMetaDataSQL(tables))) {
@@ -144,9 +155,23 @@ public final class XuguMetaDataLoader implements DialectMetaDataLoader {
                 }
             }
         }
+        try (PreparedStatement preparedStatement = connection.prepareStatement(getViewMetaDataSQL(tables))) {
+            Map<String, Collection<String>> tablePrimaryKeys = loadTablePrimaryKeys(connection, tables);
+            preparedStatement.setString(1, schema);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    String tableName = resultSet.getString("VIEW_NAME");
+                    ColumnMetaData columnMetaData = loadColumnMetaData(resultSet, tablePrimaryKeys.getOrDefault(tableName, Collections.emptyList()), connection.getMetaData());
+                    if (!result.containsKey(tableName)) {
+                        result.put(tableName, new LinkedList<>());
+                    }
+                    result.get(tableName).add(columnMetaData);
+                }
+            }
+        }
         return result;
     }
-    
+
     private ColumnMetaData loadColumnMetaData(final ResultSet resultSet, final Collection<String> primaryKeys, final DatabaseMetaData databaseMetaData) throws SQLException {
         String columnName = resultSet.getString("COL_NAME");
         String dataType = getOriginalDataType(resultSet.getString("TYPE_NAME"));
@@ -159,7 +184,7 @@ public final class XuguMetaDataLoader implements DialectMetaDataLoader {
         boolean nullable = !resultSet.getBoolean("NOT_NULL");
         return new ColumnMetaData(columnName, DataTypeRegistry.getDataType(getDatabaseType(), dataType).orElse(Types.OTHER), primaryKey, generated, caseSensitive, isVisible, false, nullable);
     }
-    
+
     private String getOriginalDataType(final String dataType) {
         int index = dataType.indexOf('(');
         if (index > 0) {
@@ -167,12 +192,17 @@ public final class XuguMetaDataLoader implements DialectMetaDataLoader {
         }
         return dataType;
     }
-    
+
     private String getTableMetaDataSQL(final Collection<String> tables) throws SQLException {
         return tables.isEmpty() ? TABLE_META_DATA_SQL
                 : String.format(TABLE_META_DATA_SQL_IN_TABLES, tables.stream().map(each -> String.format("'%s'", each)).collect(Collectors.joining(",")));
     }
-    
+
+    private String getViewMetaDataSQL(final Collection<String> tables) throws SQLException {
+        return tables.isEmpty() ? VIEW_META_DATA_SQL
+                : String.format(VIEW_META_DATA_SQL_IN_VIEWS, tables.stream().map(each -> String.format("'%s'", each)).collect(Collectors.joining(",")));
+    }
+
     private Map<String, Collection<IndexMetaData>> loadIndexMetaData(final Connection connection, final Collection<String> tableNames, final String schema) throws SQLException {
         Map<String, Collection<IndexMetaData>> result = new HashMap<>(tableNames.size(), 1F);
         try (PreparedStatement preparedStatement = connection.prepareStatement(getIndexMetaDataSQL(tableNames))) {
@@ -193,7 +223,7 @@ public final class XuguMetaDataLoader implements DialectMetaDataLoader {
         }
         return result;
     }
-    
+
     private List<String> loadIndexColumnNames(final Connection connection, final String tableName, final String indexName) throws SQLException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(INDEX_COLUMN_META_DATA_SQL)) {
             preparedStatement.setString(1, connection.getSchema());
@@ -212,12 +242,12 @@ public final class XuguMetaDataLoader implements DialectMetaDataLoader {
             return result;
         }
     }
-    
+
     private String getIndexMetaDataSQL(final Collection<String> tableNames) {
         // TODO The table name needs to be in uppercase, otherwise the index cannot be found.
         return String.format(INDEX_META_DATA_SQL, tableNames.stream().map(each -> String.format("'%s'", each)).collect(Collectors.joining(",")));
     }
-    
+
     private Map<String, Collection<String>> loadTablePrimaryKeys(final Connection connection, final Collection<String> tableNames) throws SQLException {
         Map<String, Collection<String>> result = new HashMap<>();
         try (PreparedStatement preparedStatement = connection.prepareStatement(getPrimaryKeyMetaDataSQL(connection.getSchema(), tableNames))) {
@@ -236,12 +266,12 @@ public final class XuguMetaDataLoader implements DialectMetaDataLoader {
         }
         return result;
     }
-    
+
     private String getPrimaryKeyMetaDataSQL(final String schemaName, final Collection<String> tables) {
         return tables.isEmpty() ? String.format(PRIMARY_KEY_META_DATA_SQL, schemaName)
                 : String.format(PRIMARY_KEY_META_DATA_SQL_IN_TABLES, schemaName, tables.stream().map(each -> String.format("'%s'", each)).collect(Collectors.joining(",")));
     }
-    
+
     @Override
     public String getDatabaseType() {
         return "XuGu";
