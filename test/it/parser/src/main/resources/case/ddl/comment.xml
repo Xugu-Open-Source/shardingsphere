@@ -57,4 +57,12 @@
     <comment sql-case-id="comment_on_procedure" />
     <comment sql-case-id="comment_on_tablespace" />
     <comment sql-case-id="comment_on_text_search_template" />
+    <comment sql-case-id="comment_on_database" />
+    <comment sql-case-id="comment_on_schema" />
+    <comment sql-case-id="comment_on_procedure_xugu" />
+    <comment sql-case-id="comment_on_sequence" />
+    <comment sql-case-id="comment_on_view_xugu" />
+    <comment sql-case-id="comment_on_trigger_xugu" />
+    <comment sql-case-id="comment_on_package" />
+    <comment sql-case-id="comment_on_job" />
 </sql-parser-test-cases>

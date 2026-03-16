@@ -979,6 +979,10 @@ HAVING
     : H A V I N G
     ;
 
+HEAP
+    : H E A P
+    ;
+
 HELP
     : H E L P
     ;
@@ -2121,6 +2125,10 @@ REMOVE
 
 RENAME
     : R E N A M E
+    ;
+
+REOPEN
+    : R E O P E N
     ;
 
 REORGANIZE

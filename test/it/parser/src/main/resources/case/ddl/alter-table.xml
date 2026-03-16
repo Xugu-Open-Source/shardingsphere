@@ -1185,7 +1185,22 @@
             </column-definition>
         </add-column>
     </alter-table>
-    
+
+    <alter-table sql-case-id="alter_table_add_columns_no_parenthesis_xugu">
+        <table name="t_order" start-index="12" stop-index="18" />
+        <add-column>
+            <column-definition type="VARCHAR2" start-index="24" stop-index="43">
+                <column name="column4" />
+            </column-definition>
+            <column-definition type="VARCHAR2" start-index="46" stop-index="65">
+                <column name="column5" />
+            </column-definition>
+            <column-definition type="VARCHAR2" start-index="68" stop-index="87">
+                <column name="column6" />
+            </column-definition>
+        </add-column>
+    </alter-table>
+
     <alter-table sql-case-id="alter_table_drop_columns_sqlserver">
         <table name="t_order" start-index="12" stop-index="18" />
         <drop-column name="user_id" start-index="32" stop-index="38" />
@@ -1825,5 +1840,13 @@
 
     <alter-table sql-case-id="alter_table_drop_edge_constraints">
         <table name="bought" start-index="12" stop-index="17"/>"
+    </alter-table>
+
+    <alter-table sql-case-id="alter_table_alter_default_on_null">
+        <table name="TAB_ADD_COLUMN" start-index="12" stop-index="25"/>
+    </alter-table>
+
+    <alter-table sql-case-id="alter_table_modify_default_on_null_insert_only">
+        <table name="TAB_ADD_COLUMN" start-index="12" stop-index="25"/>
     </alter-table>
 </sql-parser-test-cases>

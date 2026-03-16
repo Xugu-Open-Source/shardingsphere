@@ -78,8 +78,8 @@ duplicateAsQueryExpression
     ;
 
 alterTable
-    : ALTER TABLE tableName alterTableActions?
-    | ALTER TABLE tableName standaloneAlterTableAction
+    : ALTER TABLE tableName alterTableActions? (WAIT | NOWAIT)?
+    | ALTER TABLE tableName standaloneAlterTableAction (WAIT | NOWAIT)?
     ;
 
 standaloneAlterTableAction
@@ -178,6 +178,8 @@ standaloneAlterCommands
     | alterConstraints
     | alterCache
     | OWNER TO username
+    | REBUILD HEAP
+    | REOPEN
     | (SECONDARY_LOAD | SECONDARY_UNLOAD)
     ;
 

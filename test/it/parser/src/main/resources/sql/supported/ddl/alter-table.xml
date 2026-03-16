@@ -116,6 +116,7 @@
     <sql-case id="alter_table_add_check" value="ALTER TABLE t_order ADD CONSTRAINT chk_order_id CHECK (order_id > 0)" db-types="Oracle,SQLServer" />
     <sql-case id="alter_table_add_columns_oracle" value="ALTER TABLE t_order ADD (column4 VARCHAR2(10), column5 VARCHAR2(10), column6 VARCHAR2(10))" db-types="Oracle" />
     <sql-case id="alter_table_add_columns_xugu" value="ALTER TABLE t_order ADD (column4 VARCHAR2(10), column5 VARCHAR2(10), column6 VARCHAR2(10))" db-types="XuGu" />
+    <sql-case id="alter_table_add_columns_no_parenthesis_xugu" value="ALTER TABLE t_order ADD column4 VARCHAR2(10), column5 VARCHAR2(10), column6 VARCHAR2(10)" db-types="XuGu" />
     <sql-case id="alter_table_modify_columns_oracle" value="ALTER TABLE t_order MODIFY column4 VARCHAR2(20) MODIFY column5 VARCHAR2(20) MODIFY column6 VARCHAR2(20)" db-types="Oracle" />
     <sql-case id="alter_table_drop_columns_oracle" value="ALTER TABLE t_order DROP COLUMN user_id DROP COLUMN column5" db-types="Oracle" />
     <sql-case id="alter_table_add_primary_foreign_key" value="ALTER TABLE t_order_item ADD PRIMARY KEY (order_id) UNIQUE (order_id) CHECK (order_id > 0) FOREIGN KEY (order_id) REFERENCES t_order (order_id) ON DELETE CASCADE CHECK (order_id > 0)" db-types="Oracle" />
@@ -250,4 +251,6 @@
     <sql-case id="alter_table_add_unique" value="ALTER TABLE xwarehouses ADD (UNIQUE(XMLDATA.&quot;WarehouseId&quot;))" db-types="Oracle" />
     <sql-case id="alter_table_add_edge_constraints" value="ALTER TABLE bought ADD CONSTRAINT EC_BOUGHT1 CONNECTION (Customer TO Product, Supplier TO Product);" db-types="SQLServer"/>
     <sql-case id="alter_table_drop_edge_constraints" value="ALTER TABLE bought DROP CONSTRAINT EC_BOUGHT;" db-types="SQLServer"/>
+    <sql-case id="alter_table_alter_default_on_null" value="ALTER TABLE TAB_ADD_COLUMN ALTER COLUMN c2 DEFAULT ON NULL 'default-value';" db-types="XuGu"/>
+    <sql-case id="alter_table_modify_default_on_null_insert_only" value="ALTER TABLE TAB_ADD_COLUMN MODIFY COLUMN c2 SET DEFAULT ON NULL FOR INSERT ONLY 'default-value';" db-types="XuGu"/>
 </sql-cases>

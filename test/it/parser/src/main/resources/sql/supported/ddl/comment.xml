@@ -24,7 +24,7 @@
     <sql-case id="comment_on_view" value="COMMENT ON MATERIALIZED VIEW viewName IS 'some comments'" db-types="Oracle" />
     <sql-case id="comment_on_model" value="COMMENT ON MINING MODEL modelName IS 'some comments'" db-types="Oracle" />
     <sql-case id="comment_on_operator" value="COMMENT ON OPERATOR op IS 'some comments'" db-types="Oracle" />
-    <sql-case id="comment_on_table" value="COMMENT ON TABLE employees IS 'some comments'" db-types="Oracle, PostgreSQL, openGauss" />
+    <sql-case id="comment_on_table" value="COMMENT ON TABLE employees IS 'some comments'" db-types="Oracle, PostgreSQL, openGauss,XuGu" />
     <sql-case id="comment_on_constraint" value="comment on constraint test_id_name_key on test is &apos;child&apos;;" db-types="PostgreSQL" />
     <sql-case id="comment_on_domain" value="comment on domain test is &apos;About to drop this..&apos;;" db-types="PostgreSQL, openGauss" />
     <sql-case id="comment_on_event_trigger" value="comment on event trigger test_trigger is &apos;test&apos;;" db-types="PostgreSQL, openGauss" />
@@ -42,4 +42,12 @@
     <sql-case id="comment_on_procedure" value="COMMENT ON PROCEDURE my_proc (integer, integer) IS 'Runs a report';" db-types="PostgreSQL" />
     <sql-case id="comment_on_tablespace" value="COMMENT ON TABLESPACE my_tablespace IS 'Tablespace for indexes';" db-types="PostgreSQL" />
     <sql-case id="comment_on_text_search_template" value="COMMENT ON TEXT SEARCH TEMPLATE snowball IS 'Snowball stemmer';" db-types="PostgreSQL" />
+    <sql-case id="comment_on_database" value="COMMENT ON DATABASE database_name IS 'some comments';" db-types="XuGu" />
+    <sql-case id="comment_on_schema" value="COMMENT ON SCHEMA schema_name IS 'some comments';" db-types="XuGu" />
+    <sql-case id="comment_on_procedure_xugu" value="COMMENT ON PROCEDURE procedure_name IS 'some comments';" db-types="XuGu" />
+    <sql-case id="comment_on_sequence" value="COMMENT ON SEQUENCE sequence_name IS 'some comments';" db-types="XuGu" />
+    <sql-case id="comment_on_view_xugu" value="COMMENT ON VIEW view_name IS 'some comments'" db-types="XuGu" />
+    <sql-case id="comment_on_trigger_xugu" value="COMMENT ON TRIGGER trigger_name IS 'some comments'" db-types="XuGu" />
+    <sql-case id="comment_on_package" value="COMMENT ON PACKAGE package_name IS 'some comments'" db-types="XuGu" />
+    <sql-case id="comment_on_job" value="COMMENT ON JOB job_name IS 'some comments'" db-types="XuGu" />
 </sql-cases>
