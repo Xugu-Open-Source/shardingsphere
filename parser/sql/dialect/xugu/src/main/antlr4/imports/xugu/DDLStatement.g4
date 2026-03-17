@@ -113,8 +113,8 @@ duplicateAsQueryExpression
     ;
 
 alterTable
-    : ALTER TABLE tableName alterTableActions? (WAIT | NOWAIT)?
-    | ALTER TABLE tableName standaloneAlterTableAction (WAIT | NOWAIT)?
+    : ALTER TABLE tableName alterTableActions? optWait?
+    | ALTER TABLE tableName standaloneAlterTableAction optWait?
     ;
 
 standaloneAlterTableAction
@@ -296,7 +296,11 @@ alterLockOption
     ;
 
 truncateTable
-    : TRUNCATE TABLE? tableName
+    : TRUNCATE TABLE? tableName optWait?
+    ;
+
+optWait
+    : WAIT NUMBER_? | NOWAIT
     ;
 
 createIndex
