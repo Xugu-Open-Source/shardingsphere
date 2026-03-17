@@ -48,7 +48,9 @@ comment
     ;
 
 createTable
-    : CREATE TEMPORARY? TABLE ifNotExists? tableName (createDefinitionClause? createTableOptions? partitionClause? duplicateAsQueryExpression? startTransaction? | createLikeClause)
+    : CREATE ((LOCAL | GLOBAL)? (TEMPORARY | TEMP))? TABLE ifNotExists? tableName (createDefinitionClause?
+    commitClause? physicalProperties? createTableOptions?
+    partitionClause? optStoreProps? (COMMENT string_)? optEncrypt? duplicateAsQueryExpression? startTransaction? | createLikeClause)
     ;
 
 startTransaction
@@ -56,21 +58,54 @@ startTransaction
     ;
 
 partitionClause
-    : PARTITION BY partitionTypeDef (PARTITIONS NUMBER_)? subPartitions? partitionDefinitions?
+    : PARTITION BY partitionTypeDef subPartitions? partitionDefinitions?
     ;
 
 partitionTypeDef
-    : LINEAR? KEY partitionKeyAlgorithm? LP_ columnNames? RP_
-    | LINEAR? HASH LP_ bitExpr RP_
-    | (RANGE | LIST) (LP_ bitExpr RP_ | COLUMNS LP_ columnNames RP_ )
+    : LINEAR? KEY partitionKeyAlgorithm? LP_ columnNames? RP_ (PARTITIONS NUMBER_)?
+    | LINEAR? HASH LP_ bitExpr RP_ (PARTITIONS NUMBER_)?
+    | (RANGE | LIST) (LP_ bitExpr RP_ | COLUMNS LP_ columnNames RP_ ) (PARTITIONS NUMBER_)?
+    | RANGE LP_ columnName (COMMA_ columnName)* RP_ optPartiInterval? PARTITIONS LP_ rangePartiItem (COMMA_ rangePartiItem)* RP_
+    | LIST LP_ columnName (COMMA_ columnName)* RP_ PARTITIONS  LP_ listPartiItem (COMMA_ listPartiItem)* RP_
+    | HASH LP_ columnName (COMMA_ columnName)* RP_ PARTITIONS (partiNum = NUMBER_ | LP_ partitionName (COMMA_ partitionName)* RP_)
+    ;
+
+optPartiInterval
+    : INTERVAL iconst = NUMBER_  ( YEAR | MONTH | DAY | HOUR )
+    ;
+
+rangePartiItem
+    : (partitionName  VALUES LESS THAN)? LP_ (expr (COMMA_ expr)* | MAXVALUES) RP_
+    ;
+
+listPartiItem
+    : (partitionName VALUES)? LP_ (expr (COMMA_ expr)* | OTHERVALUES) RP_
     ;
 
 subPartitions
     : SUBPARTITION BY LINEAR? ( HASH LP_ bitExpr RP_ | KEY partitionKeyAlgorithm? LP_ columnNames RP_ ) (SUBPARTITIONS NUMBER_)?
+    | SUBPARTITION BY HASH LP_ columnName (COMMA_ columnName)* RP_ SUBPARTITIONS (parti_num = NUMBER_| LP_ partitionName (COMMA_ partitionName)* RP_)
+    | SUBPARTITION BY LIST LP_ columnName (COMMA_ columnName)* RP_ SUBPARTITIONS LP_ listPartiItem (COMMA_ listPartiItem)* RP_
+    | SUBPARTITION BY RANGE LP_ columnName (COMMA_ columnName)* RP_ SUBPARTITIONS LP_ rangePartiItem (COMMA_ rangePartiItem)* RP_
     ;
 
 partitionKeyAlgorithm
     : ALGORITHM EQ_ NUMBER_
+    ;
+
+optStoreProps
+    :storeProp+
+    ;
+
+storeProp
+    :(PCTFREE | PCTUSED | HOTSPOT | COPY NUMBER) num = NUMBER_
+    | COMPRESS
+    | NOCOMPRESS
+    | ZONE BY (zoneName = identifier | zoneId = NUMBER_ | LOCAL)
+    ;
+
+optEncrypt
+    : ENCRYPT BY encryptor_name = string_
     ;
 
 duplicateAsQueryExpression
@@ -592,6 +627,31 @@ createLikeClause
 
 createIndexSpecification
     : UNIQUE | FULLTEXT | SPATIAL
+    ;
+
+commitClause
+    : ON COMMIT (DELETE | PRESERVE) ROWS
+    ;
+
+physicalProperties
+    : ORGANIZATION (HEAP
+    | EXTERNAL LP_ optFileType? optDefaultDir? optAccessParameter? LOCATION filePath = string_ RP_
+    )
+    ;
+
+optAccessParameter
+    : ACCESS PARAMETERS LP_
+        RECORDS DELIMITED BY terminatedChars = string_
+        FIELDS TERMINATED BY terminatedChars = string_
+      RP_
+    ;
+
+optFileType
+    : TYPE typeName = identifier
+    ;
+
+optDefaultDir
+    : DEFAULT DIR dirPath = string_
     ;
 
 createTableOptions

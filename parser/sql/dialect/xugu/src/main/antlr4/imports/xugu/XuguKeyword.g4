@@ -19,6 +19,10 @@ lexer grammar XuguKeyword;
 
 import Alphabet;
 
+ACCESS
+    : A C C E S S
+    ;
+
 ACCESSIBLE
     : A C C E S S I B L E
     ;
@@ -371,6 +375,10 @@ COMPONENT
     : C O M P O N E N T
     ;
 
+COMPRESS
+    : C O M P R E S S
+    ;
+
 COMPRESSED
     : C O M P R E S S E D
     ;
@@ -567,6 +575,10 @@ DELETE
     : D E L E T E
     ;
 
+DELIMITED
+    : D E L I M I T E D
+    ;
+
 DENSE_RANK
     : D E N S E UL_ R A N K
     ;
@@ -589,6 +601,10 @@ DETERMINISTIC
 
 DIAGNOSTICS
     : D I A G N O S T I C S
+    ;
+
+DIR
+    : D I R
     ;
 
 DIRECTORY
@@ -669,6 +685,10 @@ ENABLE
 
 ENCLOSED
     : E N C L O S E D
+    ;
+
+ENCRYPT
+    : E N C R Y P T
     ;
 
 ENCRYPTION
@@ -779,6 +799,10 @@ EXTENT_SIZE
     : E X T E N T UL_ S I Z E
     ;
 
+EXTERNAL
+    : E X T E R N A L
+    ;
+
 FAILED_LOGIN_ATTEMPTS
     : F A I L E D UL_ L O G I N UL_ A T T E M P T S
     ;
@@ -800,7 +824,7 @@ FETCH
     ;
 
 FIELDS
-    : F I E L D S  -> type(COLUMNS)
+    : F I E L D S
     ;
 
 FILE
@@ -1005,6 +1029,10 @@ HOST
 
 HOSTS
     : H O S T S
+    ;
+
+HOTSPOT
+    : H O T S P O T
     ;
 
 HOUR
@@ -1319,6 +1347,10 @@ LOCALTIMESTAMP
     : L O C A L T I M E S T A M P
     ;
 
+LOCATION
+    : L O C A T I O N
+    ;
+
 LOCK
     : L O C K
     ;
@@ -1489,6 +1521,10 @@ MATCH
 
 MAXVALUE
     : M A X V A L U E
+    ;
+
+MAXVALUES
+    : M A X V A L U E S
     ;
 
 MAX_CONNECTIONS_PER_HOUR
@@ -1691,6 +1727,10 @@ EXCLUSIVE
     : E X C L U S I V E
     ;
 
+NOCOMPRESS
+    : N O C O M P R E S S
+    ;
+
 NOT
     : N O T
     ;
@@ -1835,6 +1875,10 @@ OTHERS
     : O T H E R S
     ;
 
+OTHERVALUES
+    : O T H E R V A L U E S
+    ;
+
 OUT
     : O U T
     ;
@@ -1865,6 +1909,10 @@ PACK_KEYS
 
 PAGE
     : P A G E
+    ;
+
+PARAMETERS
+    : P A R A M E T E R S
     ;
 
 PARSER
@@ -1901,6 +1949,14 @@ PASSWORD_LOCK_TIME
 
 PATH
     : P A T H
+    ;
+
+PCTFREE
+    : P C T F R E E
+    ;
+
+PCTUSED
+    : P C T U S E D
     ;
 
 PERCENT_RANK
@@ -2061,6 +2117,10 @@ REBUILD
 
 RECOMPILE
     : R E C O M P I L E
+    ;
+
+RECORDS
+    : R E C O R D S
     ;
 
 RECOVER
@@ -2805,6 +2865,10 @@ TABLE_CHECKSUM
 
 TABLE_NAME
     : T A B L E UL_ N A M E
+    ;
+
+TEMP
+    : T E M P
     ;
 
 TEMPORARY
