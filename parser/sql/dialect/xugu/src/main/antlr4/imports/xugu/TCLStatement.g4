@@ -53,6 +53,7 @@ begin
 
 lock
     : LOCK (INSTANCE FOR BACKUP | ((TABLES | TABLE) tableLock (COMMA_ tableLock)*))
+    | LOCK TABLE? (tableName ( COMMA_ tableName )*) optLock? (WAIT NUMBER_? | NOWAIT)?
     ;
 
 unlock
@@ -77,6 +78,17 @@ tableLock
 
 lockOption
     : READ LOCAL? | LOW_PRIORITY? WRITE
+    ;
+
+optLock
+    : IN lock_mode
+    ;
+
+lock_mode
+    : SHARE MODE
+    | EXCLUSIVE MODE
+    | ROW SHARE MODE
+    | ROW EXCLUSIVE MODE
     ;
 
 xaBegin
