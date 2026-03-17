@@ -263,7 +263,7 @@ tableElement
     ;
 
 restrict
-    : RESTRICT | CASCADE | CASCADE CONSTRAINTS
+    : RESTRICT | CASCADE CONSTRAINTS?
     ;
 
 fulltextIndexOption
@@ -272,7 +272,7 @@ fulltextIndexOption
     ;
 
 dropTable
-    : DROP TEMPORARY? tableOrTables ifExists? tableList restrict?
+    : DROP TEMPORARY? tableOrTables ifExists? tableList restrict? PURGE?
     ;
 
 dropIndex
