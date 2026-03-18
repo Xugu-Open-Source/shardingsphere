@@ -183,6 +183,10 @@ BIT
     : B I T
     ;
 
+BITMAP
+    : B I T M A P
+    ;
+
 BLOB
     : B L O B
     ;
@@ -1091,6 +1095,10 @@ INDEXES
     : I N D E X E S
     ;
 
+INDEXTYPE
+    : I N D E X T Y P E
+    ;
+
 INITIAL
     : I N I T I A L
     ;
@@ -1735,6 +1743,10 @@ NOFORCE
     : N O F O R C E
     ;
 
+NOPARALLEL
+    : N O P A R A L L E L
+    ;
+
 NOT
     : N O T
     ;
@@ -1913,6 +1925,10 @@ PACK_KEYS
 
 PAGE
     : P A G E
+    ;
+
+PARALLEL
+    : P A R A L L E L
     ;
 
 PARAMETERS

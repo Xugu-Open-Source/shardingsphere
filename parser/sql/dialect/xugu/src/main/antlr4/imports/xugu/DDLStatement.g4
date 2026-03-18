@@ -304,7 +304,8 @@ optWait
     ;
 
 createIndex
-    : CREATE createIndexSpecification? INDEX indexName indexTypeClause? ON tableName keyListWithExpression indexOption? algorithmOptionAndLockOption?
+    : CREATE createIndexSpecification? INDEX (IF NOT EXISTS)? indexName indexTypeClause? ON tableName keyListWithExpression indexOption?
+     optIndexType ? optIdxParti ? optOnline ? optParallel ? optWait ? algorithmOptionAndLockOption?
     ;
 
 createDatabase
@@ -604,7 +605,7 @@ keyPart
     ;
 
 keyPartWithExpression
-    : keyPart | LP_ expr RP_ direction?
+    : keyPart | LP_? expr RP_? direction?
     ;
 
 keyListWithExpression
@@ -613,6 +614,24 @@ keyListWithExpression
 
 indexOption
     : commonIndexOption | indexTypeClause
+    ;
+
+optIndexType
+    : INDEXTYPE IS (BTREE | BITMAP)
+    ;
+
+optIdxParti
+    : LOCAL
+    | GLOBAL partitionClause?
+    ;
+
+optOnline
+    : OFFLINE | ONLINE
+    ;
+
+optParallel
+    : NOPARALLEL
+    | PARALLEL (NUMBER_ (COMMA_ NUMBER_)?)
     ;
 
 commonIndexOption
