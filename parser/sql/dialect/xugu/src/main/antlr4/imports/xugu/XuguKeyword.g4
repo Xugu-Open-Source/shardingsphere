@@ -1731,6 +1731,10 @@ NOCOMPRESS
     : N O C O M P R E S S
     ;
 
+NOFORCE
+    : N O F O R C E
+    ;
+
 NOT
     : N O T
     ;

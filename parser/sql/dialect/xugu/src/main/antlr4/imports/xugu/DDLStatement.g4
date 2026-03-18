@@ -414,13 +414,14 @@ dropServer
     ;
 
 createView
-    : CREATE (OR REPLACE)?
+    : CREATE (OR REPLACE)? (NOFORCE | FORCE)?
       (ALGORITHM EQ_ (UNDEFINED | MERGE | TEMPTABLE))?
       ownerStatement?
       (SQL SECURITY (DEFINER | INVOKER))?
-      VIEW viewName (LP_ columnNames RP_)?
+      VIEW (IF NOT EXISTS)? viewName (LP_ columnNames RP_)?
       AS select
-      (WITH (CASCADED | LOCAL)? CHECK OPTION)?
+      (WITH ((CASCADED | LOCAL)? CHECK OPTION | READ ONLY))?
+      (COMMENT string_)?
     ;
 
 alterView
