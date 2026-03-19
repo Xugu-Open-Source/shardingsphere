@@ -713,6 +713,10 @@ indexName
     : identifier
     ;
 
+newIndexName
+    : identifier
+    ;
+
 constraintName
     : identifier
     ;

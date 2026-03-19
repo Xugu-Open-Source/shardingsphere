@@ -117,6 +117,10 @@ alterTable
     | ALTER TABLE tableName standaloneAlterTableAction optWait?
     ;
 
+alterIndex
+    : ALTER INDEX (owner DOT_)? name DOT_ indexName alterIndexOperation optWait?
+    ;
+
 standaloneAlterTableAction
     : (alterCommandsModifierList COMMA_)? standaloneAlterCommands
     ;
@@ -155,7 +159,7 @@ alterListItem
     | ENABLE KEYS   # enableKeys
     | ALTER COLUMN? columnInternalRef=identifier (SET DEFAULT (LP_ expr RP_| literals)| SET visibility | DROP DEFAULT) # alterColumn
     | (ALTER | MODIFY) COLUMN? LP_? (alterColumnItem | identifier fieldDefinition) (COMMA_ (alterColumnItem | identifier fieldDefinition))* RP_? restrict? # alterColumn
-    | ALTER INDEX indexName visibility  # alterIndex
+    | ALTER INDEX indexName visibility  # alterIndexVisibility
     | ALTER CHECK constraintName constraintEnforcement  # alterCheck
     | ALTER CONSTRAINT constraintName constraintEnforcement # alterConstraint
     | RENAME COLUMN oldColumn TO newColumn  # renameColumn
@@ -269,6 +273,11 @@ restrict
 fulltextIndexOption
     : commonIndexOption
     | WITH PARSER identifier
+    ;
+
+alterIndexOperation
+    : RENAME TO newIndexName
+    | ADD PARTITION partitionName VALUES (LESS THAN)? LP_ expr RP_
     ;
 
 dropTable

@@ -33,6 +33,7 @@ execute
     | truncateTable
     | createIndex
     | dropIndex
+    | alterIndex
     | createProcedure
     | dropProcedure
     | createFunction
