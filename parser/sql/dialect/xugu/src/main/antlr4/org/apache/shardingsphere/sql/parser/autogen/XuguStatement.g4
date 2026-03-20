@@ -34,6 +34,7 @@ execute
     | createIndex
     | dropIndex
     | alterIndex
+    | reindex
     | createProcedure
     | dropProcedure
     | createFunction

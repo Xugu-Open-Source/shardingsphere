@@ -2171,6 +2171,10 @@ REGEXP
     : R E G E X P
     ;
 
+REINDEX
+    : R E I N D E X
+    ;
+
 RELAY
     : R E L A Y
     ;

@@ -276,8 +276,8 @@ fulltextIndexOption
     ;
 
 alterIndexOperation
-    : RENAME TO newIndexName
-    | ADD PARTITION partitionName VALUES (LESS THAN)? LP_ expr RP_
+    : RENAME TO newIndexName # indexRename
+    | ADD PARTITION partitionName VALUES (LESS THAN)? LP_ expr RP_ # indexAddpartion
     ;
 
 dropTable
@@ -287,6 +287,10 @@ dropTable
 dropIndex
     : DROP INDEX indexName (ON tableName)? algorithmOptionAndLockOption?
     | DROP INDEX ifExists? tableName DOT_ indexName
+    ;
+
+reindex
+    : REINDEX (owner DOT_)? name (DOT_ indexName | DOT_ASTERISK_) (PARTITION partitionName)? optOnline? optParallel? optWait?
     ;
 
 algorithmOptionAndLockOption

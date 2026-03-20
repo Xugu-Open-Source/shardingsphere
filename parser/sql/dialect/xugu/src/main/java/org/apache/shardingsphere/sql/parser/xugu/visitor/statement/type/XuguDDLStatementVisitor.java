@@ -148,6 +148,7 @@ import org.apache.shardingsphere.sql.parser.statement.core.segment.generic.Comme
 import org.apache.shardingsphere.sql.parser.statement.core.segment.generic.DataTypeSegment;
 import org.apache.shardingsphere.sql.parser.statement.core.segment.generic.OwnerSegment;
 import org.apache.shardingsphere.sql.parser.statement.core.segment.generic.table.SimpleTableSegment;
+import org.apache.shardingsphere.sql.parser.statement.core.segment.generic.table.TableNameSegment;
 import org.apache.shardingsphere.sql.parser.statement.core.statement.SQLStatement;
 import org.apache.shardingsphere.sql.parser.statement.core.value.collection.CollectionValue;
 import org.apache.shardingsphere.sql.parser.statement.core.value.identifier.IdentifierValue;
@@ -187,6 +188,7 @@ import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguDropTriggerSt
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguDropViewStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguExecuteStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguPrepareStatement;
+import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguReindexStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguRenameTableStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguTruncateStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.dml.XuguDeleteStatement;
@@ -196,7 +198,6 @@ import org.apache.shardingsphere.sql.parser.statement.xugu.dml.XuguUpdateStateme
 import org.apache.shardingsphere.sql.parser.xugu.visitor.statement.XuguStatementVisitor;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -727,7 +728,51 @@ public final class XuguDDLStatementVisitor extends XuguStatementVisitor implemen
         }
         return result;
     }
-    
+
+    @Override
+    public ASTNode visitAlterIndex(final XuguStatementParser.AlterIndexContext ctx) {
+        XuguAlterTableStatement result = new XuguAlterTableStatement();
+        TableNameSegment tableNameSegment = new TableNameSegment(ctx.name().start.getStartIndex(), ctx.name().stop.getStopIndex(),
+                new IdentifierValue(ctx.name().getText()));
+        SimpleTableSegment simpleTableSegment = new SimpleTableSegment(tableNameSegment);
+        if (ctx.owner() != null) {
+            simpleTableSegment.setOwner((OwnerSegment) visit(ctx.owner()));
+        }
+        result.setTable(simpleTableSegment);
+        IndexNameSegment indexName = new IndexNameSegment(ctx.indexName().start.getStartIndex(), ctx.indexName().stop.getStopIndex(),
+                new IdentifierValue(ctx.indexName().getText()));
+        IndexSegment indexNameSegment = new IndexSegment(ctx.indexName().start.getStartIndex(), ctx.indexName().stop.getStopIndex(), indexName);
+        if (ctx.alterIndexOperation() instanceof XuguStatementParser.IndexRenameContext) {
+            IndexSegment renameIndexName = (IndexSegment) visit(ctx.alterIndexOperation());
+            RenameIndexDefinitionSegment renameIndexDefinitionSegment = new RenameIndexDefinitionSegment(ctx.start.getStartIndex(), ctx.stop.getStopIndex(), indexNameSegment, renameIndexName);
+            result.getRenameIndexDefinitions().add(renameIndexDefinitionSegment);
+        }
+        return result;
+    }
+
+    @Override
+    public ASTNode visitIndexRename(final XuguStatementParser.IndexRenameContext ctx) {
+        IndexNameSegment indexName = new IndexNameSegment(ctx.newIndexName().start.getStartIndex(), ctx.newIndexName().stop.getStopIndex(),
+                new IdentifierValue(ctx.newIndexName().getText()));
+        return new IndexSegment(ctx.newIndexName().start.getStartIndex(), ctx.newIndexName().stop.getStopIndex(), indexName);
+    }
+
+    @Override
+    public ASTNode visitReindex(final XuguStatementParser.ReindexContext ctx) {
+        XuguReindexStatement result = new XuguReindexStatement();
+        if (ctx.indexName() != null) {
+            IndexNameSegment indexName = new IndexNameSegment(ctx.indexName().start.getStartIndex(), ctx.indexName().stop.getStopIndex(), new IdentifierValue(ctx.indexName().getText()));
+            result.setIndex(new IndexSegment(ctx.indexName().start.getStartIndex(), ctx.indexName().stop.getStopIndex(), indexName));
+        }
+        TableNameSegment tableNameSegment = new TableNameSegment(ctx.name().start.getStartIndex(), ctx.name().stop.getStopIndex(), new IdentifierValue(ctx.name().getText()));
+        SimpleTableSegment simpleTableSegment = new SimpleTableSegment(tableNameSegment);
+        if (ctx.owner() != null) {
+            simpleTableSegment.setOwner((OwnerSegment) visit(ctx.owner()));
+        }
+        result.setSimpleTable(simpleTableSegment);
+        return result;
+    }
+
     @Override
     public ASTNode visitRenameIndex(final RenameIndexContext ctx) {
         IndexSegment indexNameSegment = (IndexSegment) visitIndexName(ctx.indexName(0));
