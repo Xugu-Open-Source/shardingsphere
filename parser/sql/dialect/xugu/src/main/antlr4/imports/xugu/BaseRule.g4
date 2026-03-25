@@ -1303,18 +1303,18 @@ dataType
     | dataTypeName = (SIGNED | SIGNED_INT | SIGNED_INTEGER)
     | dataTypeName = BINARY fieldLength?
     | (dataTypeName = CHAR_VARYING | dataTypeName = CHARACTER_VARYING | dataTypeName = VARCHAR | dataTypeName = VARCHAR2) fieldLength? charsetWithOptBinary?
-    | (dataTypeName = NATIONAL VARCHAR | dataTypeName = NVARCHAR | dataTypeName = NVARCHAR2| dataTypeName = NCHAR VARCHAR | dataTypeName = NATIONAL_CHAR_VARYING | dataTypeName = NCHAR VARYING) fieldLength BINARY?
+    | (dataTypeName = NATIONAL VARCHAR | dataTypeName = NVARCHAR | dataTypeName = NVARCHAR2| dataTypeName = NCHAR VARCHAR | dataTypeName = NATIONAL_CHAR_VARYING | dataTypeName = NCHAR VARYING) fieldLength? BINARY?
     | dataTypeName = VARBINARY fieldLength?
     | dataTypeName = YEAR fieldLength? fieldOptions?
     | dataTypeName = DATE
-    | dataTypeName = TIME typeDatetimePrecision? | TIME WITH TIME ZONE
+    | (dataTypeName = TIME typeDatetimePrecision? | dataTypeName = TIME_WITH_TIME_ZONE)
     | dataTypeName = (UNSIGNED | UNSIGNED_INT | UNSIGNED_INTEGER)
-    | dataTypeName = TIMESTAMP typeDatetimePrecision? | TIMESTAMP WITH TIME ZONE
-    | dataTypeName = DATETIME typeDatetimePrecision? | DATETIME WITH TIME ZONE
-    | dataTypeName = INTERVAL YEAR | INTERVAL MONTH | INTERVAL DAY | INTERVAL HOUR | INTERVAL MINUTE | INTERVAL SECOND | INTERVAL YEAR TO MONTH | INTERVAL DAY TO HOUR
-                    | INTERVAL DAY TO MINUTE | INTERVAL DAY TO SECOND | INTERVAL HOUR TO MINUTE | INTERVAL HOUR TO SECOND | INTERVAL MINUTE TO SECOND
+    | (dataTypeName = TIMESTAMP typeDatetimePrecision? | dataTypeName = TIMESTAMP_WITH_TIME_ZONE)
+    | (dataTypeName = DATETIME typeDatetimePrecision? | dataTypeName = DATETIME_WITH_TIME_ZONE)
+    | dataTypeName = (INTERVAL_YEAR | INTERVAL_MONTH | INTERVAL_DAY | INTERVAL_HOUR | INTERVAL_MINUTE | INTERVAL_SECOND | INTERVAL_YEAR_TO_MONTH | INTERVAL_DAY_TO_HOUR
+                    | INTERVAL_DAY_TO_MINUTE | INTERVAL_DAY_TO_SECOND | INTERVAL_HOUR_TO_MINUTE | INTERVAL_HOUR_TO_SECOND | INTERVAL_MINUTE_TO_SECOND)
     | dataTypeName = TINYBLOB
-    | dataTypeName = BLOB fieldLength? | CLOB
+    | (dataTypeName = BLOB fieldLength? | dataTypeName = CLOB)
     | dataTypeName = (MEDIUMBLOB | LONGBLOB)
     | dataTypeName = LONG VARBINARY
     | dataTypeName = (LONG_CHAR_VARYING | LONG_VARCHAR)? charsetWithOptBinary?

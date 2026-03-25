@@ -515,6 +515,10 @@ DATETIME
     : D A T E T I M E
     ;
 
+DATETIME_WITH_TIME_ZONE
+    : D A T E T I M E ' ' W I T H ' ' T I M E ' ' Z O N E
+    ;
+
 DAY
     : D A Y
     ;
@@ -1173,6 +1177,58 @@ INTERSECT
 
 INTERVAL
     : I N T E R V A L
+    ;
+
+INTERVAL_DAY
+    : I N T E R V A L ' ' D A Y
+    ;
+
+INTERVAL_DAY_TO_HOUR
+    : I N T E R V A L ' ' D A Y ' ' T O ' ' H O U R
+    ;
+
+INTERVAL_DAY_TO_MINUTE
+    : I N T E R V A L ' ' D A Y ' ' T O ' ' M I N U T E
+    ;
+
+INTERVAL_DAY_TO_SECOND
+    : I N T E R V A L ' ' D A Y ' ' T O ' ' S E C O N D
+    ;
+
+INTERVAL_HOUR
+    : I N T E R V A L ' ' H O U R
+    ;
+
+INTERVAL_HOUR_TO_MINUTE
+    : I N T E R V A L ' ' H O U R ' ' T O ' ' M I N U T E
+    ;
+
+INTERVAL_HOUR_TO_SECOND
+    : I N T E R V A L ' ' H O U R ' ' T O ' ' S E C O N D
+    ;
+
+INTERVAL_MINUTE
+    : I N T E R V A L ' ' M I N U T E
+    ;
+
+INTERVAL_MINUTE_TO_SECOND
+    : I N T E R V A L ' ' M I N U T E ' ' T O ' ' S E C O N D
+    ;
+
+INTERVAL_MONTH
+    : I N T E R V A L ' ' M O N T H
+    ;
+
+INTERVAL_SECOND
+    : I N T E R V A L ' ' S E C O N D
+    ;
+
+INTERVAL_YEAR
+    : I N T E R V A L ' ' Y E A R
+    ;
+
+INTERVAL_YEAR_TO_MONTH
+    : I N T E R V A L ' ' Y E A R ' ' T O ' ' M O N T H
     ;
 
 INTO
@@ -2941,6 +2997,14 @@ TIMESTAMP_ADD
 
 TIMESTAMP_DIFF
     : T I M E S T A M P UL_ D I F F
+    ;
+
+TIMESTAMP_WITH_TIME_ZONE
+    : T I M E S T A M P ' ' W I T H ' ' T I M E ' ' Z O N E
+    ;
+
+TIME_WITH_TIME_ZONE
+    :T I M E ' ' W I T H ' ' T I M E ' ' Z O N E
     ;
 
 TINYBLOB

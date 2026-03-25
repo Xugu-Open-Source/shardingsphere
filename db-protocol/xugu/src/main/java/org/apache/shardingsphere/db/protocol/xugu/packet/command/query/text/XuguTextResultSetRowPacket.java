@@ -68,7 +68,7 @@ public final class XuguTextResultSetRowPacket extends XuguPacket {
         } else if (data instanceof BigDecimal) {
             payload.writeStringLenenc(((BigDecimal) data).toPlainString());
         } else if (data instanceof Boolean) {
-            payload.writeBytesLenenc((boolean) data ? new byte[]{1} : new byte[]{0});
+            payload.writeBytesLenenc((boolean) data ? new byte[]{'1'} : new byte[]{'0'});
         } else if (data instanceof LocalDateTime) {
             payload.writeStringLenenc(DateTimeFormatterFactory.getStandardFormatter().format((LocalDateTime) data));
         } else {
