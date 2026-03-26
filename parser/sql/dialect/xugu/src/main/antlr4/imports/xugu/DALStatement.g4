@@ -246,6 +246,13 @@ showVariables
     : SHOW (GLOBAL | SESSION)? VARIABLES showFilter?
     ;
 
+showXuguVariable
+    : SHOW (internalVariableName
+    | TRANSACTION ISOLATION LEVEL
+    | AUTO COMMIT
+    | CURRENT SCHEMA)
+    ;
+
 showWarnings
     : SHOW (COUNT LP_ ASTERISK_ RP_)? WARNINGS limitClause?
     ;
@@ -475,4 +482,5 @@ show
     | showVariables
     | showReplicas
     | showReplicaStatus
+    | showXuguVariable
     ;

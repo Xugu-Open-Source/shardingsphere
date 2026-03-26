@@ -109,6 +109,7 @@ import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.ShowTrig
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.ShowVariablesContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.ShowWarningsContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.ShowWhereClauseContext;
+import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.ShowXuguVariableContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.ShutdownContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.TableNameContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.TablesOptionContext;
@@ -205,6 +206,7 @@ import org.apache.shardingsphere.sql.parser.statement.xugu.dal.XuguShowReplicaSt
 import org.apache.shardingsphere.sql.parser.statement.xugu.dal.XuguShowReplicasStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.dal.XuguShowSlaveHostsStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.dal.XuguShowSlaveStatusStatement;
+import org.apache.shardingsphere.sql.parser.statement.xugu.dal.XuguShowStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.dal.XuguShowStatusStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.dal.XuguShowTableStatusStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.dal.XuguShowTablesStatement;
@@ -827,6 +829,11 @@ public final class XuguDALStatementVisitor extends XuguStatementVisitor implemen
         }
         result.addParameterMarkerSegments(getParameterMarkerSegments());
         return result;
+    }
+
+    @Override
+    public ASTNode visitShowXuguVariable(final ShowXuguVariableContext ctx) {
+        return new XuguShowStatement();
     }
     
     @Override
