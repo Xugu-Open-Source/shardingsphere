@@ -116,7 +116,6 @@ import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.TablesOp
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.UninstallComponentContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.UninstallPluginContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.UseContext;
-import org.apache.shardingsphere.sql.parser.xugu.visitor.statement.XuguStatementVisitor;
 import org.apache.shardingsphere.sql.parser.statement.core.segment.dal.CacheTableIndexSegment;
 import org.apache.shardingsphere.sql.parser.statement.core.segment.dal.CloneActionSegment;
 import org.apache.shardingsphere.sql.parser.statement.core.segment.dal.CloneInstanceSegment;
@@ -217,13 +216,14 @@ import org.apache.shardingsphere.sql.parser.statement.xugu.dal.XuguShutdownState
 import org.apache.shardingsphere.sql.parser.statement.xugu.dal.XuguUninstallComponentStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.dal.XuguUninstallPluginStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.dal.XuguUseStatement;
+import org.apache.shardingsphere.sql.parser.xugu.visitor.statement.XuguStatementVisitor;
 
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
 /**
- * DAL statement visitor for MySQL.
+ * DAL statement visitor for xugu.
  */
 public final class XuguDALStatementVisitor extends XuguStatementVisitor implements DALStatementVisitor {
     

@@ -1005,3 +1005,18 @@ executeVarList
 deallocate
     : (DEALLOCATE | DROP) PREPARE identifier
     ;
+
+flashbackTable
+    : FLASHBACK TABLE tableName TO BEFORE DROP renameToTable?
+    ;
+
+renameToTable
+    : RENAME TO tableName
+    ;
+
+purge
+    : PURGE (TABLE tableName
+    | INDEX tableName DOT_ indexName
+    | RECYCLEBIN
+    | DBA_RECYCLEBIN)
+    ;

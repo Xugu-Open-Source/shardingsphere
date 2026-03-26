@@ -539,6 +539,10 @@ DAY_SECOND
     : D A Y UL_ S E C O N D
     ;
 
+DBA_RECYCLEBIN
+    : D B A UL_ R E C Y C L E B I N
+    ;
+
 DEALLOCATE
     : D E A L L O C A T E
     ;
@@ -861,6 +865,10 @@ FIRST_VALUE
 
 FIXED
     : F I X E D
+    ;
+
+FLASHBACK
+    : F L A S H B A C K
     ;
 
 FLOAT
@@ -2205,6 +2213,10 @@ RECOVER
 
 RECURSIVE
     : R E C U R S I V E
+    ;
+
+RECYCLEBIN
+    : R E C Y C L E B I N
     ;
 
 REDO_BUFFER_SIZE

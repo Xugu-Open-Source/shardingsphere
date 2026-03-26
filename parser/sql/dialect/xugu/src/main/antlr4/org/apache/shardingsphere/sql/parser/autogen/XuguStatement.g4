@@ -62,6 +62,8 @@ execute
     | setAutoCommit
     | commit
     | rollback
+    | flashbackTable
+    | purge
     | savepoint
     | grant
     | revoke

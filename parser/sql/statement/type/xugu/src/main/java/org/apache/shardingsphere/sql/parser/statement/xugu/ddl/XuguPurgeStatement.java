@@ -17,23 +17,11 @@
 
 package org.apache.shardingsphere.sql.parser.statement.xugu.ddl;
 
-import lombok.Setter;
-import org.apache.shardingsphere.sql.parser.statement.core.segment.ddl.index.IndexTypeSegment;
-import org.apache.shardingsphere.sql.parser.statement.core.statement.ddl.CommentStatement;
+import org.apache.shardingsphere.sql.parser.statement.core.statement.ddl.PurgeStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.XuguStatement;
 
-import java.util.Optional;
-
 /**
- * xugu comment statement.
+ * xugu purge statement.
  */
-@Setter
-public final class XuguCommentStatement extends CommentStatement implements XuguStatement {
-    
-    private IndexTypeSegment indexType;
-    
-    @Override
-    public Optional<IndexTypeSegment> getIndexType() {
-        return Optional.ofNullable(indexType);
-    }
+public final class XuguPurgeStatement extends PurgeStatement implements XuguStatement {
 }
