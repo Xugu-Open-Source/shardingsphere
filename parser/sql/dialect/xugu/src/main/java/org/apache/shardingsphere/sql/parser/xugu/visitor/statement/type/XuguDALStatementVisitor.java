@@ -402,7 +402,8 @@ public final class XuguDALStatementVisitor extends XuguStatementVisitor implemen
         result.getTables().addAll(((CollectionValue<SimpleTableSegment>) visit(ctx.tableList())).getValue());
         return result;
     }
-    
+
+    @SuppressWarnings("unchecked")
     @Override
     public ASTNode visitCacheIndex(final CacheIndexContext ctx) {
         XuguCacheIndexStatement result = new XuguCacheIndexStatement();
@@ -447,7 +448,8 @@ public final class XuguDALStatementVisitor extends XuguStatementVisitor implemen
     public ASTNode visitPartitionName(final PartitionNameContext ctx) {
         return new PartitionSegment(ctx.getStart().getStartIndex(), ctx.getStop().getStopIndex(), (IdentifierValue) visit(ctx.identifier()));
     }
-    
+
+    @SuppressWarnings("unchecked")
     @Override
     public ASTNode visitChecksumTable(final ChecksumTableContext ctx) {
         XuguChecksumTableStatement result = new XuguChecksumTableStatement();
@@ -498,7 +500,8 @@ public final class XuguDALStatementVisitor extends XuguStatementVisitor implemen
         }
         return result;
     }
-    
+
+    @SuppressWarnings("unchecked")
     @Override
     public ASTNode visitLoadTableIndexList(final LoadTableIndexListContext ctx) {
         LoadTableIndexSegment result = new LoadTableIndexSegment(ctx.getStart().getStartIndex(), ctx.getStop().getStopIndex(), (SimpleTableSegment) visit(ctx.tableName()));
@@ -1049,7 +1052,8 @@ public final class XuguDALStatementVisitor extends XuguStatementVisitor implemen
         result.setGroupName(((IdentifierValue) visit(ctx.groupName())).getValue());
         return result;
     }
-    
+
+    @SuppressWarnings("unchecked")
     @Override
     public ASTNode visitCheckTable(final CheckTableContext ctx) {
         XuguCheckTableStatement result = new XuguCheckTableStatement();

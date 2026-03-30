@@ -68,7 +68,7 @@ optionValueList
     ;
 
 optionValueNoOptionType
-    : internalVariableName equal setExprOrDefault
+    : internalVariableName (TO | equal)? setExprOrDefault optOnNode?
     | userVariable equal expr
     | setSystemVariable equal setExprOrDefault
     | NAMES (equal expr | charsetName collateClause? | DEFAULT)
@@ -76,6 +76,10 @@ optionValueNoOptionType
 
 equal
     : EQ_ | ASSIGNMENT_
+    ;
+
+optOnNode
+    : ON ((LOCAL | ALL) NODE | NODE NUMBER_)
     ;
 
 optionValue

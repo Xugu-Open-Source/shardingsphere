@@ -29,6 +29,7 @@ import org.apache.shardingsphere.authentication.result.AuthenticationResultBuild
 import org.apache.shardingsphere.authority.checker.AuthorityChecker;
 import org.apache.shardingsphere.authority.rule.AuthorityRule;
 import org.apache.shardingsphere.db.protocol.constant.CommonConstants;
+import org.apache.shardingsphere.db.protocol.payload.PacketPayload;
 import org.apache.shardingsphere.db.protocol.xugu.constant.XuguCapabilityFlag;
 import org.apache.shardingsphere.db.protocol.xugu.constant.XuguCharacterSet;
 import org.apache.shardingsphere.db.protocol.xugu.constant.XuguConnectionPhase;
@@ -41,20 +42,19 @@ import org.apache.shardingsphere.db.protocol.xugu.packet.handshake.XuguAuthentic
 import org.apache.shardingsphere.db.protocol.xugu.packet.handshake.XuguHandshakePacket;
 import org.apache.shardingsphere.db.protocol.xugu.packet.handshake.XuguHandshakeResponse41Packet;
 import org.apache.shardingsphere.db.protocol.xugu.payload.XuguPacketPayload;
-import org.apache.shardingsphere.db.protocol.payload.PacketPayload;
 import org.apache.shardingsphere.infra.exception.dialect.exception.syntax.database.UnknownDatabaseException;
-import org.apache.shardingsphere.infra.exception.mysql.exception.AccessDeniedException;
-import org.apache.shardingsphere.infra.exception.mysql.exception.DatabaseAccessDeniedException;
-import org.apache.shardingsphere.infra.exception.mysql.exception.HandshakeException;
+import org.apache.shardingsphere.infra.exception.xugu.exception.AccessDeniedException;
+import org.apache.shardingsphere.infra.exception.xugu.exception.DatabaseAccessDeniedException;
+import org.apache.shardingsphere.infra.exception.xugu.exception.HandshakeException;
 import org.apache.shardingsphere.infra.metadata.user.Grantee;
 import org.apache.shardingsphere.infra.metadata.user.ShardingSphereUser;
 import org.apache.shardingsphere.proxy.backend.context.ProxyContext;
 import org.apache.shardingsphere.proxy.frontend.authentication.AuthenticationEngine;
 import org.apache.shardingsphere.proxy.frontend.connection.ConnectionIdGenerator;
+import org.apache.shardingsphere.proxy.frontend.ssl.ProxySSLContext;
 import org.apache.shardingsphere.proxy.frontend.xugu.authentication.authenticator.XuguAuthenticatorType;
 import org.apache.shardingsphere.proxy.frontend.xugu.command.query.binary.XuguStatementIdGenerator;
 import org.apache.shardingsphere.proxy.frontend.xugu.ssl.XuguSSLRequestHandler;
-import org.apache.shardingsphere.proxy.frontend.ssl.ProxySSLContext;
 
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;

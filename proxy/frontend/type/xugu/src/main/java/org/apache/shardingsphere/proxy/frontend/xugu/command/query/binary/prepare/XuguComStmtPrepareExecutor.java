@@ -18,6 +18,7 @@
 package org.apache.shardingsphere.proxy.frontend.xugu.command.query.binary.prepare;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.shardingsphere.db.protocol.packet.DatabasePacket;
 import org.apache.shardingsphere.db.protocol.xugu.constant.XuguBinaryColumnType;
 import org.apache.shardingsphere.db.protocol.xugu.constant.XuguConstants;
 import org.apache.shardingsphere.db.protocol.xugu.packet.XuguPacket;
@@ -27,7 +28,6 @@ import org.apache.shardingsphere.db.protocol.xugu.packet.command.query.XuguColum
 import org.apache.shardingsphere.db.protocol.xugu.packet.command.query.binary.prepare.XuguComStmtPrepareOKPacket;
 import org.apache.shardingsphere.db.protocol.xugu.packet.command.query.binary.prepare.XuguComStmtPreparePacket;
 import org.apache.shardingsphere.db.protocol.xugu.packet.generic.XuguEofPacket;
-import org.apache.shardingsphere.db.protocol.packet.DatabasePacket;
 import org.apache.shardingsphere.infra.binder.context.segment.select.projection.Projection;
 import org.apache.shardingsphere.infra.binder.context.segment.select.projection.impl.ColumnProjection;
 import org.apache.shardingsphere.infra.binder.context.statement.SQLStatementContext;
@@ -37,8 +37,8 @@ import org.apache.shardingsphere.infra.binder.engine.SQLBindEngine;
 import org.apache.shardingsphere.infra.database.core.type.DatabaseType;
 import org.apache.shardingsphere.infra.database.core.type.DatabaseTypeRegistry;
 import org.apache.shardingsphere.infra.exception.core.ShardingSpherePreconditions;
-import org.apache.shardingsphere.infra.exception.mysql.exception.TooManyPlaceholdersException;
-import org.apache.shardingsphere.infra.exception.mysql.exception.UnsupportedPreparedStatementException;
+import org.apache.shardingsphere.infra.exception.xugu.exception.TooManyPlaceholdersException;
+import org.apache.shardingsphere.infra.exception.xugu.exception.UnsupportedPreparedStatementException;
 import org.apache.shardingsphere.infra.metadata.database.ShardingSphereDatabase;
 import org.apache.shardingsphere.infra.metadata.database.schema.model.ShardingSphereColumn;
 import org.apache.shardingsphere.infra.metadata.database.schema.model.ShardingSphereSchema;

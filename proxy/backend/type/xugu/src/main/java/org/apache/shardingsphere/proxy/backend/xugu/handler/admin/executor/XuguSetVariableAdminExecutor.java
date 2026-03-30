@@ -21,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.shardingsphere.infra.binder.context.statement.SQLStatementContext;
 import org.apache.shardingsphere.infra.binder.engine.SQLBindEngine;
 import org.apache.shardingsphere.infra.database.core.type.DatabaseType;
-import org.apache.shardingsphere.infra.exception.mysql.exception.UnknownSystemVariableException;
+import org.apache.shardingsphere.infra.exception.xugu.exception.UnknownSystemVariableException;
 import org.apache.shardingsphere.infra.hint.HintValueContext;
 import org.apache.shardingsphere.infra.session.query.QueryContext;
 import org.apache.shardingsphere.infra.spi.type.typed.TypedSPILoader;
@@ -33,9 +33,9 @@ import org.apache.shardingsphere.proxy.backend.handler.admin.executor.DatabaseAd
 import org.apache.shardingsphere.proxy.backend.handler.admin.executor.variable.charset.CharsetSetExecutor;
 import org.apache.shardingsphere.proxy.backend.handler.admin.executor.variable.session.SessionVariableRecordExecutor;
 import org.apache.shardingsphere.proxy.backend.handler.data.DatabaseBackendHandler;
-import org.apache.shardingsphere.proxy.backend.xugu.handler.admin.executor.sysvar.XuguSystemVariable;
-import org.apache.shardingsphere.proxy.backend.xugu.handler.admin.executor.sysvar.Scope;
 import org.apache.shardingsphere.proxy.backend.session.ConnectionSession;
+import org.apache.shardingsphere.proxy.backend.xugu.handler.admin.executor.sysvar.Scope;
+import org.apache.shardingsphere.proxy.backend.xugu.handler.admin.executor.sysvar.XuguSystemVariable;
 import org.apache.shardingsphere.sql.parser.statement.core.segment.dal.VariableAssignSegment;
 import org.apache.shardingsphere.sql.parser.statement.core.statement.SQLStatement;
 import org.apache.shardingsphere.sql.parser.statement.core.statement.dal.SetStatement;
@@ -65,9 +65,10 @@ public final class XuguSetVariableAdminExecutor implements DatabaseAdminExecutor
         new SessionVariableRecordExecutor(databaseType, connectionSession).recordVariable(sessionVariables);
         executeSetGlobalVariablesIfPresent(connectionSession);
     }
-    
+
     private Map<String, String> extractSessionVariables() {
-        return setStatement.getVariableAssigns().stream().filter(each -> !"global".equalsIgnoreCase(each.getVariable().getScope().orElse("")))
+        return setStatement.getVariableAssigns().stream().filter(each -> !XuguSystemVariable.findBuiltinVariable(each.getVariable().getVariable()).isPresent()
+                        && !"global".equalsIgnoreCase(each.getVariable().getScope().orElse("")))
                 .collect(Collectors.toMap(each -> each.getVariable().getVariable(), VariableAssignSegment::getAssignValue));
     }
     
@@ -84,27 +85,49 @@ public final class XuguSetVariableAdminExecutor implements DatabaseAdminExecutor
         }
         String concatenatedGlobalVariables = extractGlobalVariables().entrySet().stream().map(entry -> String.format("@@GLOBAL.%s = %s", entry.getKey(), entry.getValue()))
                 .collect(Collectors.joining(", "));
-        if (concatenatedGlobalVariables.isEmpty()) {
-            return;
+        String concatenatedBuiltinVariable = extractBuiltinVariable().entrySet().stream().map(entry -> String.format("%s to %s", entry.getKey(), entry.getValue()))
+                .collect(Collectors.joining(", "));
+        if (!concatenatedGlobalVariables.isEmpty()) {
+            String sql = "SET " + concatenatedGlobalVariables;
+            MetaDataContexts metaDataContexts = ProxyContext.getInstance().getContextManager().getMetaDataContexts();
+            SQLParserRule sqlParserRule = metaDataContexts.getMetaData().getGlobalRuleMetaData().getSingleRule(SQLParserRule.class);
+            SQLStatement sqlStatement = sqlParserRule.getSQLParserEngine(TypedSPILoader.getService(DatabaseType.class, "XuGu")).parse(sql, false);
+            SQLStatementContext sqlStatementContext = new SQLBindEngine(ProxyContext.getInstance().getContextManager().getMetaDataContexts().getMetaData(),
+                    connectionSession.getCurrentDatabaseName(), new HintValueContext()).bind(sqlStatement, Collections.emptyList());
+            DatabaseBackendHandler databaseBackendHandler = DatabaseConnectorFactory.getInstance().newInstance(
+                    new QueryContext(sqlStatementContext, sql, Collections.emptyList(), new HintValueContext(), connectionSession.getConnectionContext(), metaDataContexts.getMetaData()),
+                    connectionSession.getDatabaseConnectionManager(), false);
+            try {
+                databaseBackendHandler.execute();
+            } finally {
+                databaseBackendHandler.close();
+            }
         }
-        String sql = "SET " + concatenatedGlobalVariables;
-        MetaDataContexts metaDataContexts = ProxyContext.getInstance().getContextManager().getMetaDataContexts();
-        SQLParserRule sqlParserRule = metaDataContexts.getMetaData().getGlobalRuleMetaData().getSingleRule(SQLParserRule.class);
-        SQLStatement sqlStatement = sqlParserRule.getSQLParserEngine(TypedSPILoader.getService(DatabaseType.class, "XuGu")).parse(sql, false);
-        SQLStatementContext sqlStatementContext = new SQLBindEngine(ProxyContext.getInstance().getContextManager().getMetaDataContexts().getMetaData(),
-                connectionSession.getCurrentDatabaseName(), new HintValueContext()).bind(sqlStatement, Collections.emptyList());
-        DatabaseBackendHandler databaseBackendHandler = DatabaseConnectorFactory.getInstance().newInstance(
-                new QueryContext(sqlStatementContext, sql, Collections.emptyList(), new HintValueContext(), connectionSession.getConnectionContext(), metaDataContexts.getMetaData()),
-                connectionSession.getDatabaseConnectionManager(), false);
-        try {
-            databaseBackendHandler.execute();
-        } finally {
-            databaseBackendHandler.close();
+        if (!concatenatedBuiltinVariable.isEmpty()) {
+            String sql = "SET " + concatenatedBuiltinVariable;
+            MetaDataContexts metaDataContexts = ProxyContext.getInstance().getContextManager().getMetaDataContexts();
+            SQLParserRule sqlParserRule = metaDataContexts.getMetaData().getGlobalRuleMetaData().getSingleRule(SQLParserRule.class);
+            SQLStatement sqlStatement = sqlParserRule.getSQLParserEngine(TypedSPILoader.getService(DatabaseType.class, "XuGu")).parse(sql, false);
+            SQLStatementContext sqlStatementContext = new SQLBindEngine(ProxyContext.getInstance().getContextManager().getMetaDataContexts().getMetaData(),
+                    connectionSession.getCurrentDatabaseName(), new HintValueContext()).bind(sqlStatement, Collections.emptyList());
+            DatabaseBackendHandler databaseBackendHandler = DatabaseConnectorFactory.getInstance().newInstance(
+                    new QueryContext(sqlStatementContext, sql, Collections.emptyList(), new HintValueContext(), connectionSession.getConnectionContext(), metaDataContexts.getMetaData()),
+                    connectionSession.getDatabaseConnectionManager(), false);
+            try {
+                databaseBackendHandler.execute();
+            } finally {
+                databaseBackendHandler.close();
+            }
         }
     }
     
     private Map<String, String> extractGlobalVariables() {
         return setStatement.getVariableAssigns().stream().filter(each -> "global".equalsIgnoreCase(each.getVariable().getScope().orElse("")))
+                .collect(Collectors.toMap(each -> each.getVariable().getVariable(), VariableAssignSegment::getAssignValue, (oldValue, newValue) -> newValue, LinkedHashMap::new));
+    }
+
+    private Map<String, String> extractBuiltinVariable() {
+        return setStatement.getVariableAssigns().stream().filter(each -> !"global".equalsIgnoreCase(each.getVariable().getScope().orElse("")) && XuguSystemVariable.findBuiltinVariable(each.getVariable().getVariable()).isPresent())
                 .collect(Collectors.toMap(each -> each.getVariable().getVariable(), VariableAssignSegment::getAssignValue, (oldValue, newValue) -> newValue, LinkedHashMap::new));
     }
 }

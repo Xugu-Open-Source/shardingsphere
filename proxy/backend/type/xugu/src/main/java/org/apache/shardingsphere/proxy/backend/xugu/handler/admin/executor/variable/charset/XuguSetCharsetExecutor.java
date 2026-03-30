@@ -17,9 +17,9 @@
 
 package org.apache.shardingsphere.proxy.backend.xugu.handler.admin.executor.variable.charset;
 
-import org.apache.shardingsphere.db.protocol.mysql.constant.MySQLConstants;
-import org.apache.shardingsphere.infra.exception.mysql.exception.UnknownCharsetException;
+import org.apache.shardingsphere.db.protocol.xugu.constant.XuguConstants;
 import org.apache.shardingsphere.infra.database.core.metadata.database.enums.QuoteCharacter;
+import org.apache.shardingsphere.infra.exception.xugu.exception.UnknownCharsetException;
 import org.apache.shardingsphere.proxy.backend.handler.admin.executor.variable.charset.CharsetVariableProvider;
 
 import java.nio.charset.Charset;
@@ -41,7 +41,7 @@ public final class XuguSetCharsetExecutor implements CharsetVariableProvider {
         String formattedValue = formatValue(variableValue);
         switch (formattedValue.toLowerCase(Locale.ROOT)) {
             case "default":
-                return MySQLConstants.DEFAULT_CHARSET.getCharset();
+                return XuguConstants.DEFAULT_CHARSET.getCharset();
             case "utf8mb4":
                 return StandardCharsets.UTF_8;
             default:

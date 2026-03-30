@@ -31,8 +31,8 @@ import org.apache.shardingsphere.sql.parser.statement.core.segment.dml.item.Expr
 import org.apache.shardingsphere.sql.parser.statement.core.segment.dml.item.ProjectionSegment;
 import org.apache.shardingsphere.sql.parser.statement.core.statement.SQLStatement;
 import org.apache.shardingsphere.sql.parser.statement.core.statement.dml.SelectStatement;
-import org.apache.shardingsphere.sql.parser.statement.mysql.dal.MySQLSetStatement;
-import org.apache.shardingsphere.sql.parser.statement.mysql.dal.MySQLShowOtherStatement;
+import org.apache.shardingsphere.sql.parser.statement.xugu.dal.XuguSetStatement;
+import org.apache.shardingsphere.sql.parser.statement.xugu.dal.XuguShowOtherStatement;
 
 import java.sql.SQLException;
 import java.sql.Types;
@@ -56,10 +56,10 @@ public final class XuguDialectSaneQueryResultEngine implements DialectSaneQueryR
         if (sqlStatement instanceof SelectStatement) {
             return createQueryResult((SelectStatement) sqlStatement);
         }
-        if (sqlStatement instanceof MySQLShowOtherStatement) {
+        if (sqlStatement instanceof XuguShowOtherStatement) {
             return Optional.of(createQueryResult());
         }
-        if (sqlStatement instanceof MySQLSetStatement) {
+        if (sqlStatement instanceof XuguSetStatement) {
             return Optional.of(new UpdateResult(0, 0L));
         }
         return Optional.empty();

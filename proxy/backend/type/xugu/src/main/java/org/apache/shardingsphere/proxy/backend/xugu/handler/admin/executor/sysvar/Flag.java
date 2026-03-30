@@ -30,7 +30,10 @@ import lombok.NoArgsConstructor;
 public final class Flag {
     
     public static final int GLOBAL = 0x0001;
-    
+
+    // xugu 没有关键字判断是否是 GLOBAL
+    public static final int XUGU_SYSTEM = 0x0001;
+
     public static final int SESSION = 0x0002;
     
     public static final int ONLY_SESSION = 0x0004;

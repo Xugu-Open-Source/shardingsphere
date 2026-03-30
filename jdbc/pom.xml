@@ -105,6 +105,11 @@
         </dependency>
         <dependency>
             <groupId>org.apache.shardingsphere</groupId>
+            <artifactId>shardingsphere-xugu-dialect-exception</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.shardingsphere</groupId>
             <artifactId>shardingsphere-postgresql-dialect-exception</artifactId>
             <version>${project.version}</version>
         </dependency>

@@ -29,6 +29,7 @@
     
     <modules>
         <module>mysql</module>
+        <module>xugu</module>
         <module>postgresql</module>
         <module>opengauss</module>
     </modules>

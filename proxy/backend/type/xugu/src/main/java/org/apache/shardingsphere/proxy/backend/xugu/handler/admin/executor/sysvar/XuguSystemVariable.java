@@ -20,16 +20,16 @@ package org.apache.shardingsphere.proxy.backend.xugu.handler.admin.executor.sysv
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.apache.shardingsphere.db.protocol.constant.DatabaseProtocolServerInfo;
-import org.apache.shardingsphere.infra.exception.mysql.exception.ErrorGlobalVariableException;
-import org.apache.shardingsphere.infra.exception.mysql.exception.ErrorLocalVariableException;
-import org.apache.shardingsphere.infra.exception.mysql.exception.IncorrectGlobalLocalVariableException;
 import org.apache.shardingsphere.infra.database.core.type.DatabaseType;
 import org.apache.shardingsphere.infra.exception.core.ShardingSpherePreconditions;
+import org.apache.shardingsphere.infra.exception.xugu.exception.ErrorGlobalVariableException;
+import org.apache.shardingsphere.infra.exception.xugu.exception.ErrorLocalVariableException;
+import org.apache.shardingsphere.infra.exception.xugu.exception.IncorrectGlobalLocalVariableException;
 import org.apache.shardingsphere.infra.spi.type.typed.TypedSPILoader;
+import org.apache.shardingsphere.proxy.backend.session.ConnectionSession;
 import org.apache.shardingsphere.proxy.backend.xugu.handler.admin.executor.sysvar.provider.TransactionIsolationValueProvider;
 import org.apache.shardingsphere.proxy.backend.xugu.handler.admin.executor.sysvar.provider.TransactionReadOnlyValueProvider;
 import org.apache.shardingsphere.proxy.backend.xugu.handler.admin.executor.sysvar.provider.VersionValueProvider;
-import org.apache.shardingsphere.proxy.backend.session.ConnectionSession;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -265,7 +265,7 @@ public enum XuguSystemVariable {
     
     GLOBAL_CONNECTION_MEMORY_TRACKING(Flag.SESSION, "0"),
     
-    GROUP_CONCAT_MAX_LEN(Flag.SESSION | Flag.HINT_UPDATEABLE, "1024"),
+    // GROUP_CONCAT_MAX_LEN(Flag.SESSION | Flag.HINT_UPDATEABLE, "1024"),
     
     // GROUP_REPLICATION_CONSISTENCY(Flag.SESSION, "TODO"),
     
@@ -1060,7 +1060,7 @@ public enum XuguSystemVariable {
     
     SYNC_FRM(Flag.GLOBAL, "1"),
     
-    TIME_FORMAT(Flag.GLOBAL | Flag.READONLY, "%H:%i:%s"),
+    // TIME_FORMAT(Flag.GLOBAL | Flag.READONLY, "%H:%i:%s"),
     
     TX_ISOLATION(Flag.SESSION | Flag.TRI_LEVEL, "REPEATABLE-READ", new TransactionIsolationValueProvider()),
     
@@ -1076,9 +1076,160 @@ public enum XuguSystemVariable {
     
     THREAD_CONCURRENCY(Flag.READONLY, "10"),
     
-    TIMED_MUTEXES(Flag.GLOBAL, "0");
-    
+    TIMED_MUTEXES(Flag.GLOBAL, "0"),
+
+    CLUSTER_FAULT_LEVEL(Flag.XUGU_SYSTEM, "0"),
+    DEBUG_PRINT(Flag.XUGU_SYSTEM, "FALSE"),
+    EXCLUDE_ERRNO(Flag.XUGU_SYSTEM, ""),
+
+    LOGIN_TIMEOUT(Flag.XUGU_SYSTEM, "30"),
+    MAX_IDLE_TIME(Flag.XUGU_SYSTEM, "3600"),
+    DEF_TIMEZONE(Flag.XUGU_SYSTEM, "GMT+08:00"),
+    DEF_TIMEFMT(Flag.XUGU_SYSTEM, "YYYY-MM-DD HH24:MI:SS"),
+    DEF_CHARSET(Flag.XUGU_SYSTEM, "GBK"),
+    SEND_WARNING(Flag.XUGU_SYSTEM, "TRUE"),
+    CONN_FAIL_CNT(Flag.XUGU_SYSTEM, "3"),
+    MAX_CONN_NUM(Flag.XUGU_SYSTEM, "1000"),
+    SESSION_PER_USER(Flag.XUGU_SYSTEM, "1000"),
+
+    MIN_PASS_LEN(Flag.XUGU_SYSTEM, "8"),
+    PASS_MODE(Flag.XUGU_SYSTEM, "2"),
+    MIN_PASS_NUMBER(Flag.XUGU_SYSTEM, "0"),
+    MIN_PASS_MIXED_CASE(Flag.XUGU_SYSTEM, "0"),
+    MIN_PASS_SPECIAL_CHAR(Flag.XUGU_SYSTEM, "0"),
+    PASS_USERNAME_CHECK(Flag.XUGU_SYSTEM, "TRUE"),
+    WEAK_PASS_DICTIONARY(Flag.XUGU_SYSTEM, "TRUE"),
+
+    MAX_HASH_SIZE(Flag.XUGU_SYSTEM, "3000000"),
+    MIN_HASH_SIZE(Flag.XUGU_SYSTEM, "100"),
+    HASH_PARTI_NUM(Flag.XUGU_SYSTEM, "16"),
+    MAX_MALLOC_ONCE(Flag.XUGU_SYSTEM, "512"),
+
+    DEF_OPTIMIZE_MODE(Flag.XUGU_SYSTEM, "0"),
+    ENABLE_HISTOGRAM(Flag.XUGU_SYSTEM, "FALSE"),
+    MAX_PREPARE_NUM(Flag.XUGU_SYSTEM, "100"),
+    PREPARE_PARAM_NUM(Flag.XUGU_SYSTEM, "2048"),
+    MAX_CURSOR_NUM(Flag.XUGU_SYSTEM, "100"),
+    PREPARE_REUSE(Flag.XUGU_SYSTEM, "TRUE"),
+    SUPPLE_PREPARE_SQL(Flag.XUGU_SYSTEM, "FALSE"),
+    MAX_LOOP_NUM(Flag.XUGU_SYSTEM, "1000000"),
+    PROC_REUSE_CNT(Flag.XUGU_SYSTEM, "1"),
+    DELAY_CHECK_UNIQUE(Flag.XUGU_SYSTEM, "FALSE"),
+    STR_TRUNC_WARNING(Flag.XUGU_SYSTEM, "FALSE"),
+    DEF_EMPTY_STR_AS_NULL(Flag.XUGU_SYSTEM, "TRUE"),
+    AUTO_USE_EJE(Flag.XUGU_SYSTEM, "FALSE"),
+    AUTO_EJE_CAST(Flag.XUGU_SYSTEM, "10000"),
+    AUTO_EJE_PARALLEL(Flag.XUGU_SYSTEM, "4"),
+    ENABLE_EJE_BIG_BLOCK(Flag.XUGU_SYSTEM, "FALSE"),
+    PARA_EJE_SEQSCAN_NUM(Flag.XUGU_SYSTEM, "2"),
+    CHECK_UNIQUE_MODE(Flag.XUGU_SYSTEM, "2"),
+    DDL_TIMEOUT(Flag.XUGU_SYSTEM, "2000"),
+    TAB_REBUILD_LIMIT(Flag.XUGU_SYSTEM, "10"),
+    USE_INDEX_ORDER(Flag.XUGU_SYSTEM, "FALSE"),
+    ISCAN_INI_COST(Flag.XUGU_SYSTEM, "200"),
+    IDX_JOIN_COST(Flag.XUGU_SYSTEM, "200"),
+    SEQSCAN_SKIP_ERR(Flag.XUGU_SYSTEM, "FALSE"),
+    ENABLE_FIND_SYNONYM(Flag.XUGU_SYSTEM, "TRUE"),
+    SUPPORT_GLOBAL_TAB(Flag.XUGU_SYSTEM, "FALSE"),
+    ENABLE_SYS_NAME_IDX(Flag.XUGU_SYSTEM, "FALSE"),
+    ENABLE_STREAM_IMPORT(Flag.XUGU_SYSTEM, "FALSE"),
+    STREAM_IMPORT_ERROR(Flag.XUGU_SYSTEM, "0"),
+    SELECT_TABLE_NUM(Flag.XUGU_SYSTEM, "12"),
+    DEF_INDEX_ROW_LENGTH(Flag.XUGU_SYSTEM, "1024"),
+    WEEK_MODE(Flag.XUGU_SYSTEM, "0"),
+    GROUP_CONCAT_MAX_LEN(Flag.XUGU_SYSTEM, "1024"),
+    MAX_SQL_SIZE(Flag.XUGU_SYSTEM, "2"),
+    BACKSLASH_ESCAPES(Flag.XUGU_SYSTEM, "FALSE"),
+    ERROR_FOR_DIVISION_ZERO(Flag.XUGU_SYSTEM, "TRUE"),
+
+    DEFAULT_COPY_NUM(Flag.XUGU_SYSTEM, "3"),
+    SAFELY_COPY_NUM(Flag.XUGU_SYSTEM, "2"),
+    ENABLE_READ_COPY2(Flag.XUGU_SYSTEM, "FALSE"),
+    MAX_HOTSPOT_NUM(Flag.XUGU_SYSTEM, "256"),
+    BLOCK_PCTFREE(Flag.XUGU_SYSTEM, "15"),
+    MAX_TEMP_SPACE_SIZE(Flag.XUGU_SYSTEM, "-1"),
+    AUTO_EXTEND_DFILE(Flag.XUGU_SYSTEM, "FALSE"),
+    STORE_DROP_DELAY(Flag.XUGU_SYSTEM, "16"),
+    STORE_MAINT_SPAN(Flag.XUGU_SYSTEM, "0"),
+    ENABLE_STORE_MIGRATE(Flag.XUGU_SYSTEM, "FALSE"),
+    OV_REUSE(Flag.XUGU_SYSTEM, "FALSE"),
+    INDEX_PRELOAD_CNT(Flag.XUGU_SYSTEM, "FALSE"),
+    DATA_FILE_APPEND_MODE(Flag.XUGU_SYSTEM, "0"),
+    IOERR_REPORT_MODE(Flag.XUGU_SYSTEM, "1"),
+
+    CACHE_UNDO_WRT(Flag.XUGU_SYSTEM, "1"),
+    DATA_PERSISTENCE(Flag.XUGU_SYSTEM, "0"),
+    MAJOR_RETRY_NUM(Flag.XUGU_SYSTEM, "20"),
+    GSTORE_PICK_MODE(Flag.XUGU_SYSTEM, "1"),
+    MAJOR_CONTROL_MODE(Flag.XUGU_SYSTEM, "0"),
+
+    DEF_ISO_LEVEL(Flag.XUGU_SYSTEM, "1"),
+    MAX_TRANS_MODIFY(Flag.XUGU_SYSTEM, "10000"),
+    DLOCK_CHECK_DELAY(Flag.XUGU_SYSTEM, "3000"),
+    UNDO_DELAY_FREE(Flag.XUGU_SYSTEM, "3000"),
+    NODE_DEAD_DELAY(Flag.XUGU_SYSTEM, "30"),
+    ENABLE_NODE_DEGRADE(Flag.XUGU_SYSTEM, "TRUE"),
+
+    IGNORE_WHEN_META_ERR(Flag.XUGU_SYSTEM, "2"),
+    TRIGGER_MODIFY_LOG_LEVEL(Flag.XUGU_SYSTEM, "1"),
+    MAX_ALLOW_LOB_LEN(Flag.XUGU_SYSTEM, "10"),
+    LOG_ARCHIVE_MODE(Flag.XUGU_SYSTEM, "0"),
+    LOG_SUPPLEMENT(Flag.XUGU_SYSTEM, "FALSE"),
+    ENABLE_RECYCLE(Flag.XUGU_SYSTEM, "FALSE"),
+
+    REG_COMMAND(Flag.XUGU_SYSTEM, "FALSE"),
+    REG_DDL(Flag.XUGU_SYSTEM, "FALSE"),
+    ERROR_LEVEL(Flag.XUGU_SYSTEM, "3"),
+    ERRLOG_SIZE(Flag.XUGU_SYSTEM, "100"),
+    TRACE_LOGIN(Flag.XUGU_SYSTEM, "TRUE"),
+    LICENSE_PROMPT_DAY(Flag.XUGU_SYSTEM, "30"),
+    SLOW_SQL_TIME(Flag.XUGU_SYSTEM, "0"),
+
+    ENABLE_AUDIT(Flag.XUGU_SYSTEM, "FALSE"),
+    SECURITY_LEVEL(Flag.XUGU_SYSTEM, "0"),
+
+    ENABLE_ANALYZE(Flag.XUGU_SYSTEM, "TRUE"),
+    ANALYZE_TIME(Flag.XUGU_SYSTEM, "02:00:00"),
+    ANALYZE_THRESHOLD(Flag.XUGU_SYSTEM, "10"),
+    ANALYZE_MODE(Flag.XUGU_SYSTEM, "1"),
+    ANALYZE_LEVEL(Flag.XUGU_SYSTEM, "2"),
+    HISTOGRAM_BUCKET(Flag.XUGU_SYSTEM, "0"),
+    ENABLE_MONITOR(Flag.XUGU_SYSTEM, "1"),
+    DEBUG_FLAG(Flag.XUGU_SYSTEM, "0"),
+
+    DEF_IDENTITY_MODE(Flag.XUGU_SYSTEM, "0"),
+    DEF_GROUP_BY_MODE(Flag.XUGU_SYSTEM, "0"),
+    DEF_COMPATIBLE_MODE(Flag.XUGU_SYSTEM, "NONE"),
+    USE_OLD_PRODUCT_NAME(Flag.XUGU_SYSTEM, "FALSE"),
+
+    SESSION_USER(Flag.SESSION, "SYSDBA"),
+    CHAR_SET(Flag.SESSION, "GBK"),
+    CLIENT_ENCODING(Flag.SESSION, "GBK"),
+    TIME_FORMAT(Flag.SESSION, "YYYY-MM-DD HH24:MI:SS"),
+    ISO_LEVEL(Flag.SESSION, "1"),
+    SESSION_ISO_LEVEL(Flag.SESSION, "1"),
+    AUTO_COMMIT(Flag.SESSION, "TRUE"),
+    STRICT_COMMIT(Flag.SESSION, "FALSE"),
+    RESULT(Flag.SESSION, "DEFAULT"),
+    LANGUAGE(Flag.SESSION, "PL/SQL"),
+    RETURN_ROWID(Flag.SESSION, "FALSE"),
+    RETURN_SCHEMA(Flag.SESSION, "FALSE"),
+    RETURN_CURSOR_ID(Flag.SESSION, "FALSE"),
+    LOB_RET(Flag.SESSION, "FALSE"),
+    EMPTY_STR_AS_NULL(Flag.SESSION, "FALSE"),
+    OPTIMIZER_MODE(Flag.SESSION, "ALL_ROWS"),
+    COMPATIBLE_MODE(Flag.SESSION, "NONE"),
+    TRANS_READONLY(Flag.SESSION, "FALSE"),
+    SCHEMA(Flag.SESSION, "DEFAULT"),
+    CURRENT_SCHEMA(Flag.SESSION, "DEFAULT"),
+    DISABLE_BINLOG(Flag.SESSION, "FALSE"),
+    IDENTITY_MODE(Flag.SESSION, "DEFAULT"),
+    APP_NAME(Flag.SESSION, ""),
+    KEYWORD_FILTER(Flag.SESSION, null);
+
     private static final Map<String, XuguSystemVariable> ALL_VARIABLES = Arrays.stream(values()).collect(Collectors.toMap(Enum::name, Function.identity()));
+
+    private static final Map<String, XuguSystemVariable> BUILTIN_VARIABLE = Arrays.stream(values()).filter(e -> e.flag == Flag.XUGU_SYSTEM).collect(Collectors.toMap(Enum::name, Function.identity()));
     
     private final int flag;
     
@@ -1099,6 +1250,16 @@ public enum XuguSystemVariable {
      */
     public static Optional<XuguSystemVariable> findSystemVariable(final String name) {
         return Optional.ofNullable(ALL_VARIABLES.get(name.toUpperCase()));
+    }
+
+    /**
+     * Find builtin variable by name.
+     *
+     * @param name variable name
+     * @return builtin variable
+     */
+    public static Optional<XuguSystemVariable> findBuiltinVariable(final String name) {
+        return Optional.ofNullable(BUILTIN_VARIABLE.get(name.toUpperCase()));
     }
     
     /**

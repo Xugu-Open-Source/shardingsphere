@@ -23,7 +23,7 @@ import lombok.NoArgsConstructor;
 import org.apache.shardingsphere.db.protocol.xugu.packet.generic.XuguErrPacket;
 import org.apache.shardingsphere.infra.database.core.type.DatabaseType;
 import org.apache.shardingsphere.infra.exception.dialect.SQLExceptionTransformEngine;
-import org.apache.shardingsphere.infra.exception.mysql.vendor.MySQLVendorError;
+import org.apache.shardingsphere.infra.exception.xugu.vendor.XuguVendorError;
 import org.apache.shardingsphere.infra.spi.type.typed.TypedSPILoader;
 
 import java.sql.SQLException;
@@ -44,7 +44,7 @@ public final class XuguErrorPacketFactory {
      */
     public static XuguErrPacket newInstance(final Exception cause) {
         SQLException sqlException = SQLExceptionTransformEngine.toSQLException(cause, DATABASE_TYPE);
-        return null == sqlException.getSQLState() ? new XuguErrPacket(MySQLVendorError.ER_INTERNAL_ERROR, getErrorMessage(sqlException)) : new XuguErrPacket(sqlException);
+        return null == sqlException.getSQLState() ? new XuguErrPacket(XuguVendorError.ER_INTERNAL_ERROR, getErrorMessage(sqlException)) : new XuguErrPacket(sqlException);
     }
     
     private static String getErrorMessage(final SQLException cause) {

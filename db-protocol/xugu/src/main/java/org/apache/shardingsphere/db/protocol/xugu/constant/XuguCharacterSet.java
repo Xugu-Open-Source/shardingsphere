@@ -18,8 +18,8 @@
 package org.apache.shardingsphere.db.protocol.xugu.constant;
 
 import lombok.Getter;
-import org.apache.shardingsphere.infra.exception.mysql.exception.UnknownCollationException;
 import org.apache.shardingsphere.infra.exception.core.ShardingSpherePreconditions;
+import org.apache.shardingsphere.infra.exception.xugu.exception.UnknownCollationException;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;

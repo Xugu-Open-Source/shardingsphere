@@ -1803,6 +1803,10 @@ NOCOMPRESS
     : N O C O M P R E S S
     ;
 
+NODE
+    : N O D E
+    ;
+
 NOFORCE
     : N O F O R C E
     ;
