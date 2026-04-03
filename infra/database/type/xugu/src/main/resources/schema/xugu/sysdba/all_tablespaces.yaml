@@ -63,3 +63,30 @@ columns:
     primaryKey: false
     unsigned: false
     visible: true
+  media_error:
+    caseSensitive: false
+    dataType: 16
+    generated: false
+    name: MEDIA_ERROR
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  total_chunk_num:
+    caseSensitive: false
+    dataType: -5
+    generated: false
+    name: TOTAL_CHUNK_NUM
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  free_chunk_num:
+    caseSensitive: false
+    dataType: -5
+    generated: false
+    name: FREE_CHUNK_NUM
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true

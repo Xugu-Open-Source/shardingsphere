@@ -72,3 +72,237 @@ columns:
     primaryKey: false
     unsigned: false
     visible: true
+  max_dbc_num:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: MAX_DBC_NUM
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  max_size:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: MAX_SIZE
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  max_tab_num:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: MAX_TAB_NUM
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  max_view_num:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: MAX_VIEW_NUM
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  max_seq_num:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: MAX_SEQ_NUM
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  max_trig_num:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: MAX_TRIG_NUM
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  max_proc_num:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: MAX_PROC_NUM
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  max_pack_num:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: MAX_PACK_NUM
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  max_udt_num:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: MAX_UDT_NUM
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  max_job_num:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: MAX_JOB_NUM
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  encryptor:
+    caseSensitive: false
+    dataType: -2
+    generated: false
+    name: ENCRYPTOR
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  enable_encry:
+    caseSensitive: false
+    dataType: 16
+    generated: false
+    name: ENABLE_ENCRY
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  enable_policy:
+    caseSensitive: false
+    dataType: 16
+    generated: false
+    name: ENABLE_POLICY
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  enable_audit:
+    caseSensitive: false
+    dataType: 16
+    generated: false
+    name: ENABLE_AUDIT
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  max_pack_id:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: MAX_PACK_ID
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  max_obj_id:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: MAX_OBJ_ID
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  max_user_id:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: MAX_USER_ID
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  comments:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: COMMENTS
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  CREATE_TIME:
+    caseSensitive: false
+    dataType: 93
+    generated: false
+    name: CREATE_TIME
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  modify_time:
+    caseSensitive: false
+    dataType: 93
+    generated: false
+    name: MODIFY_TIME
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  reg_modify:
+    caseSensitive: false
+    dataType: 16
+    generated: false
+    name: REG_MODIFY
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  online:
+    caseSensitive: false
+    dataType: 16
+    generated: false
+    name: ONLINE
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  droped:
+    caseSensitive: false
+    dataType: 16
+    generated: false
+    name: DROPED
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  encry_id:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: ENCRY_ID
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  sto_zone:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: STO_ZONE
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  RESERVED3:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: RESERVED3
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true

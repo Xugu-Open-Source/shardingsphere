@@ -63,3 +63,201 @@ columns:
     primaryKey: false
     unsigned: false
     visible: true
+  start_time:
+    caseSensitive: false
+    dataType: 93
+    generated: false
+    name: START_TIME
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  until_time:
+    caseSensitive: false
+    dataType: 93
+    generated: false
+    name: UNTIL_TIME
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  locked:
+    caseSensitive: false
+    dataType: 16
+    generated: false
+    name: LOCKED
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  expired:
+    caseSensitive: false
+    dataType: 16
+    generated: false
+    name: EXPIRED
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  pass_set_time:
+    caseSensitive: false
+    dataType: 93
+    generated: false
+    name: PASS_SET_TIME
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  pass_set_period:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: PASS_SET_PERIOD
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  alias:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: ALIAS
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  is_sys:
+    caseSensitive: false
+    dataType: 16
+    generated: false
+    name: IS_SYS
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  trust_ip:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: TRUST_IP
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  xls_pid:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: XLS_PID
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  xls_lid:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: XLS_LID
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  xls_cids:
+    caseSensitive: false
+    dataType: -5
+    generated: false
+    name: XLS_CIDS
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  priority:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: PRIORITY
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  temp_space_quota:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: TEMP_SPACE_QUOTA
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  cursor_quota:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: CURSOR_QUOTA
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  session_quota:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: SESSION_QUOTA
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  io_quota:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: IO_QUOTA
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  create_time:
+    caseSensitive: false
+    dataType: 93
+    generated: false
+    name: CREATE_TIME
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  last_modi_time:
+    caseSensitive: false
+    dataType: 93
+    generated: false
+    name: LAST_MODI_TIME
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  encry_id:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: ENCRY_ID
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  sto_zone:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: STO_ZONE
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  reserved3:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: RESERVED3
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true

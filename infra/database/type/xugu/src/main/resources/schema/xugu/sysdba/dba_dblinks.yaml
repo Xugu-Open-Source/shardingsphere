@@ -63,3 +63,75 @@ columns:
     primaryKey: false
     unsigned: false
     visible: true
+  port:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: PORT
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  rdb_name:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: RDB_NAME
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  user_name:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: USER_NAME
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  password:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: PASSWORD
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  connect_str:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: CONNECT_STR
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  valid:
+    caseSensitive: false
+    dataType: 16
+    generated: false
+    name: VALID
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  is_public:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: IS_PUBLIC
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  owner_id:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: OWNER_ID
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true

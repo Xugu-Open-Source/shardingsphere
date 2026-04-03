@@ -63,3 +63,255 @@ columns:
     primaryKey: false
     unsigned: false
     visible: true
+  is_primary:
+    caseSensitive: false
+    dataType: 16
+    generated: false
+    name: IS_PRIMARY
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  is_unique:
+    caseSensitive: false
+    dataType: 16
+    generated: false
+    name: IS_UNIQUE
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  is_local:
+    caseSensitive: false
+    dataType: 16
+    generated: false
+    name: IS_LOCAL
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  parti_type:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: PARTI_TYPE
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  parti_num:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: PARTI_NUM
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  parti_key:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: PARTI_KEY
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  subparti_type:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: SUBPARTI_TYPE
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  subparti_num:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: SUBPARTI_NUM
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  subparti_key:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: SUBPARTI_KEY
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  gsto_no:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: GSTO_NO
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  copy_num:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: COPY_NUM
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  block_size:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: BLOCK_SIZE
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  chunk_size:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: CHUNK_SIZE
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  field_num:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: FIELD_NUM
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  keys:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: KEYS
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  filter:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: FILTER
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  vocable:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: VOCABLE
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  lexer:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: LEXER
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  word_len:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: WORD_LEN
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  enable_trans:
+    caseSensitive: false
+    dataType: 16
+    generated: false
+    name: ENABLE_TRANS
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  create_time:
+    caseSensitive: false
+    dataType: 93
+    generated: false
+    name: CREATE_TIME
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  is_sys:
+    caseSensitive: false
+    dataType: 16
+    generated: false
+    name: IS_SYS
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  keepin_cache:
+    caseSensitive: false
+    dataType: 16
+    generated: false
+    name: KEEPIN_CACHE
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  nologging:
+    caseSensitive: false
+    dataType: 16
+    generated: false
+    name: NOLOGGING
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  valid:
+    caseSensitive: false
+    dataType: -6
+    generated: false
+    name: VALID
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  slow_modify:
+    caseSensitive: false
+    dataType: 16
+    generated: false
+    name: SLOW_MODIFY
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  onlinelog_id:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: ONLINELOG_ID
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  reserved3:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: RESERVED3
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true

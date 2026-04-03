@@ -54,11 +54,92 @@ columns:
     primaryKey: false
     unsigned: false
     visible: true
-  object_type:
+  obj_type:
     caseSensitive: false
     dataType: 12
     generated: false
-    name: OBJECT_TYPE
+    name: OBJ_TYPE
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  op_type:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: OP_TYPE
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  file_name:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: FILE_NAME
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  file_op:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: FILE_OP
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  file_keep_cnt:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: FILE_KEEP_CNT
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  file_move_path:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: FILE_MOVE_PATH
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  time_off:
+    caseSensitive: false
+    dataType: 3009
+    generated: false
+    name: TIME_OFF
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  next_run_t:
+    caseSensitive: false
+    dataType: 93
+    generated: false
+    name: NEXT_RUN_T
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  iperiod:
+    caseSensitive: false
+    dataType: 3009
+    generated: false
+    name: IPERIOD
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  istart_t:
+    caseSensitive: false
+    dataType: 93
+    generated: false
+    name: ISTART_T
     nullable: false
     primaryKey: false
     unsigned: false

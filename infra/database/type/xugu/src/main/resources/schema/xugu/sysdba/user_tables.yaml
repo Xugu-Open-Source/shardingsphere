@@ -15,7 +15,7 @@
 # limitations under the License.
 #
 
-name: all_tables
+name: user_tables
 type: VIEW
 columns:
   db_id:
@@ -59,6 +59,402 @@ columns:
     dataType: 12
     generated: false
     name: TABLE_NAME
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  table_type:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: TABLE_TYPE
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  temp_type:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: TEMP_TYPE
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  field_num:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: FIELD_NUM
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  parti_type:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: PARTI_TYPE
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  parti_num:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: PARTI_NUM
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  parti_key:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: PARTI_KEY
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  auto_parti_type:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: AUTO_PARTI_TYPE
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  auto_parti_span:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: AUTO_PARTI_SPAN
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  subparti_type:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: SUBPARTI_TYPE
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  subparti_num:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: SUBPARTI_NUM
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  subparti_key:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: SUBPARTI_KEY
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  gsto_no:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: GSTO_NO
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  copy_num:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: COPY_NUM
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  block_size:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: BLOCK_SIZE
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  chunk_size:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: CHUNK_SIZE
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  record_num:
+    caseSensitive: false
+    dataType: -5
+    generated: false
+    name: RECORD_NUM
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  pctfree:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: PCTFREE
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  hotspot_num:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: HOTSPOT_NUM
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  use_cache:
+    caseSensitive: false
+    dataType: 16
+    generated: false
+    name: USE_CACHE
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  online:
+    caseSensitive: false
+    dataType: 16
+    generated: false
+    name: ONLINE
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  is_sys:
+    caseSensitive: false
+    dataType: 16
+    generated: false
+    name: IS_SYS
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  is_encry:
+    caseSensitive: false
+    dataType: 16
+    generated: false
+    name: IS_ENCRY
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  slow_modify:
+    caseSensitive: false
+    dataType: 16
+    generated: false
+    name: SLOW_MODIFY
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  xls_pid:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: XLS_PID
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  xls_col_no:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: XLS_COL_NO
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  xls_col_opt:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: XLS_COL_OPT
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  on_commit_del:
+    caseSensitive: false
+    dataType: 16
+    generated: false
+    name: ON_COMMIT_DEL
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  ena_trans:
+    caseSensitive: false
+    dataType: 16
+    generated: false
+    name: ENA_TRANS
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  ena_logging:
+    caseSensitive: false
+    dataType: 16
+    generated: false
+    name: ENA_LOGGING
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  reg_modify:
+    caseSensitive: false
+    dataType: 16
+    generated: false
+    name: REG_MODIFY
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  valid:
+    caseSensitive: false
+    dataType: 16
+    generated: false
+    name: VALID
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  acl_mask:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: ACL_MASK
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  auto_parti_no:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: AUTO_PARTI_NO
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  create_time:
+    caseSensitive: false
+    dataType: 93
+    generated: false
+    name: CREATE_TIME
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  comments:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: COMMENTS
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  ana_policy:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: ANA_POLICY
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  ana_period:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: ANA_PERIOD
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  ana_threshold:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: ANA_THRESHOLD
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  ana_level:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: ANA_LEVEL
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  encry_id:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: ENCRY_ID
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  sto_zone:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: STO_ZONE
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  cache_hash_key:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: CACHE_HASH_KEY
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  compress_level:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: COMPRESS_LEVEL
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  reserved5:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: RESERVED5
     nullable: false
     primaryKey: false
     unsigned: false

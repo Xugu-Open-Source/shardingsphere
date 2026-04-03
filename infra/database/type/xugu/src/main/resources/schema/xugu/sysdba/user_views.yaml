@@ -15,7 +15,7 @@
 # limitations under the License.
 #
 
-name: all_views
+name: user_views
 type: VIEW
 columns:
   db_id:
@@ -59,6 +59,78 @@ columns:
     dataType: 12
     generated: false
     name: VIEW_NAME
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  define:
+    caseSensitive: false
+    dataType: 2005
+    generated: false
+    name: DEFINE
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  option:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: OPTION
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  create_time:
+    caseSensitive: false
+    dataType: 93
+    generated: false
+    name: CREATE_TIME
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  valid:
+    caseSensitive: false
+    dataType: 16
+    generated: false
+    name: VALID
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  is_sys:
+    caseSensitive: false
+    dataType: 16
+    generated: false
+    name: IS_SYS
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  comments:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: COMMENTS
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  reserved1:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: RESERVED1
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  reserved2:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: RESERVED2
     nullable: false
     primaryKey: false
     unsigned: false

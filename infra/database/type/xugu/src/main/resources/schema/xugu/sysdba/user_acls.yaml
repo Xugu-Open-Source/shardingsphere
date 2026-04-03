@@ -63,3 +63,66 @@ columns:
     primaryKey: false
     unsigned: false
     visible: true
+  authority:
+    caseSensitive: false
+    dataType: -5
+    generated: false
+    name: AUTHORITY
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  regrant:
+    caseSensitive: false
+    dataType: -5
+    generated: false
+    name: REGRANT
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  org_grantor_id:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: ORG_GRANTOR_ID
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  is_sys:
+    caseSensitive: false
+    dataType: 16
+    generated: false
+    name: IS_SYS
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  reserved1:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: RESERVED1
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  reserved2:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: RESERVED2
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  reserved3:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: RESERVED3
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true

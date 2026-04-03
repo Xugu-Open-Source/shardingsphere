@@ -15,7 +15,7 @@
 # limitations under the License.
 #
 
-name: all_acls
+name: all_jobs
 type: VIEW
 columns:
   db_id:
@@ -59,6 +59,159 @@ columns:
     dataType: 4
     generated: false
     name: JOB_GRP_ID
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  job_no:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: JOB_NO
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  job_type:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: JOB_TYPE
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  job_param_num:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: JOB_PARAM_NUM
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  job_param:
+    caseSensitive: false
+    dataType: -2
+    generated: false
+    name: JOB_PARAM
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  job_action:
+    caseSensitive: false
+    dataType: 2005
+    generated: false
+    name: JOB_ACTION
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  begin_t:
+    caseSensitive: false
+    dataType: 93
+    generated: false
+    name: BEGIN_T
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  end_t:
+    caseSensitive: false
+    dataType: 93
+    generated: false
+    name: END_T
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  repet_interval:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: REPET_INTERVAL
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  trig_events:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: TRIG_EVENTS
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  last_run_t:
+    caseSensitive: false
+    dataType: 93
+    generated: false
+    name: LAST_RUN_T
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  state:
+    caseSensitive: false
+    dataType: 1
+    generated: false
+    name: STATE
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  enable:
+    caseSensitive: false
+    dataType: 16
+    generated: false
+    name: ENABLE
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  auto_drop:
+    caseSensitive: false
+    dataType: 16
+    generated: false
+    name: AUTO_DROP
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  is_sys:
+    caseSensitive: false
+    dataType: 16
+    generated: false
+    name: IS_SYS
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  comments:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: COMMENTS
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  reserved1:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: RESERVED1
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  reserved2:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: RESERVED2
     nullable: false
     primaryKey: false
     unsigned: false

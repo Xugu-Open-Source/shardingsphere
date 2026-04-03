@@ -63,3 +63,30 @@ columns:
     primaryKey: false
     unsigned: false
     visible: true
+  ENABLE:
+    caseSensitive: false
+    dataType: 16
+    generated: false
+    name: ENABLE
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  path:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: PATH
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  curr_item:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: CURR_ITEM
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true

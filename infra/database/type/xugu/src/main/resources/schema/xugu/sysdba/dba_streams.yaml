@@ -63,3 +63,12 @@ columns:
     primaryKey: false
     unsigned: false
     visible: true
+  reserved1:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: RESERVED1
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true

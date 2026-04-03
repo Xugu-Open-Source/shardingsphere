@@ -63,3 +63,12 @@ columns:
     primaryKey: false
     unsigned: false
     visible: true
+  option:
+    caseSensitive: false
+    dataType: 16
+    generated: false
+    name: OPTION
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true

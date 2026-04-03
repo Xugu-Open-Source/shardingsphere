@@ -63,3 +63,39 @@ columns:
     primaryKey: false
     unsigned: false
     visible: true
+  owner_id2:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: OWNER_ID2
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  obj_id2:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: OBJ_ID2
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  reserved1:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: RESERVED1
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  RESERVED2:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: RESERVED2
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true

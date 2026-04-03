@@ -63,3 +63,345 @@ columns:
     primaryKey: false
     unsigned: false
     visible: true
+  curr_user_name:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: CURR_USER_NAME
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  schema_id:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: SCHEMA_ID
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  schema:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: SCHEMA
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  db_id:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: DB_ID
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  db_name:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: DB_NAME
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  ip:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: IP
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  start_t:
+    caseSensitive: false
+    dataType: 93
+    generated: false
+    name: START_T
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  visit_t:
+    caseSensitive: false
+    dataType: 93
+    generated: false
+    name: VISIT_T
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  status:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: STATUS
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  curr_tid:
+    caseSensitive: false
+    dataType: -5
+    generated: false
+    name: CURR_TID
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  curr_cid:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: CURR_CID
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  auto_commit:
+    caseSensitive: false
+    dataType: 16
+    generated: false
+    name: AUTO_COMMIT
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  iso_level:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: ISO_LEVEL
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  trans_start_t:
+    caseSensitive: false
+    dataType: 93
+    generated: false
+    name: TRANS_START_T
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  cmd_start_t:
+    caseSensitive: false
+    dataType: 93
+    generated: false
+    name: CMD_START_T
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  cursor_num:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: CURSOR_NUM
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  mem_size:
+    caseSensitive: false
+    dataType: -5
+    generated: false
+    name: MEM_SIZE
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  char_set:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: CHAR_SET
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  time_zone:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: TIME_ZONE
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  TIME_FORMAT:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: TIME_FORMAT
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  lock_timeout:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: LOCK_TIMEOUT
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  strict_commit:
+    caseSensitive: false
+    dataType: 16
+    generated: false
+    name: STRICT_COMMIT
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  RESULT:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: RESULT
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  language:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: LANGUAGE
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  return_rowid:
+    caseSensitive: false
+    dataType: 16
+    generated: false
+    name: RETURN_ROWID
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  return_schema:
+    caseSensitive: false
+    dataType: 16
+    generated: false
+    name: RETURN_SCHEMA
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  return_cursor_id:
+    caseSensitive: false
+    dataType: 16
+    generated: false
+    name: RETURN_CURSOR_ID
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  lob_ret:
+    caseSensitive: false
+    dataType: 16
+    generated: false
+    name: LOB_RET
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  empty_str_as_null:
+    caseSensitive: false
+    dataType: 16
+    generated: false
+    name: EMPTY_STR_AS_NULL
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  optimizer_mode:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: OPTIMIZER_MODE
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  compatible_mode:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: COMPATIBLE_MODE
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  filter_policy:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: FILTER_POLICY
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  trans_rdly:
+    caseSensitive: false
+    dataType: 16
+    generated: false
+    name: TRANS_RDLY
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  disable_binlog:
+    caseSensitive: false
+    dataType: 16
+    generated: false
+    name: DISABLE_BINLOG
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  identity_mode:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: IDENTITY_MODE
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  app_name:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: APP_NAME
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  keyword_filter:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: KEYWORD_FILTER
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  sql:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: SQL
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true

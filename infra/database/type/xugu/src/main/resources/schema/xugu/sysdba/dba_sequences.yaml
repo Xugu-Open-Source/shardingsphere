@@ -64,3 +64,120 @@ columns:
     primaryKey: false
     unsigned: false
     visible: true
+  is_cycle:
+    caseSensitive: false
+    dataType: 16
+    generated: false
+    name: IS_CYCLE
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  is_order:
+    caseSensitive: false
+    dataType: 16
+    generated: false
+    name: IS_ORDER
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  cache_val:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: CACHE_VAL
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  curr_val:
+    caseSensitive: false
+    dataType: -5
+    generated: false
+    name: CURR_VAL
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  max_val:
+    caseSensitive: false
+    dataType: -5
+    generated: false
+    name: MAX_VAL
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  min_val:
+    caseSensitive: false
+    dataType: -5
+    generated: false
+    name: MIN_VAL
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  step_val:
+    caseSensitive: false
+    dataType: -5
+    generated: false
+    name: STEP_VAL
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  create_time:
+    caseSensitive: false
+    dataType: 93
+    generated: false
+    name: CREATE_TIME
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  is_sys:
+    caseSensitive: false
+    dataType: 16
+    generated: false
+    name: IS_SYS
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  valid:
+    caseSensitive: false
+    dataType: 16
+    generated: false
+    name: VALID
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  comments:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: COMMENTS
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  reserved1:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: RESERVED1
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  reserved2:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: RESERVED2
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true

@@ -63,3 +63,30 @@ columns:
     primaryKey: false
     unsigned: false
     visible: true
+  step_size:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: STEP_SIZE
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  curr_size:
+    caseSensitive: false
+    dataType: -5
+    generated: false
+    name: CURR_SIZE
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  reserved1:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: RESERVED1
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true

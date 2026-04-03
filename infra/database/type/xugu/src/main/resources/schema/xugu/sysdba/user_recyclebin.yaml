@@ -63,3 +63,75 @@ columns:
     primaryKey: false
     unsigned: false
     visible: true
+  object_type_name:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: OBJECT_TYPE_NAME
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  schema_id:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: SCHEMA_ID
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  object_name:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: OBJECT_NAME
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  recycle_name:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: RECYCLE_NAME
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  droped_time:
+    caseSensitive: false
+    dataType: 93
+    generated: false
+    name: DROPED_TIME
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  can_undrop:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: CAN_UNDROP
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  can_purge:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: CAN_PURGE
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  reserved1:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: RESERVED1
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true

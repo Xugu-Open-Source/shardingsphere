@@ -63,3 +63,57 @@ columns:
     primaryKey: false
     unsigned: false
     visible: true
+  scale:
+    caseSensitive: false
+    dataType: 4
+    generated: false
+    name: SCALE
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  varying:
+    caseSensitive: false
+    dataType: 16
+    generated: false
+    name: VARYING
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  comments:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: COMMENTS
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  reserved1:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: RESERVED1
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  reserved2:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: RESERVED2
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  reserved3:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: RESERVED3
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true

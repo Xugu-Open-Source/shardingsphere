@@ -63,3 +63,93 @@ columns:
     primaryKey: false
     unsigned: false
     visible: true
+  language:
+    caseSensitive: false
+    dataType: 1
+    generated: false
+    name: LANGUAGE
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  spec:
+    caseSensitive: false
+    dataType: 2005
+    generated: false
+    name: SPEC
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  body:
+    caseSensitive: false
+    dataType: 2005
+    generated: false
+    name: BODY
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  valid:
+    caseSensitive: false
+    dataType: 16
+    generated: false
+    name: VALID
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  all_ok:
+    caseSensitive: false
+    dataType: 16
+    generated: false
+    name: ALL_OK
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  comments:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: COMMENTS
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  is_sys:
+    caseSensitive: false
+    dataType: 16
+    generated: false
+    name: IS_SYS
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  reserved1:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: RESERVED1
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  reserved2:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: RESERVED2
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
+  reserved3:
+    caseSensitive: false
+    dataType: 12
+    generated: false
+    name: RESERVED3
+    nullable: false
+    primaryKey: false
+    unsigned: false
+    visible: true
