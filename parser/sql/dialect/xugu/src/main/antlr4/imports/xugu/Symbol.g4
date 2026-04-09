@@ -60,3 +60,4 @@ SEMI_:               ';';
 ASSIGNMENT_:         ':=';
 JSON_SEPARATOR:      '->';
 JSON_UNQUOTED_SEPARATOR:      '->>';
+RANGE_OPERATOR_:     '..';

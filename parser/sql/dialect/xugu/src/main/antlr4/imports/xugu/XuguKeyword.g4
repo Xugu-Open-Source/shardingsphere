@@ -19,6 +19,14 @@ lexer grammar XuguKeyword;
 
 import Alphabet;
 
+ABORT
+    : A B O R T
+    ;
+
+ABOVE
+    : A B O V E
+    ;
+
 ACCESS
     : A C C E S S
     ;
@@ -115,6 +123,14 @@ ATTRIBUTE
     : A T T R I B U T E
     ;
 
+AUDIT
+    : A U D I T
+    ;
+
+AUTHID
+    : A U T H I D
+    ;
+
 AUTOEXTEND_SIZE
     : A U T O E X T E N D UL_ S I Z E
     ;
@@ -175,6 +191,10 @@ BINARY
     : B I N A R Y
     ;
 
+BINARY_INTEGER
+    : B I N A R Y UL_ I N T E G E R
+    ;
+
 BINLOG
     : B I N L O G
     ;
@@ -193,6 +213,10 @@ BLOB
 
 BLOCK
     : B L O C K
+    ;
+
+BODY
+    : B O D Y
     ;
 
 BOOL
@@ -295,6 +319,10 @@ CHECK
     : C H E C K
     ;
 
+CHECKPOINT
+    : C H E C K P O I N T
+    ;
+
 CHECKSUM
     : C H E C K S U M
     ;
@@ -337,6 +365,10 @@ COLLATE
 
 COLLATION
     : C O L L A T I O N
+    ;
+
+COLLECT
+    : C O L L E C T
     ;
 
 COLUMN
@@ -407,6 +439,10 @@ CONSISTENT
     : C O N S I S T E N T
     ;
 
+CONSTANT
+    : C O N S T A N T
+    ;
+
 CONSTRAINT
     : C O N S T R A I N T
     ;
@@ -425,6 +461,10 @@ CONSTRAINT_NAME
 
 CONSTRAINT_SCHEMA
     : C O N S T R A I N T UL_ S C H E M A
+    ;
+
+CONSTRUCTOR
+    : C O N S T R U C T O R
     ;
 
 CONTAINS
@@ -627,6 +667,10 @@ DISABLE
     : D I S A B L E
     ;
 
+DISASSEMBLE
+    : D I S A S S E M B L E
+    ;
+
 DISCARD
     : D I S C A R D
     ;
@@ -687,6 +731,10 @@ ELSEIF
     : E L S E I F
     ;
 
+ELSIF
+    : E L S I F
+    ;
+
 EMPTY
     : E M P T Y
     ;
@@ -709,6 +757,22 @@ ENCRYPTION
 
 END
     : E N D
+    ;
+
+ENDCASE
+    : E N D C A S E
+    ;
+
+ENDFOR
+    : E N D F O R
+    ;
+
+ENDIF
+    : E N D I F
+    ;
+
+ENDLOOP
+    : E N D L O O P
     ;
 
 ENDS
@@ -767,12 +831,24 @@ EXCEPT
     : E X C E P T
     ;
 
+EXCEPTION
+    : E X C E P T I O N
+    ;
+
+EXCEPTION_INIT
+    : E X C E P T I O N UL_ I N I T
+    ;
+
 EXCHANGE
     : E X C H A N G E
     ;
 
 EXCLUDE
     : E X C L U D E
+    ;
+
+EXEC
+    : E X E C
     ;
 
 EXECUTE
@@ -851,6 +927,10 @@ FILTER
     : F I L T E R
     ;
 
+FINALLY
+    : F I N A L L Y
+    ;
+
 FINISH
     : F I N I S H
     ;
@@ -897,6 +977,10 @@ FOLLOWS
 
 FOR
     : F O R
+    ;
+
+FORALL
+    : F O R A L L
     ;
 
 FORCE
@@ -967,6 +1051,10 @@ GLOBAL
     : G L O B A L
     ;
 
+GOTO
+    : G O T O
+    ;
+
 GRANT
     : G R A N T
     ;
@@ -1005,6 +1093,10 @@ GTID_ONLY
 
 GENERATE
     : G E N E R A T E
+    ;
+
+GUID
+    : G U I D
     ;
 
 HANDLER
@@ -1087,6 +1179,10 @@ IGNORE_SERVER_IDS
     : I G N O R E UL_ S E R V E R UL_ I D S
     ;
 
+IMMEDIATE
+    : I M M E D I A T E
+    ;
+
 IMPORT
     : I M P O R T
     ;
@@ -1109,6 +1205,10 @@ INDEXES
 
 INDEXTYPE
     : I N D E X T Y P E
+    ;
+
+INDICES
+    : I N D I C E S
     ;
 
 INITIAL
@@ -1149,6 +1249,10 @@ INSTALL
 
 INSTANCE
     : I N S T A N C E
+    ;
+
+INSTEAD
+    :I N S T E A D
     ;
 
 INT
@@ -2063,6 +2167,18 @@ PHASE
     : P H A S E
     ;
 
+PIPELINED
+    : P I P E L I N E D
+    ;
+
+PLSQL
+    : P L S Q L
+    ;
+
+PLS_INTEGER
+    : P L S UL_ I N T E G E R
+    ;
+
 PLUGIN
     : P L U G I N
     ;
@@ -2085,6 +2201,10 @@ POLYGON
 
 PORT
     : P O R T
+    ;
+
+PRAGMA
+    : P R A G M A
     ;
 
 PRECEDES
@@ -2167,6 +2287,10 @@ QUICK
     : Q U I C K
     ;
 
+RAISE
+    : R A I S E
+    ;
+
 RANDOM
     : R A N D O M
     ;
@@ -2207,6 +2331,10 @@ RECOMPILE
     : R E C O M P I L E
     ;
 
+RECORD
+    : R E C O R D
+    ;
+
 RECORDS
     : R E C O R D S
     ;
@@ -2231,12 +2359,20 @@ REDUNDANT
     : R E D U N D A N T
     ;
 
+REF
+    : R E F
+    ;
+
 REFERENCE
     : R E F E R E N C E
     ;
 
 REFERENCES
     : R E F E R E N C E S
+    ;
+
+REFERENCING
+    :R E F E R E N C I N G
     ;
 
 REGEXP
@@ -2387,6 +2523,10 @@ RESTRICT
     : R E S T R I C T
     ;
 
+RESULT
+    : R E S U L T
+    ;
+
 RESUME
     : R E S U M E
     ;
@@ -2461,6 +2601,10 @@ ROW
 
 ROWS
     : R O W S
+    ;
+
+ROWTYPE
+    : R O W T Y P E
     ;
 
 ROW_COUNT
@@ -2539,6 +2683,10 @@ SELECT
     : S E L E C T
     ;
 
+SELF
+    : S E L F
+    ;
+
 SENSITIVE
     : S E N S I T I V E
     ;
@@ -2601,6 +2749,10 @@ SIGNED_INTEGER
 
 SIMPLE
     : S I M P L E
+    ;
+
+SINGLE_C
+    : C
     ;
 
 SKIP_SYMBOL
@@ -2759,6 +2911,14 @@ STARTS
     : S T A R T S
     ;
 
+STATEMENT
+    : S T A T E M E N T
+    ;
+
+STATIC
+    :S T A T I C
+    ;
+
 STATS_AUTO_RECALC
     : S T A T S UL_ A U T O UL_ R E C A L C
     ;
@@ -2815,6 +2975,10 @@ SUBPARTITIONS
     : S U B P A R T I T I O N S
     ;
 
+SUBTYPE
+    : S U B T Y P E
+    ;
+
 SUPER
     : S U P E R
     ;
@@ -2833,6 +2997,10 @@ SWITCHES
 
 SYSTEM
     : S Y S T E M
+    ;
+
+SYS_REFCURSOR
+    : S Y S UL_ R E F C U R S O R
     ;
 
 SOURCE_BIND
@@ -2995,6 +3163,10 @@ THREAD_PRIORITY
     : T H R E A D UL_ P R I O R I T Y
     ;
 
+THROW
+    : T H R O W
+    ;
+
 TIES
     : T I E S
     ;
@@ -3085,6 +3257,10 @@ UNCOMMITTED
 
 UNDEFINED
     : U N D E F I N E D
+    ;
+
+UNDER
+    : U N D E R
     ;
 
 UNDO
@@ -3203,6 +3379,10 @@ VARBINARY
     : V A R B I N A R Y
     ;
 
+VARBIT
+    : V A R B I T
+    ;
+
 VARCHAR
     : V A R C H A R
     ;
@@ -3217,6 +3397,10 @@ VARCHARACTER
 
 VARIABLES
     : V A R I A B L E S
+    ;
+
+VARRAY
+    : V A R R A Y
     ;
 
 VARYING

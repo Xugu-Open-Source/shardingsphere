@@ -130,20 +130,26 @@ identifier
     ;
 
 identifierKeywordsUnambiguous
-    : ACTION
+    : ABORT
+    | ACTION
+    | ACCESS
+    | ACCOUNT
     | ACCOUNT
     | ACTIVE
 //    | ADDDATE
+    | ADD
     | ADMIN
     | AFTER
     | AGAINST
     | AGGREGATE
     | ALGORITHM
     | ALWAYS
+    | ANALYZE
     | ANY
     | ARRAY
     | AT
     | ATTRIBUTE
+    | AUTHID
     | AUTOEXTEND_SIZE
     | AUTO_INCREMENT
     | AUTHENTICATION
@@ -153,27 +159,37 @@ identifierKeywordsUnambiguous
     | BACKUP
     | BEFORE
     | BERNOULLI
+    | BINARY
     | BINLOG
     | BIT
     | BLOCK
+    | BODY
     | BOOLEAN
     | BOOL
+    | BOTH
     | BTREE
     | BUCKETS
     | BULK
+    | BY
+    | CALL
+    | CASCADE
     | CASCADED
     | CATALOG_NAME
     | CHAIN
     | CHALLENGE_RESPONSE
     | CHANGED
     | CHANNEL
+    | CHECKPOINT
     | CIPHER
     | CLASS_ORIGIN
     | CLIENT
     | CLOSE
     | COALESCE
     | CODE
+    | COLLATE
     | COLLATION
+    | COLLECT
+    | COLUMN
     | COLUMNS
     | COLUMN_FORMAT
     | COLUMN_NAME
@@ -186,6 +202,7 @@ identifierKeywordsUnambiguous
     | CONCURRENT
     | CONNECTION
     | CONSISTENT
+    | CONSTRAINTS
     | CONSTRAINT_CATALOG
     | CONSTRAINT_NAME
     | CONSTRAINT_SCHEMA
@@ -194,6 +211,7 @@ identifierKeywordsUnambiguous
     | CREATE
     | CURRENT
     | CURSOR_NAME
+    | DATABASE
     | DATAFILE
     | DATA
     | DATETIME
@@ -205,17 +223,24 @@ identifierKeywordsUnambiguous
     | DEFINER
     | DEFINITION
     | DELAY_KEY_WRITE
+    | DELIMITED
     | DESCRIPTION
+    | DETERMINISTIC
     | DIAGNOSTICS
+    | DIR
     | DIRECTORY
     | DISABLE
+    | DISASSEMBLE
     | DISCARD
     | DISK
     | DUMPFILE
     | DUPLICATE
     | DROP
     | DYNAMIC
+    | EACH
+    | EMPTY
     | ENABLE
+    | ENCRYPT
     | ENCRYPTION
     | ENDS
     | ENFORCED
@@ -230,55 +255,78 @@ identifierKeywordsUnambiguous
     | EVERY
     | EXCHANGE
     | EXCLUDE
+    | EXCLUSIVE
+    | EXEC
     | EXPANSION
     | EXPIRE
     | EXPORT
     | EXTENDED
     | EXTENT_SIZE
+    | EXTERNAL
     | FACTOR
     | FAILED_LOGIN_ATTEMPTS
     | FAST
     | FAULTS
+    | FIELDS
     | FILE_BLOCK_SIZE
     | FILTER
     | FINISH
     | FIRST
     | FIXED
+    | FLASHBACK
     | FOLLOWING
+    | FORALL
+    | FORCE
     | FORMAT
     | FOUND
     | FULL
     | GENERAL
+    | GENERATED
     | GEOMETRYCOLLECTION
     | GEOMETRY
+    | GET
     | GET_FORMAT
     | GET_MASTER_PUBLIC_KEY
+    | GLOBAL
+    | GOTO
     | GRANTS
     | GROUP_REPLICATION
     | GROUPS
     | GTIDS
     | HASH
+    | HEAP
     | HISTOGRAM
     | HISTORY
     | HOSTS
     | HOST
+    | HOTSPOT
     | HOUR
     | IDENTIFIED
+    | IDENTITY
+    | IGNORE
     | IGNORE_SERVER_IDS
     | INACTIVE
     | INDEXES
+    | INDEXTYPE
+    | INDICES
     | INITIAL
     | INITIAL_SIZE
+    | INOUT
+    | INSENSITIVE
+    | INSERT
     | INSERT_METHOD
     | INSTANCE
+    | INSTEAD
     | INVISIBLE
     | INVOKER
     | IO
     | IPC
     | ISOLATION
     | ISSUER
+    | JOB
     | JSON
     | JSON_VALUE
+    | KEEP
     | KEY
     | KEYS
     | KEY_BLOCK_SIZE
@@ -290,6 +338,8 @@ identifierKeywordsUnambiguous
     | LEVEL
     | LINESTRING
     | LIST
+    | LOAD
+    | LOCATION
     | LOCKED
     | LOCKS
     | LOGFILE
@@ -359,28 +409,39 @@ identifierKeywordsUnambiguous
     | NEVER
     | NEW
     | NEXT
+    | NOCOMPRESS
+    | NODE
     | NODEGROUP
+    | NOFORCE
     | NOWAIT
     | NO_WAIT
     | NULLS
     | NUMBER
     | NVARCHAR
+    | OBJECT
     | OF
     | OFF
+    | OFFLINE
     | OFFSET
     | OJ
     | OLD
     | ONE
+    | ONLINE
     | ONLY
     | OPEN
+    | OPTION
     | OPTIONAL
     | OPTIONS
     | ORDINALITY
     | ORGANIZATION
     | OTHERS
+    | OUTER
     | OWNER
+    | PACKAGE
     | PACK_KEYS
     | PAGE
+    | PARALLEL
+    | PARAMETERS
     | PARSER
     | PARTIAL
     | PARSE_TREE
@@ -389,7 +450,10 @@ identifierKeywordsUnambiguous
     | PASSWORD
     | PASSWORD_LOCK_TIME
     | PATH
+    | PCTFREE
+    | PCTUSED
     | PHASE
+    | PIPELINED
     | PLUGINS
     | PLUGIN_DIR
     | PLUGIN
@@ -397,6 +461,7 @@ identifierKeywordsUnambiguous
     | POLYGON
     | PORT
     | PRECEDING
+    | PRECISION
     | PRESERVE
     | PREV
     | PRIVILEGES
@@ -410,20 +475,31 @@ identifierKeywordsUnambiguous
     | QUICK
     | RANDOM
     | RANK
+    | READ
+    | READS
     | READ_ONLY
     | REBUILD
+    | RECOMPILE
+    | RECORD
+    | RECORDS
     | RECOVER
     | REDO_BUFFER_SIZE
     | REDUNDANT
+    | REF
     | REFERENCE
+    | REFERENCING
+    | REINDEX
     | RELAY
     | RELAYLOG
     | RELAY_LOG_FILE
     | RELAY_LOG_POS
     | RELAY_THREAD
+    | RELEASE
     | REMOVE
+    | REOPEN
     | REORGANIZE
     | REPEATABLE
+    | REPLACE
     | REPLICATE_DO_DB
     | REPLICATE_DO_TABLE
     | REPLICATE_IGNORE_DB
@@ -436,6 +512,7 @@ identifierKeywordsUnambiguous
     | USER_RESOURCES
     | RESPECT
     | RESTORE
+    | RESULT
     | RESUME
     | RETAIN
     | REGISTRATION
@@ -444,15 +521,19 @@ identifierKeywordsUnambiguous
     | RETURNS
     | REUSE
     | REVERSE
+    | REVOKE
     | ROLE
     | ROLLUP
     | ROTATE
     | ROUTINE
+    | ROWS
+    | ROWTYPE
     | ROW_COUNT
     | ROW_FORMAT
     | RTREE
     | S3
     | SCHEDULE
+    | SCHEMA
     | SCHEMA_NAME
     | SECONDARY_ENGINE
     | SECONDARY_ENGINE_ATTRIBUTE
@@ -461,10 +542,12 @@ identifierKeywordsUnambiguous
     | SECONDARY_UNLOAD
     | SECOND
     | SECURITY
+    | SEQUENCE
     | SERIALIZABLE
     | SERIAL
     | SERVER
     | SHARE
+    | SHOW
     | SIMPLE
     | SKIP_SYMBOL
     | SLOW
@@ -473,6 +556,7 @@ identifierKeywordsUnambiguous
     | SONAME
     | SOUNDS
     | SOURCE
+    | SPATIAL
     | SQL_AFTER_GTIDS
     | SQL_AFTER_MTS_GAPS
     | SQL_BEFORE_GTIDS
@@ -482,6 +566,7 @@ identifierKeywordsUnambiguous
     | SRID
     | STACKED
     | STARTS
+    | STATEMENT
     | STATS_AUTO_RECALC
     | STATS_PERSISTENT
     | STATS_SAMPLE_PAGES
@@ -494,6 +579,7 @@ identifierKeywordsUnambiguous
     | SUBJECT
     | SUBPARTITIONS
     | SUBPARTITION
+    | SUBTYPE
     | SUSPEND
     | SWAPS
     | SWITCHES
@@ -503,11 +589,14 @@ identifierKeywordsUnambiguous
     | TABLESPACE
     | TABLE_CHECKSUM
     | TABLE_NAME
+    | TEMP
     | TEMPORARY
     | TEMPTABLE
+    | TERMINATED
     | TEXT
     | THAN
     | THREAD_PRIORITY
+    | THROW
     | TIES
     | TIMESTAMP_ADD
     | TIMESTAMP_DIFF
@@ -521,9 +610,11 @@ identifierKeywordsUnambiguous
     | UNBOUNDED
     | UNCOMMITTED
     | UNDEFINED
+    | UNDO
     | UNDOFILE
     | UNDO_BUFFER_SIZE
     | UNKNOWN
+    | UNLOCK
     | UNTIL
     | UPGRADE
     | URL
@@ -532,6 +623,7 @@ identifierKeywordsUnambiguous
     | VALIDATION
     | VALUE
     | VARIABLES
+    | VARRAY
     | VCPU
     | VIEW
     | VISIBLE
@@ -542,6 +634,7 @@ identifierKeywordsUnambiguous
     | WITHOUT
     | WORK
     | WRAPPER
+    | WRITE
     | X509
     | XID
     | XML
@@ -559,37 +652,123 @@ identifierKeywordsAmbiguous1RolesAndLabels
     ;
 
 identifierKeywordsAmbiguous2Labels
-    : ASCII
+    : ALL
+    | ALTER
+    | AND
+    | AS
+    | ASC
+    | ASCII
     | BEGIN
+    | BETWEEN
     | BYTE
     | CACHE
+    | CASE
+    | CHAR
+    | CHARACTER
     | CHARSET
+    | CHECK
     | CHECKSUM
     | CLONE
     | COMMENT
     | COMMIT
+    | COMPRESS
+    | CONSTANT
+    | CONSTRAINT
     | CONTAINS
+    | CROSS
+    | CUBE
+    | DBA_RECYCLEBIN
     | DEALLOCATE
+    | DEC
+    | DECIMAL
+    | DECLARE
+    | DELETE
+    | DESC
+    | DISTINCT
     | DO
+    | DOUBLE
+    | ELSE
     | END
+    | EXCEPT
+    | EXISTS
+    | EXPLAIN
+    | FETCH
+    | FINALLY
+    | FLOAT
     | FLUSH
     | FOLLOWS
+    | FOREIGN
+    | FROM
+    | FUNCTION
+    | GRANT
+    | GROUP
+    | GROUPING
     | HANDLER
+    | HAVING
     | HELP
+    | IMMEDIATE
     | IMPORT
+    | IN
+    | INDEX
+    | INNER
     | INSTALL
+    | INTERSECT
+    | INTO
+    | IS
+    | JOIN
     | LANGUAGE
+    | LEFT
+    | LIKE
+    | LIMIT
+    | LOCK
     | NO
+    | NOT
+    | NOTNULL
+    | NULL
+    | NUMERIC
+    | NVARCHAR2
+    | ON
+    | OR
+    | ORDER
+    | OUT
+    | PRAGMA
     | PRECEDES
     | PREPARE
+    | PROCEDURE
+    | RECYCLEBIN
+    | REFERENCES
+    | RENAME
     | REPAIR
     | RESET
+    | RIGHT
     | ROLLBACK
     | SAVEPOINT
+    | SELECT
+    | SELF
+    | SEPARATOR
+    | SET
     | SIGNED
     | SLAVE
+    | SQL
     | START
+    | STATIC
     | STOP
+    | THEN
+    | TIMESTAMPDIFF
+    | TO
+    | TRAILING
+    | TRIGGER
+    | TRUE
+    | UNION
+    | UNIQUE
+    | UPDATE
+    | USING
+    | VALUES
+    | VARBIT
+    | VARCHAR
+    | VARCHAR2
+    | WHEN
+    | WHERE
     | TRUNCATE
     | UNICODE
     | UNINSTALL
@@ -1297,11 +1476,14 @@ dataType
     | (dataTypeName = REAL | dataTypeName = DOUBLE PRECISION?) precision? fieldOptions?
     | dataTypeName = (FLOAT | DECIMAL | DEC | NUMERIC | NUMBER | FIXED) (fieldLength | precision)? fieldOptions?
     | dataTypeName = BIT fieldLength?
+    | dataTypeName = BIT VARYING fieldLength?
+    | dataTypeName = VARBIT fieldLength?
     | dataTypeName = (BOOL | BOOLEAN)
     | dataTypeName = CHAR fieldLength? charsetWithOptBinary?
     | (dataTypeName = NCHAR | dataTypeName = NATIONAL_CHAR) fieldLength? BINARY?
     | dataTypeName = (SIGNED | SIGNED_INT | SIGNED_INTEGER)
     | dataTypeName = BINARY fieldLength?
+    | dataTypeName = GUID
     | (dataTypeName = CHAR_VARYING | dataTypeName = CHARACTER_VARYING | dataTypeName = VARCHAR | dataTypeName = VARCHAR2) fieldLength? charsetWithOptBinary?
     | (dataTypeName = NATIONAL VARCHAR | dataTypeName = NVARCHAR | dataTypeName = NVARCHAR2| dataTypeName = NCHAR VARCHAR | dataTypeName = NATIONAL_CHAR_VARYING | dataTypeName = NCHAR VARYING) fieldLength? BINARY?
     | dataTypeName = VARBINARY fieldLength?
@@ -1325,6 +1507,7 @@ dataType
     | dataTypeName = ENUM stringList charsetWithOptBinary?
     | dataTypeName = SET stringList charsetWithOptBinary?
     | dataTypeName = (SERIAL | JSON | GEOMETRY | GEOMCOLLECTION | GEOMETRYCOLLECTION | POINT | MULTIPOINT | LINESTRING | MULTILINESTRING | POLYGON | MULTIPOLYGON)
+    | dataTypeName = IDENTIFIER_
     ;
 
 stringList
