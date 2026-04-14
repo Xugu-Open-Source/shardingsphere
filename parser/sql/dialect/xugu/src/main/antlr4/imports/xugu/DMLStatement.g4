@@ -28,7 +28,7 @@ insertSpecification
     ;
 
 insertValuesClause
-    : (LP_ fields? RP_ )? (VALUES | VALUE) (assignmentValues (COMMA_ assignmentValues)* | rowConstructorList) valueReference?
+    : (LP_ fields? RP_ )? (VALUES | VALUE) (assignmentValues (COMMA_? assignmentValues)* | rowConstructorList) valueReference?
     ;
 
 fields
@@ -163,7 +163,7 @@ querySpecification
     ;
 
 call
-    : CALL (owner DOT_)? identifier (LP_ (expr (COMMA_ expr)*)? RP_)?
+    : (CALL | EXECUTE | EXEC)? (owner DOT_)? (identifier | functionName) (LP_ (expr (COMMA_ expr)*)? RP_)?
     ;
 
 doStatement
@@ -357,7 +357,7 @@ limitClause
     ;
 
 limitRowCount
-    : numberLiterals | parameterMarker
+    : numberLiterals | parameterMarker | ALL
     ;
 
 limitOffset
@@ -385,7 +385,7 @@ selectFieldsInto
     ;
 
 selectIntoExpression
-    : INTO variable (COMMA_ variable )* | INTO DUMPFILE string_
+    : (BULK COLLECT)? INTO expr (COMMA_ expr )* | INTO DUMPFILE string_
     | (INTO OUTFILE string_ (CHARACTER SET charsetName)?(COLUMNS selectFieldsInto+)? (LINES selectLinesInto+)?)
     ;
 

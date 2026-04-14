@@ -836,7 +836,7 @@ internalVariableName
     ;
 
 setExprOrDefault
-    : expr | DEFAULT | ALL | ON | BINARY | ROW | SYSTEM
+    : expr | DEFAULT | ALL | ON | OFF | BINARY | ROW | SYSTEM
     ;
 
 transactionCharacteristics
@@ -958,6 +958,10 @@ sequenceName
 
 viewName
     : (owner DOT_)? identifier
+    ;
+
+typeName
+    : (owner DOT_)? name
     ;
 
 owner
@@ -1139,6 +1143,7 @@ bitExpr
     | bitExpr CARET_ bitExpr
     | bitExpr PLUS_ intervalExpression
     | bitExpr MINUS_ intervalExpression
+    | bitExpr DOT_ bitExpr
     | simpleExpr
     ;
 
@@ -1406,7 +1411,7 @@ shorthandRegularFunction
     ;
 
 completeRegularFunction
-    : regularFunctionName (LP_ (expr (COMMA_ expr)* | ASTERISK_)? RP_)
+    : regularFunctionName ((LP_ (expr (COMMA_ expr)* | ASTERISK_)? RP_) | (LP_ expr RP_)+)
     ;
 
 regularFunctionName
@@ -1507,6 +1512,7 @@ dataType
     | dataTypeName = ENUM stringList charsetWithOptBinary?
     | dataTypeName = SET stringList charsetWithOptBinary?
     | dataTypeName = (SERIAL | JSON | GEOMETRY | GEOMCOLLECTION | GEOMETRYCOLLECTION | POINT | MULTIPOINT | LINESTRING | MULTILINESTRING | POLYGON | MULTIPOLYGON)
+    | rowtype
     | dataTypeName = IDENTIFIER_
     ;
 
@@ -1518,6 +1524,12 @@ textString
     : string_
     | HEX_DIGIT_
     | BIT_NUM_
+    ;
+
+rowtype
+    : (tableName DOT_)? columnName MOD_ TYPE
+    | tableName MOD_ ROWTYPE
+    | tableName MOD_ ROW TYPE
     ;
 
 textStringHash

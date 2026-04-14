@@ -69,7 +69,14 @@ public final class XuguDMLStatementVisitor extends XuguStatementVisitor implemen
     public ASTNode visitCall(final CallContext ctx) {
         List<ExpressionSegment> params = new ArrayList<>(ctx.expr().size());
         ctx.expr().forEach(each -> params.add((ExpressionSegment) visit(each)));
-        String procedureName = ctx.identifier().getText();
+        String procedureName;
+        if (ctx.functionName() != null) {
+            FunctionSegment functionSegment = (FunctionSegment) visit(ctx.functionName());
+            procedureName = functionSegment.getText();
+        } else {
+            procedureName = ctx.identifier().getText();
+        }
+
         if (null != ctx.owner()) {
             procedureName = ctx.owner().getText() + "." + procedureName;
         }

@@ -37,8 +37,11 @@ execute
     | reindex
     | createProcedure
     | dropProcedure
+    | disassembleProcedure
     | createFunction
     | dropFunction
+    | dropPackage
+    | alterPackage
     | createDatabase
     | dropDatabase
     | createEvent
@@ -108,6 +111,11 @@ execute
     | setVariable
     | setCharacter
     | call
+    | plsqlBlock
+    | cursor
+    | open
+    | fetch
+    | close
     | changeMasterTo
     | changeReplicationFilter
     | checkTable
@@ -132,6 +140,9 @@ execute
     | dropTablespace
     | delimiter
     | startReplica
+    | createType
+    | alterType
+    | dropType
     | comment
     // TODO consider refactor following sytax to SEMI_? EOF
     ) (SEMI_ EOF? | EOF)

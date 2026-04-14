@@ -51,6 +51,7 @@ import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.Constrai
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.ConvertFunctionContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.CteClauseContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.CurrentUserFunctionContext;
+import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.CursorNameContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.DataTypeContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.DatabaseNameContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.DeleteContext;
@@ -89,6 +90,7 @@ import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.LockClau
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.MatchExpressionContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.MultipleTablesClauseContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.NaturalJoinTypeContext;
+import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.NewIndexNameContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.NullValueLiteralsContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.NumberLiteralsContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.OnDuplicateKeyClauseContext;
@@ -112,6 +114,7 @@ import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.ReplaceC
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.ReplaceSelectClauseContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.ReplaceValuesClauseContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.RowConstructorListContext;
+import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.SchemaNameContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.SelectContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.SelectSpecificationContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.SelectWithIntoContext;
@@ -139,6 +142,7 @@ import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.Temporal
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.TimeStampDiffFunctionContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.TrimFunctionContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.TypeDatetimePrecisionContext;
+import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.TypeNameContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.UdfFunctionContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.UpdateContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.UserVariableContext;
@@ -157,9 +161,11 @@ import org.apache.shardingsphere.sql.parser.statement.core.enums.ParameterMarker
 import org.apache.shardingsphere.sql.parser.statement.core.enums.SubqueryType;
 import org.apache.shardingsphere.sql.parser.statement.core.segment.dal.VariableSegment;
 import org.apache.shardingsphere.sql.parser.statement.core.segment.ddl.constraint.ConstraintSegment;
+import org.apache.shardingsphere.sql.parser.statement.core.segment.ddl.cursor.CursorNameSegment;
 import org.apache.shardingsphere.sql.parser.statement.core.segment.ddl.engine.EngineSegment;
 import org.apache.shardingsphere.sql.parser.statement.core.segment.ddl.index.IndexNameSegment;
 import org.apache.shardingsphere.sql.parser.statement.core.segment.ddl.index.IndexSegment;
+import org.apache.shardingsphere.sql.parser.statement.core.segment.ddl.type.TypeSegment;
 import org.apache.shardingsphere.sql.parser.statement.core.segment.dml.ReturningSegment;
 import org.apache.shardingsphere.sql.parser.statement.core.segment.dml.assignment.ColumnAssignmentSegment;
 import org.apache.shardingsphere.sql.parser.statement.core.segment.dml.assignment.InsertValuesSegment;
@@ -340,7 +346,12 @@ public abstract class XuguStatementVisitor extends XuguStatementBaseVisitor<ASTN
     public final ASTNode visitDatabaseName(final DatabaseNameContext ctx) {
         return new DatabaseSegment(ctx.getStart().getStartIndex(), ctx.getStop().getStopIndex(), (IdentifierValue) visit(ctx.identifier()));
     }
-    
+
+    @Override
+    public final ASTNode visitSchemaName(final SchemaNameContext ctx) {
+        return visit(ctx.identifier());
+    }
+
     @Override
     public final ASTNode visitTableName(final TableNameContext ctx) {
         SimpleTableSegment result = new SimpleTableSegment(new TableNameSegment(ctx.name().getStart().getStartIndex(),
@@ -362,7 +373,12 @@ public abstract class XuguStatementVisitor extends XuguStatementBaseVisitor<ASTN
         }
         return result;
     }
-    
+
+    @Override
+    public final ASTNode visitTypeName(final TypeNameContext ctx) {
+        return new TypeSegment(ctx.getStart().getStartIndex(), ctx.getStop().getStopIndex(), (IdentifierValue) visit(ctx.name()));
+    }
+
     @Override
     public final ASTNode visitOwner(final OwnerContext ctx) {
         return new OwnerSegment(ctx.getStart().getStartIndex(), ctx.getStop().getStopIndex(), (IdentifierValue) visit(ctx.identifier()));
@@ -384,6 +400,12 @@ public abstract class XuguStatementVisitor extends XuguStatementBaseVisitor<ASTN
     
     @Override
     public final ASTNode visitIndexName(final IndexNameContext ctx) {
+        IndexNameSegment indexName = new IndexNameSegment(ctx.start.getStartIndex(), ctx.stop.getStopIndex(), (IdentifierValue) visit(ctx.identifier()));
+        return new IndexSegment(ctx.getStart().getStartIndex(), ctx.getStop().getStopIndex(), indexName);
+    }
+
+    @Override
+    public final ASTNode visitNewIndexName(final NewIndexNameContext ctx) {
         IndexNameSegment indexName = new IndexNameSegment(ctx.start.getStartIndex(), ctx.stop.getStopIndex(), (IdentifierValue) visit(ctx.identifier()));
         return new IndexSegment(ctx.getStart().getStartIndex(), ctx.getStop().getStopIndex(), indexName);
     }
@@ -1996,6 +2018,11 @@ public abstract class XuguStatementVisitor extends XuguStatementBaseVisitor<ASTN
     @Override
     public final ASTNode visitConstraintName(final ConstraintNameContext ctx) {
         return new ConstraintSegment(ctx.getStart().getStartIndex(), ctx.getStop().getStopIndex(), (IdentifierValue) visit(ctx.identifier()));
+    }
+
+    @Override
+    public ASTNode visitCursorName(final CursorNameContext ctx) {
+        return new CursorNameSegment(ctx.start.getStartIndex(), ctx.stop.getStopIndex(), (IdentifierValue) visit(ctx.identifier()));
     }
     
     @Override

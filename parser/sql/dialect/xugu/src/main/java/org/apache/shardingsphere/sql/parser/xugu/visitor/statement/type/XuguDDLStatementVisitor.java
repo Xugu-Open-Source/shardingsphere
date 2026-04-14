@@ -38,6 +38,7 @@ import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.AlterLis
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.AlterListItemContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.AlterLockOptionContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.AlterLogfileGroupContext;
+import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.AlterPackageContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.AlterProcedureContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.AlterRenameTableContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.AlterServerContext;
@@ -46,11 +47,13 @@ import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.AlterTab
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.AlterTablespaceContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.AlterTablespaceInnodbContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.AlterTablespaceNdbContext;
+import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.AlterTypeContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.AlterViewContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.BeginStatementContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.CaseStatementContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.ChangeColumnContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.CharsetNameContext;
+import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.CloseContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.CollationNameContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.ColumnDefinitionContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.CommentContext;
@@ -69,20 +72,26 @@ import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.CreateTa
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.CreateTableOptionsContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.CreateTablespaceContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.CreateTriggerContext;
+import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.CreateTypeContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.CreateViewContext;
+import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.CursorContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.DeallocateContext;
+import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.DeclareContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.DropDatabaseContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.DropEventContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.DropFunctionContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.DropIndexContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.DropLogfileGroupContext;
+import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.DropPackageContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.DropProcedureContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.DropServerContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.DropTableContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.DropTablespaceContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.DropTriggerContext;
+import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.DropTypeContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.DropViewContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.ExecuteStmtContext;
+import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.FetchContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.FieldDefinitionContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.FlashbackTableContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.FlowControlStatementContext;
@@ -95,8 +104,15 @@ import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.KeyPartC
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.KeyPartWithExpressionContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.KeyPartsContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.LoopStatementContext;
+import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.MemberVarDeclContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.ModifyColumnContext;
+import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.NestedTableTypeSpecContext;
+import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.ObjectBaseTypeDefContext;
+import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.ObjectSubTypeDefContext;
+import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.ObjectTypeDefContext;
+import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.OpenContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.PlaceContext;
+import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.PlsqlBlockContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.PrepareContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.PurgeContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.ReferenceDefinitionContext;
@@ -113,6 +129,7 @@ import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.TableNam
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.TextOrIdentifierContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.TruncateTableContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.ValidStatementContext;
+import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.VarrayTypeSpecContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.WhileStatementContext;
 import org.apache.shardingsphere.sql.parser.statement.core.enums.AlgorithmOption;
 import org.apache.shardingsphere.sql.parser.statement.core.enums.LockTableOption;
@@ -133,6 +150,7 @@ import org.apache.shardingsphere.sql.parser.statement.core.segment.ddl.constrain
 import org.apache.shardingsphere.sql.parser.statement.core.segment.ddl.constraint.alter.AddConstraintDefinitionSegment;
 import org.apache.shardingsphere.sql.parser.statement.core.segment.ddl.constraint.alter.DropConstraintDefinitionSegment;
 import org.apache.shardingsphere.sql.parser.statement.core.segment.ddl.constraint.alter.ModifyConstraintDefinitionSegment;
+import org.apache.shardingsphere.sql.parser.statement.core.segment.ddl.cursor.CursorNameSegment;
 import org.apache.shardingsphere.sql.parser.statement.core.segment.ddl.engine.EngineSegment;
 import org.apache.shardingsphere.sql.parser.statement.core.segment.ddl.index.DropIndexDefinitionSegment;
 import org.apache.shardingsphere.sql.parser.statement.core.segment.ddl.index.IndexNameSegment;
@@ -147,6 +165,8 @@ import org.apache.shardingsphere.sql.parser.statement.core.segment.ddl.table.Cre
 import org.apache.shardingsphere.sql.parser.statement.core.segment.ddl.table.LockTableSegment;
 import org.apache.shardingsphere.sql.parser.statement.core.segment.ddl.table.RenameTableDefinitionSegment;
 import org.apache.shardingsphere.sql.parser.statement.core.segment.ddl.tablespace.TablespaceSegment;
+import org.apache.shardingsphere.sql.parser.statement.core.segment.ddl.type.TypeDefinitionSegment;
+import org.apache.shardingsphere.sql.parser.statement.core.segment.ddl.type.TypeSegment;
 import org.apache.shardingsphere.sql.parser.statement.core.segment.dml.column.ColumnSegment;
 import org.apache.shardingsphere.sql.parser.statement.core.segment.dml.expr.simple.SimpleExpressionSegment;
 import org.apache.shardingsphere.sql.parser.statement.core.segment.generic.CommentSegment;
@@ -155,44 +175,61 @@ import org.apache.shardingsphere.sql.parser.statement.core.segment.generic.Owner
 import org.apache.shardingsphere.sql.parser.statement.core.segment.generic.table.SimpleTableSegment;
 import org.apache.shardingsphere.sql.parser.statement.core.segment.generic.table.TableNameSegment;
 import org.apache.shardingsphere.sql.parser.statement.core.statement.SQLStatement;
+import org.apache.shardingsphere.sql.parser.statement.core.statement.dml.DeleteStatement;
+import org.apache.shardingsphere.sql.parser.statement.core.statement.dml.InsertStatement;
+import org.apache.shardingsphere.sql.parser.statement.core.statement.dml.SelectStatement;
+import org.apache.shardingsphere.sql.parser.statement.core.statement.dml.UpdateStatement;
 import org.apache.shardingsphere.sql.parser.statement.core.value.collection.CollectionValue;
 import org.apache.shardingsphere.sql.parser.statement.core.value.identifier.IdentifierValue;
-import org.apache.shardingsphere.sql.parser.statement.oracle.ddl.OracleCommentStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguAlterDatabaseStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguAlterEventStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguAlterFunctionStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguAlterInstanceStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguAlterLogfileGroupStatement;
+import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguAlterPackageStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguAlterProcedureStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguAlterServerStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguAlterTableStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguAlterTablespaceStatement;
+import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguAlterTypeStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguAlterViewStatement;
+import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguCloseStatement;
+import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguCommentStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguCreateDatabaseStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguCreateEventStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguCreateFunctionStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguCreateIndexStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguCreateLogfileGroupStatement;
+import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguCreateNestedTableTypeStatement;
+import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguCreateObjectTypeStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguCreateProcedureStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguCreateServerStatement;
+import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguCreateSubTypeStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguCreateTableStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguCreateTablespaceStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguCreateTriggerStatement;
+import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguCreateVarrayTypeStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguCreateViewStatement;
+import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguCursorStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguDeallocateStatement;
+import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguDeclareStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguDropDatabaseStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguDropEventStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguDropFunctionStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguDropIndexStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguDropLogfileGroupStatement;
+import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguDropPackageStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguDropProcedureStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguDropServerStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguDropTableStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguDropTablespaceStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguDropTriggerStatement;
+import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguDropTypeStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguDropViewStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguExecuteStatement;
+import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguFetchStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguFlashbackTableStatement;
+import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguPLSQLBlockStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguPrepareStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguPurgeStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguReindexStatement;
@@ -208,12 +245,13 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * DDL statement visitor for Xugu.
  */
 public final class XuguDDLStatementVisitor extends XuguStatementVisitor implements DDLStatementVisitor {
-    
+
     @Override
     public ASTNode visitCreateView(final CreateViewContext ctx) {
         XuguCreateViewStatement result = new XuguCreateViewStatement();
@@ -223,7 +261,7 @@ public final class XuguDDLStatementVisitor extends XuguStatementVisitor implemen
         result.setSelect((XuguSelectStatement) visit(ctx.select()));
         return result;
     }
-    
+
     @Override
     public ASTNode visitAlterView(final AlterViewContext ctx) {
         XuguAlterViewStatement result = new XuguAlterViewStatement();
@@ -232,7 +270,7 @@ public final class XuguDDLStatementVisitor extends XuguStatementVisitor implemen
         result.setSelect((XuguSelectStatement) visit(ctx.select()));
         return result;
     }
-    
+
     @SuppressWarnings("unchecked")
     @Override
     public ASTNode visitDropView(final DropViewContext ctx) {
@@ -241,7 +279,7 @@ public final class XuguDDLStatementVisitor extends XuguStatementVisitor implemen
         result.getViews().addAll(((CollectionValue<SimpleTableSegment>) visit(ctx.viewNames())).getValue());
         return result;
     }
-    
+
     @Override
     public ASTNode visitCreateDatabase(final CreateDatabaseContext ctx) {
         XuguCreateDatabaseStatement result = new XuguCreateDatabaseStatement();
@@ -249,12 +287,12 @@ public final class XuguDDLStatementVisitor extends XuguStatementVisitor implemen
         result.setIfNotExists(null != ctx.ifNotExists());
         return result;
     }
-    
+
     @Override
     public ASTNode visitAlterDatabase(final AlterDatabaseContext ctx) {
         return new XuguAlterDatabaseStatement();
     }
-    
+
     @Override
     public ASTNode visitDropDatabase(final DropDatabaseContext ctx) {
         XuguDropDatabaseStatement result = new XuguDropDatabaseStatement();
@@ -262,7 +300,7 @@ public final class XuguDDLStatementVisitor extends XuguStatementVisitor implemen
         result.setIfExists(null != ctx.ifExists());
         return result;
     }
-    
+
     @SuppressWarnings("unchecked")
     @Override
     public ASTNode visitCreateTable(final CreateTableContext ctx) {
@@ -287,7 +325,7 @@ public final class XuguDDLStatementVisitor extends XuguStatementVisitor implemen
         }
         return result;
     }
-    
+
     @Override
     public ASTNode visitCreateTableOptions(final CreateTableOptionsContext ctx) {
         CreateTableOptionSegment result = new CreateTableOptionSegment(ctx.getStart().getStartIndex(), ctx.getStop().getStopIndex());
@@ -306,7 +344,7 @@ public final class XuguDDLStatementVisitor extends XuguStatementVisitor implemen
         }
         return result;
     }
-    
+
     @Override
     public ASTNode visitCreateDefinitionClause(final CreateDefinitionClauseContext ctx) {
         CollectionValue<CreateDefinitionSegment> result = new CollectionValue<>();
@@ -320,12 +358,12 @@ public final class XuguDDLStatementVisitor extends XuguStatementVisitor implemen
         }
         return result;
     }
-    
+
     @Override
     public ASTNode visitCreateLikeClause(final CreateLikeClauseContext ctx) {
         return visit(ctx.tableName());
     }
-    
+
     @SuppressWarnings("unchecked")
     @Override
     public ASTNode visitAlterTable(final AlterTableContext ctx) {
@@ -339,7 +377,7 @@ public final class XuguDDLStatementVisitor extends XuguStatementVisitor implemen
         }
         return result;
     }
-    
+
     private void setAlterDefinition(final XuguAlterTableStatement alterTableStatement, final AlterDefinitionSegment alterDefinitionSegment) {
         if (alterDefinitionSegment instanceof AddColumnDefinitionSegment) {
             alterTableStatement.getAddColumnDefinitions().add((AddColumnDefinitionSegment) alterDefinitionSegment);
@@ -369,7 +407,7 @@ public final class XuguDDLStatementVisitor extends XuguStatementVisitor implemen
             alterTableStatement.setLockTableSegment((LockTableSegment) alterDefinitionSegment);
         }
     }
-    
+
     private ColumnDefinitionSegment generateColumnDefinitionSegment(final ColumnSegment column, final FieldDefinitionContext ctx) {
         DataTypeSegment dataTypeSegment = (DataTypeSegment) visit(ctx.dataType());
         boolean isPrimaryKey = ctx.columnAttribute().stream().anyMatch(each -> null != each.KEY() && null == each.UNIQUE());
@@ -379,16 +417,16 @@ public final class XuguDDLStatementVisitor extends XuguStatementVisitor implemen
         result.setAutoIncrement(isAutoIncrement);
         return result;
     }
-    
+
     private String getText(final ParserRuleContext ctx) {
         return ctx.start.getInputStream().getText(new Interval(ctx.start.getStartIndex(), ctx.stop.getStopIndex()));
     }
-    
+
     @Override
     public ASTNode visitAlterConstraint(final AlterConstraintContext ctx) {
         return new ModifyConstraintDefinitionSegment(ctx.getStart().getStartIndex(), ctx.getStop().getStopIndex(), (ConstraintSegment) visit(ctx.constraintName()));
     }
-    
+
     @Override
     public ASTNode visitAlterList(final AlterListContext ctx) {
         CollectionValue<AlterDefinitionSegment> result = new CollectionValue<>();
@@ -405,7 +443,7 @@ public final class XuguDDLStatementVisitor extends XuguStatementVisitor implemen
         }
         return result;
     }
-    
+
     private Collection<AlterDefinitionSegment> getAlterDefinitionSegments(final AlterListContext ctx) {
         Collection<AlterDefinitionSegment> result = new LinkedList<>();
         for (AlterListItemContext each : ctx.alterListItem()) {
@@ -413,7 +451,7 @@ public final class XuguDDLStatementVisitor extends XuguStatementVisitor implemen
         }
         return result;
     }
-    
+
     private Optional<AlterDefinitionSegment> getAlterDefinitionSegment(final AlterListContext alterListContext, final AlterListItemContext alterListItemContext) {
         if (alterListItemContext instanceof AddColumnContext) {
             return Optional.of((AddColumnDefinitionSegment) visit(alterListItemContext));
@@ -447,7 +485,7 @@ public final class XuguDDLStatementVisitor extends XuguStatementVisitor implemen
         }
         return Optional.empty();
     }
-    
+
     private Optional<AlterDefinitionSegment> getDropItemDefinitionSegment(final AlterListContext alterListContext, final AlterTableDropContext alterTableDrop) {
         if (null != alterTableDrop.CHECK() || null != alterTableDrop.CONSTRAINT()) {
             ConstraintSegment constraint = new ConstraintSegment(alterTableDrop.constraintInternalRef.start.getStartIndex(), alterTableDrop.constraintInternalRef.stop.getStopIndex(),
@@ -469,7 +507,7 @@ public final class XuguDDLStatementVisitor extends XuguStatementVisitor implemen
         }
         return Optional.empty();
     }
-    
+
     @Override
     public ASTNode visitAlterAlgorithmOption(final AlterAlgorithmOptionContext ctx) {
         AlgorithmOption algorithmOption = null;
@@ -484,7 +522,7 @@ public final class XuguDDLStatementVisitor extends XuguStatementVisitor implemen
         }
         return new AlgorithmTypeSegment(ctx.getStart().getStartIndex(), ctx.getStop().getStopIndex(), algorithmOption);
     }
-    
+
     @Override
     public ASTNode visitAlterLockOption(final AlterLockOptionContext ctx) {
         LockTableOption lockOption = null;
@@ -499,7 +537,7 @@ public final class XuguDDLStatementVisitor extends XuguStatementVisitor implemen
         }
         return new LockTableSegment(ctx.getStart().getStartIndex(), ctx.getStop().getStopIndex(), lockOption);
     }
-    
+
     @Override
     public ASTNode visitAlterConvert(final AlterConvertContext ctx) {
         ConvertTableDefinitionSegment result = new ConvertTableDefinitionSegment(ctx.getStart().getStartIndex(), ctx.getStop().getStopIndex(), (CharsetNameSegment) visit(ctx.charsetName()));
@@ -508,29 +546,29 @@ public final class XuguDDLStatementVisitor extends XuguStatementVisitor implemen
         }
         return result;
     }
-    
+
     @Override
     public ASTNode visitCharsetName(final CharsetNameContext ctx) {
         return new CharsetNameSegment(ctx.getStart().getStartIndex(), ctx.getStop().getStopIndex(), ctx.getText());
     }
-    
+
     @Override
     public ASTNode visitAddTableConstraint(final AddTableConstraintContext ctx) {
         return new AddConstraintDefinitionSegment(ctx.getStart().getStartIndex(), ctx.getStop().getStopIndex(), (ConstraintDefinitionSegment) visit(ctx.tableConstraintDef()));
     }
-    
+
     @Override
     public ASTNode visitAlterCheck(final AlterCheckContext ctx) {
         return new ModifyConstraintDefinitionSegment(ctx.getStart().getStartIndex(), ctx.getStop().getStopIndex(), (ConstraintSegment) visit(ctx.constraintName()));
     }
-    
+
     @Override
     public ASTNode visitAlterRenameTable(final AlterRenameTableContext ctx) {
         RenameTableDefinitionSegment result = new RenameTableDefinitionSegment(ctx.start.getStartIndex(), ctx.stop.getStopIndex());
         result.setRenameTable((SimpleTableSegment) visit(ctx.tableName()));
         return result;
     }
-    
+
     @Override
     public ASTNode visitRenameTable(final RenameTableContext ctx) {
         XuguRenameTableStatement result = new XuguRenameTableStatement();
@@ -541,14 +579,14 @@ public final class XuguDDLStatementVisitor extends XuguStatementVisitor implemen
         }
         return result;
     }
-    
+
     private RenameTableDefinitionSegment createRenameTableDefinitionSegment(final TableNameContext tableName, final TableNameContext renameTableName) {
         RenameTableDefinitionSegment result = new RenameTableDefinitionSegment(tableName.start.getStartIndex(), renameTableName.stop.getStopIndex());
         result.setTable((SimpleTableSegment) visit(tableName));
         result.setRenameTable((SimpleTableSegment) visit(renameTableName));
         return result;
     }
-    
+
     private ModifyColumnDefinitionSegment generateModifyColumnDefinitionSegment(final ModifyColumnContext ctx) {
         ColumnSegment column = new ColumnSegment(ctx.columnInternalRef.start.getStartIndex(), ctx.columnInternalRef.stop.getStopIndex(), (IdentifierValue) visit(ctx.columnInternalRef));
         ModifyColumnDefinitionSegment result = new ModifyColumnDefinitionSegment(
@@ -558,7 +596,7 @@ public final class XuguDDLStatementVisitor extends XuguStatementVisitor implemen
         }
         return result;
     }
-    
+
     private ChangeColumnDefinitionSegment generateModifyColumnDefinitionSegment(final ChangeColumnContext ctx) {
         ChangeColumnDefinitionSegment result = new ChangeColumnDefinitionSegment(ctx.getStart().getStartIndex(), ctx.getStop().getStopIndex(), (ColumnDefinitionSegment) visit(ctx.columnDefinition()));
         result.setPreviousColumn(new ColumnSegment(ctx.columnInternalRef.getStart().getStartIndex(), ctx.columnInternalRef.getStop().getStopIndex(),
@@ -568,7 +606,7 @@ public final class XuguDDLStatementVisitor extends XuguStatementVisitor implemen
         }
         return result;
     }
-    
+
     @Override
     public ASTNode visitAddColumn(final AddColumnContext ctx) {
         Collection<ColumnDefinitionSegment> columnDefinitions = new LinkedList<>();
@@ -589,14 +627,14 @@ public final class XuguDDLStatementVisitor extends XuguStatementVisitor implemen
         }
         return result;
     }
-    
+
     @Override
     public ASTNode visitRenameColumn(final RenameColumnContext ctx) {
         ColumnSegment oldColumnSegment = (ColumnSegment) visit(ctx.oldColumn());
         ColumnSegment newColumnSegment = (ColumnSegment) visit(ctx.newColumn());
         return new RenameColumnSegment(ctx.getStart().getStartIndex(), ctx.getStop().getStopIndex(), oldColumnSegment, newColumnSegment);
     }
-    
+
     @Override
     public ASTNode visitColumnDefinition(final ColumnDefinitionContext ctx) {
         ColumnSegment column = new ColumnSegment(ctx.column_name.start.getStartIndex(), ctx.column_name.stop.getStopIndex(), (IdentifierValue) visit(ctx.column_name));
@@ -614,7 +652,7 @@ public final class XuguDDLStatementVisitor extends XuguStatementVisitor implemen
                 .ifPresent(optional -> result.setCollateName(optional.collateClause().collationName().textOrIdentifier().identifier().IDENTIFIER_().getText()));
         return result;
     }
-    
+
     private Collection<SimpleTableSegment> getReferencedTables(final ColumnDefinitionContext ctx) {
         Collection<SimpleTableSegment> result = new LinkedList<>();
         if (null != ctx.referenceDefinition()) {
@@ -622,7 +660,7 @@ public final class XuguDDLStatementVisitor extends XuguStatementVisitor implemen
         }
         return result;
     }
-    
+
     @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public ASTNode visitTableConstraintDef(final TableConstraintDefContext ctx) {
@@ -656,7 +694,7 @@ public final class XuguDDLStatementVisitor extends XuguStatementVisitor implemen
         }
         return result;
     }
-    
+
     @Override
     public ASTNode visitKeyListWithExpression(final KeyListWithExpressionContext ctx) {
         CollectionValue<ColumnSegment> result = new CollectionValue<>();
@@ -667,12 +705,12 @@ public final class XuguDDLStatementVisitor extends XuguStatementVisitor implemen
         }
         return result;
     }
-    
+
     @Override
     public ASTNode visitReferenceDefinition(final ReferenceDefinitionContext ctx) {
         return visit(ctx.tableName());
     }
-    
+
     @Override
     public ASTNode visitPlace(final PlaceContext ctx) {
         ColumnSegment columnName = null;
@@ -683,7 +721,7 @@ public final class XuguDDLStatementVisitor extends XuguStatementVisitor implemen
                 ? new ColumnFirstPositionSegment(ctx.getStart().getStartIndex(), ctx.getStop().getStopIndex(), columnName)
                 : new ColumnAfterPositionSegment(ctx.getStart().getStartIndex(), ctx.getStop().getStopIndex(), columnName);
     }
-    
+
     @SuppressWarnings("unchecked")
     @Override
     public ASTNode visitDropTable(final DropTableContext ctx) {
@@ -692,14 +730,14 @@ public final class XuguDDLStatementVisitor extends XuguStatementVisitor implemen
         result.getTables().addAll(((CollectionValue<SimpleTableSegment>) visit(ctx.tableList())).getValue());
         return result;
     }
-    
+
     @Override
     public ASTNode visitTruncateTable(final TruncateTableContext ctx) {
         XuguTruncateStatement result = new XuguTruncateStatement();
         result.getTables().add((SimpleTableSegment) visit(ctx.tableName()));
         return result;
     }
-    
+
     @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public ASTNode visitCreateIndex(final CreateIndexContext ctx) {
@@ -718,7 +756,7 @@ public final class XuguDDLStatementVisitor extends XuguStatementVisitor implemen
         }
         return result;
     }
-    
+
     @Override
     public ASTNode visitDropIndex(final DropIndexContext ctx) {
         XuguDropIndexStatement result = new XuguDropIndexStatement();
@@ -786,7 +824,7 @@ public final class XuguDDLStatementVisitor extends XuguStatementVisitor implemen
         IndexSegment renameIndexName = (IndexSegment) visitIndexName(ctx.indexName(1));
         return new RenameIndexDefinitionSegment(ctx.start.getStartIndex(), ctx.stop.getStopIndex(), indexNameSegment, renameIndexName);
     }
-    
+
     @Override
     public ASTNode visitKeyParts(final KeyPartsContext ctx) {
         CollectionValue<ColumnSegment> result = new CollectionValue<>();
@@ -798,15 +836,20 @@ public final class XuguDDLStatementVisitor extends XuguStatementVisitor implemen
         }
         return result;
     }
-    
+
     @Override
     public ASTNode visitCreateProcedure(final CreateProcedureContext ctx) {
         XuguCreateProcedureStatement result = new XuguCreateProcedureStatement();
-        result.setProcedureName((FunctionNameSegment) visit(ctx.functionName()));
-        result.setRoutineBody((RoutineBodySegment) visit(ctx.routineBody()));
+        if (ctx.procDef() != null) {
+            result.setProcedureName((FunctionNameSegment) visit(ctx.procDef().functionName()));
+            result.setRoutineBody((RoutineBodySegment) visit(ctx.procDef().routineBody()));
+        } else {
+            result.setProcedureName((FunctionNameSegment) visit(ctx.functionName()));
+            result.setRoutineBody((RoutineBodySegment) visit(ctx.routineBody()));
+        }
         return result;
     }
-    
+
     @Override
     public ASTNode visitFunctionName(final FunctionNameContext ctx) {
         FunctionNameSegment result = new FunctionNameSegment(ctx.start.getStartIndex(), ctx.stop.getStopIndex(), (IdentifierValue) visit(ctx.identifier()));
@@ -815,25 +858,40 @@ public final class XuguDDLStatementVisitor extends XuguStatementVisitor implemen
         }
         return result;
     }
-    
+
     @Override
     public ASTNode visitAlterProcedure(final AlterProcedureContext ctx) {
         return new XuguAlterProcedureStatement();
     }
-    
+
     @Override
     public ASTNode visitDropProcedure(final DropProcedureContext ctx) {
         return new XuguDropProcedureStatement();
     }
-    
+
     @Override
     public ASTNode visitCreateFunction(final CreateFunctionContext ctx) {
         XuguCreateFunctionStatement result = new XuguCreateFunctionStatement();
-        result.setFunctionName((FunctionNameSegment) visit(ctx.functionName()));
-        result.setRoutineBody((RoutineBodySegment) visit(ctx.routineBody()));
+        if (ctx.funcDef() != null) {
+            result.setFunctionName((FunctionNameSegment) visit(ctx.funcDef().functionName()));
+            result.setRoutineBody((RoutineBodySegment) visit(ctx.funcDef().routineBody()));
+        } else {
+            result.setFunctionName((FunctionNameSegment) visit(ctx.functionName()));
+            result.setRoutineBody((RoutineBodySegment) visit(ctx.routineBody()));
+        }
         return result;
     }
-    
+
+    @Override
+    public ASTNode visitDropPackage(final DropPackageContext ctx) {
+        return new XuguDropPackageStatement();
+    }
+
+    @Override
+    public ASTNode visitAlterPackage(final AlterPackageContext ctx) {
+        return new XuguAlterPackageStatement();
+    }
+
     @SuppressWarnings("unchecked")
     @Override
     public ASTNode visitRoutineBody(final RoutineBodyContext ctx) {
@@ -844,17 +902,17 @@ public final class XuguDDLStatementVisitor extends XuguStatementVisitor implemen
         result.getValidStatements().addAll(validStatements.getValue());
         return result;
     }
-    
+
     @Override
     public ASTNode visitSimpleStatement(final SimpleStatementContext ctx) {
         return visit(ctx.validStatement());
     }
-    
+
     @Override
     public ASTNode visitCompoundStatement(final CompoundStatementContext ctx) {
         return visit(ctx.beginStatement());
     }
-    
+
     @SuppressWarnings("unchecked")
     @Override
     public ASTNode visitBeginStatement(final BeginStatementContext ctx) {
@@ -864,7 +922,60 @@ public final class XuguDDLStatementVisitor extends XuguStatementVisitor implemen
         }
         return result;
     }
-    
+
+    @Override
+    public ASTNode visitPlsqlBlock(final PlsqlBlockContext ctx) {
+        return new XuguPLSQLBlockStatement();
+    }
+
+    @Override
+    public ASTNode visitDeclare(final DeclareContext ctx) {
+        XuguDeclareStatement result = new XuguDeclareStatement();
+        result.setCursorName((CursorNameSegment) visit(ctx.cursorName()));
+        if (ctx.select() != null) {
+            result.setSelect((SelectStatement) visit(ctx.select()));
+        }
+        return result;
+    }
+
+    @Override
+    public ASTNode visitCursor(final CursorContext ctx) {
+        XuguCursorStatement result = new XuguCursorStatement();
+        result.setCursorName((CursorNameSegment) visit(ctx.cursorName()));
+        if (ctx.select() != null) {
+            result.setSelect((SelectStatement) visit(ctx.select()));
+        }
+        List<String> parameterNameList = ctx.cursorParameterDec().stream()
+                .map(definition -> new IdentifierValue(definition.identifier().getText()).getValue())
+                .collect(Collectors.toList());
+        result.getVariableNames().addAll(parameterNameList);
+        return result;
+    }
+
+    @Override
+    public ASTNode visitOpen(final OpenContext ctx) {
+        // 在 org.apache.shardingsphere.infra.binder.context.statement.SQLStatementContextFactory.getDDLStatementContext
+        // OpenStatement 没有对应的 CommonSQLStatementContext
+        // 导致 OPEN cur(1); 发送的游标名字不拼接表名后缀，暂时使用 FetchStatement
+        XuguFetchStatement result = new XuguFetchStatement();
+        result.setCursorName((CursorNameSegment) visit(ctx.cursorName()));
+        return result;
+    }
+
+    @Override
+    public ASTNode visitFetch(final FetchContext ctx) {
+        XuguFetchStatement result = new XuguFetchStatement();
+        result.setCursorName((CursorNameSegment) visit(ctx.cursorName()));
+        return result;
+    }
+
+    @Override
+    public ASTNode visitClose(final CloseContext ctx) {
+        XuguCloseStatement result = new XuguCloseStatement();
+        result.setCursorName((CursorNameSegment) visit(ctx.cursorName()));
+        return result;
+    }
+
     @SuppressWarnings("unchecked")
     @Override
     public ASTNode visitValidStatement(final ValidStatementContext ctx) {
@@ -881,7 +992,7 @@ public final class XuguDDLStatementVisitor extends XuguStatementVisitor implemen
         }
         return result;
     }
-    
+
     private ValidStatementSegment createValidStatementSegment(final ValidStatementContext ctx) {
         ValidStatementSegment result = new ValidStatementSegment(ctx.start.getStartIndex(), ctx.stop.getStopIndex());
         SQLStatement sqlStatement = null;
@@ -907,7 +1018,7 @@ public final class XuguDDLStatementVisitor extends XuguStatementVisitor implemen
         result.setSqlStatement(sqlStatement);
         return result;
     }
-    
+
     @SuppressWarnings("unchecked")
     @Override
     public ASTNode visitFlowControlStatement(final FlowControlStatementContext ctx) {
@@ -929,7 +1040,7 @@ public final class XuguDDLStatementVisitor extends XuguStatementVisitor implemen
         }
         return result;
     }
-    
+
     @SuppressWarnings("unchecked")
     @Override
     public ASTNode visitCaseStatement(final CaseStatementContext ctx) {
@@ -939,7 +1050,7 @@ public final class XuguDDLStatementVisitor extends XuguStatementVisitor implemen
         }
         return result;
     }
-    
+
     @SuppressWarnings("unchecked")
     @Override
     public ASTNode visitIfStatement(final IfStatementContext ctx) {
@@ -949,7 +1060,7 @@ public final class XuguDDLStatementVisitor extends XuguStatementVisitor implemen
         }
         return result;
     }
-    
+
     @SuppressWarnings("unchecked")
     @Override
     public ASTNode visitLoopStatement(final LoopStatementContext ctx) {
@@ -959,7 +1070,7 @@ public final class XuguDDLStatementVisitor extends XuguStatementVisitor implemen
         }
         return result;
     }
-    
+
     @SuppressWarnings("unchecked")
     @Override
     public ASTNode visitRepeatStatement(final RepeatStatementContext ctx) {
@@ -969,7 +1080,7 @@ public final class XuguDDLStatementVisitor extends XuguStatementVisitor implemen
         }
         return result;
     }
-    
+
     @SuppressWarnings("unchecked")
     @Override
     public ASTNode visitWhileStatement(final WhileStatementContext ctx) {
@@ -979,67 +1090,67 @@ public final class XuguDDLStatementVisitor extends XuguStatementVisitor implemen
         }
         return result;
     }
-    
+
     @Override
     public ASTNode visitAlterFunction(final AlterFunctionContext ctx) {
         return new XuguAlterFunctionStatement();
     }
-    
+
     @Override
     public ASTNode visitDropFunction(final DropFunctionContext ctx) {
         return new XuguDropFunctionStatement();
     }
-    
+
     @Override
     public ASTNode visitCreateEvent(final CreateEventContext ctx) {
         return new XuguCreateEventStatement();
     }
-    
+
     @Override
     public ASTNode visitAlterEvent(final AlterEventContext ctx) {
         return new XuguAlterEventStatement();
     }
-    
+
     @Override
     public ASTNode visitDropEvent(final DropEventContext ctx) {
         return new XuguDropEventStatement();
     }
-    
+
     @Override
     public ASTNode visitAlterInstance(final AlterInstanceContext ctx) {
         return new XuguAlterInstanceStatement();
     }
-    
+
     @Override
     public ASTNode visitCreateLogfileGroup(final CreateLogfileGroupContext ctx) {
         return new XuguCreateLogfileGroupStatement();
     }
-    
+
     @Override
     public ASTNode visitAlterLogfileGroup(final AlterLogfileGroupContext ctx) {
         return new XuguAlterLogfileGroupStatement();
     }
-    
+
     @Override
     public ASTNode visitDropLogfileGroup(final DropLogfileGroupContext ctx) {
         return new XuguDropLogfileGroupStatement();
     }
-    
+
     @Override
     public ASTNode visitCreateServer(final CreateServerContext ctx) {
         return new XuguCreateServerStatement();
     }
-    
+
     @Override
     public ASTNode visitAlterServer(final AlterServerContext ctx) {
         return new XuguAlterServerStatement();
     }
-    
+
     @Override
     public ASTNode visitDropServer(final DropServerContext ctx) {
         return new XuguDropServerStatement();
     }
-    
+
     @Override
     public ASTNode visitCreateTrigger(final CreateTriggerContext ctx) {
         return new XuguCreateTriggerStatement();
@@ -1049,12 +1160,68 @@ public final class XuguDDLStatementVisitor extends XuguStatementVisitor implemen
     public ASTNode visitDropTrigger(final DropTriggerContext ctx) {
         return new XuguDropTriggerStatement();
     }
-    
+
+    @Override
+    public ASTNode visitCreateType(final CreateTypeContext ctx) {
+        boolean isReplace = null != ctx.REPLACE();
+        boolean isForce = null == ctx.FORCE();
+        TypeSegment typeSegment = (TypeSegment) visit(ctx.plsqlTypeSource().typeName());
+        if (null != ctx.plsqlTypeSource().objectSubTypeDef()) {
+            ObjectSubTypeDefContext objectSubTypeDefContext = ctx.plsqlTypeSource().objectSubTypeDef();
+            return new XuguCreateSubTypeStatement(isReplace, isForce,
+                    typeSegment,
+                    objectSubTypeDefContext.memberDecl().stream()
+                            .filter(def -> def.memberVarDecl() != null)
+                            .map(definition -> (TypeDefinitionSegment) visit(definition.memberVarDecl()))
+                            .collect(Collectors.toList()));
+        } else {
+            return visitCreateTypeObjectBaseTypeDef(ctx.plsqlTypeSource().objectBaseTypeDef(), isReplace, isForce, typeSegment);
+        }
+    }
+
+    @Override
+    public ASTNode visitMemberVarDecl(final MemberVarDeclContext ctx) {
+        return new TypeDefinitionSegment(ctx.getStart().getStartIndex(), ctx.getStop().getStopIndex(),
+                new IdentifierValue(ctx.name().getText()).getValue(), (DataTypeSegment) visit(ctx.dataType()));
+    }
+
+    private ASTNode visitCreateTypeObjectBaseTypeDef(final ObjectBaseTypeDefContext ctx, final boolean isReplace, final boolean isForce, final TypeSegment typeSegment) {
+        if (null != ctx.objectTypeDef()) {
+            ObjectTypeDefContext objectTypeDefContext = ctx.objectTypeDef();
+            return new XuguCreateObjectTypeStatement(isReplace, isForce,
+                    typeSegment, objectTypeDefContext.memberDecl().stream()
+                    .filter(def -> def.memberVarDecl() != null)
+                    .map(definition -> (TypeDefinitionSegment) visit(definition))
+                    .collect(Collectors.toList()));
+        } else if (null != ctx.varrayTypeSpec()) {
+            VarrayTypeSpecContext varrayTypeSpecContext = ctx.varrayTypeSpec();
+            return new XuguCreateVarrayTypeStatement(isReplace, isForce,
+                    Integer.parseInt(varrayTypeSpecContext.NUMBER_().getText()),
+                    typeSegment,
+                    (DataTypeSegment) visit(varrayTypeSpecContext.dataType()));
+        } else {
+            NestedTableTypeSpecContext nestedTableTypeSpecContext = ctx.nestedTableTypeSpec();
+            return new XuguCreateNestedTableTypeStatement(isReplace, isForce,
+                    typeSegment,
+                    (DataTypeSegment) visit(nestedTableTypeSpecContext.dataType()));
+        }
+    }
+
+    @Override
+    public ASTNode visitAlterType(final AlterTypeContext ctx) {
+        return new XuguAlterTypeStatement();
+    }
+
+    @Override
+    public ASTNode visitDropType(final DropTypeContext ctx) {
+        return new XuguDropTypeStatement();
+    }
+
     @Override
     public ASTNode visitCreateTablespace(final CreateTablespaceContext ctx) {
         return new XuguCreateTablespaceStatement();
     }
-    
+
     @Override
     public ASTNode visitAlterTablespace(final AlterTablespaceContext ctx) {
         if (null != ctx.alterTablespaceInnodb()) {
@@ -1063,7 +1230,7 @@ public final class XuguDDLStatementVisitor extends XuguStatementVisitor implemen
             return visit(ctx.alterTablespaceNdb());
         }
     }
-    
+
     @Override
     public ASTNode visitAlterTablespaceInnodb(final AlterTablespaceInnodbContext ctx) {
         XuguAlterTablespaceStatement result = new XuguAlterTablespaceStatement();
@@ -1075,7 +1242,7 @@ public final class XuguDDLStatementVisitor extends XuguStatementVisitor implemen
         }
         return result;
     }
-    
+
     @Override
     public ASTNode visitAlterTablespaceNdb(final AlterTablespaceNdbContext ctx) {
         XuguAlterTablespaceStatement result = new XuguAlterTablespaceStatement();
@@ -1087,26 +1254,26 @@ public final class XuguDDLStatementVisitor extends XuguStatementVisitor implemen
         }
         return result;
     }
-    
+
     private TablespaceSegment createTablespaceSegment(final IdentifierContext ctx) {
         return new TablespaceSegment(ctx.getStart().getStartIndex(), ctx.getStop().getStopIndex(), (IdentifierValue) visit(ctx));
     }
-    
+
     @Override
     public ASTNode visitDropTablespace(final DropTablespaceContext ctx) {
         return new XuguDropTablespaceStatement();
     }
-    
+
     @Override
     public ASTNode visitPrepare(final PrepareContext ctx) {
         return new XuguPrepareStatement();
     }
-    
+
     @Override
     public ASTNode visitExecuteStmt(final ExecuteStmtContext ctx) {
         return new XuguExecuteStatement();
     }
-    
+
     @Override
     public ASTNode visitDeallocate(final DeallocateContext ctx) {
         return new XuguDeallocateStatement();
@@ -1114,7 +1281,7 @@ public final class XuguDDLStatementVisitor extends XuguStatementVisitor implemen
 
     @Override
     public ASTNode visitComment(final CommentContext ctx) {
-        OracleCommentStatement result = new OracleCommentStatement();
+        XuguCommentStatement result = new XuguCommentStatement();
         if (null != ctx.tableName()) {
             result.setTable((SimpleTableSegment) visit(ctx.tableName()));
         }

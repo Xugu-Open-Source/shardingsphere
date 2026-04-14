@@ -158,15 +158,16 @@ alterListItem
     | DISABLE KEYS  # disableKeys
     | ENABLE KEYS   # enableKeys
     | ALTER COLUMN? columnInternalRef=identifier (SET DEFAULT (LP_ expr RP_| literals)| SET visibility | DROP DEFAULT) # alterColumn
-    | (ALTER | MODIFY) COLUMN? LP_? (alterColumnItem | identifier fieldDefinition) (COMMA_ (alterColumnItem | identifier fieldDefinition))* RP_? restrict? # alterColumn
+    | (ALTER | MODIFY) COLUMN? LP_? (alterColumnItem | identifier fieldDefinition) (COMMA_ (alterColumnItem | identifier fieldDefinition))* RP_? # alterColumn
     | ALTER INDEX indexName visibility  # alterIndexVisibility
     | ALTER CHECK constraintName constraintEnforcement  # alterCheck
     | ALTER CONSTRAINT constraintName constraintEnforcement # alterConstraint
-    | RENAME COLUMN oldColumn TO newColumn  # renameColumn
+    | RENAME COLUMN? oldColumn TO newColumn  # renameColumn
     | RENAME (TO | AS)? tableName # alterRenameTable
     | RENAME keyOrIndex indexName TO indexName  # renameIndex
     | CONVERT TO charset charsetName collateClause?  # alterConvert
     | FORCE  # alterTableForce
+    | restrict  # alterTableRestrict
     | ORDER BY alterOrderList  # alterTableOrder
     ;
 
@@ -241,8 +242,8 @@ alterPartition
     ;
 
 alterConstraints
-    : (ENABLE | DISABLE) (CONSTRAINT constraintName (COMMA_ constraintName)* ((KEEP | DROP) INDEX)? restrict | operation (COMMA_ operation)*)
-    | DROP CONSTRAINT constraintName (COMMA_ constraintName)* ((KEEP | DROP) INDEX)? restrict
+    : (ENABLE | DISABLE) (CONSTRAINT constraintName (COMMA_ constraintName)* ((KEEP | DROP) INDEX)? restrict? | operation (COMMA_ operation)*)
+    | DROP CONSTRAINT constraintName (COMMA_ constraintName)* ((KEEP | DROP) INDEX)? restrict?
     ;
 
 operation
@@ -387,14 +388,22 @@ createFunction
       RETURNS dataType
       routineOption*
       routineBody
+    | CREATE? (OR REPLACE)? (NOFORCE | FORCE)? funcDef
+    ;
+
+funcDef
+    : FUNCTION ifNotExists? functionName LP_ procedureParameter? (COMMA_ procedureParameter)* RP_
+      RETURN (dataType PIPELINED? | SELF AS RESULT | varrayTypeDef | nestedTableTypeDef)
+      optAuthid? (COMMENT string_)? ((IS | AS)
+      (LANGUAGE (SINGLE_C | PLSQL) NAME identifier | (DECLARE? declareSection)? routineBody procedureName?))?
     ;
 
 alterFunction
-    : ALTER FUNCTION functionName routineOption*
+    : ALTER FUNCTION functionName (RECOMPILE | routineOption*)
     ;
 
 dropFunction
-    : DROP FUNCTION ifExists? functionName
+    : DROP FUNCTION ifExists? functionName restrict?
     ;
 
 createProcedure
@@ -402,14 +411,33 @@ createProcedure
       PROCEDURE functionName LP_ procedureParameter? (COMMA_ procedureParameter)* RP_
       routineOption*
       routineBody
+    | CREATE? (OR REPLACE)? (NOFORCE | FORCE)? procDef
+    ;
+
+procDef
+    : PROCEDURE ifNotExists? functionName (LP_ procedureParameter? (COMMA_ procedureParameter)* RP_)?
+      optAuthid? (COMMENT string_)? ((IS | AS)
+      (LANGUAGE (SINGLE_C | PLSQL) NAME identifier | (DECLARE? declareSection)? routineBody procedureName?))?
     ;
 
 alterProcedure
-    : ALTER PROCEDURE functionName routineOption*
+    : ALTER PROCEDURE functionName (RECOMPILE | routineOption*)
     ;
 
 dropProcedure
-    : DROP PROCEDURE ifExists? functionName
+    : DROP PROCEDURE ifExists? functionName restrict?
+    ;
+
+disassembleProcedure
+    : DISASSEMBLE functionName
+    ;
+
+dropPackage
+    : DROP PACKAGE packageName restrict?
+    ;
+
+alterPackage
+    : ALTER PACKAGE packageName RECOMPILE
     ;
 
 createServer
@@ -684,7 +712,7 @@ optAccessParameter
     ;
 
 optFileType
-    : TYPE typeName = identifier
+    : TYPE identifier
     ;
 
 optDefaultDir
@@ -740,6 +768,50 @@ srsAttribute
     | DEFINITION string_
     | ORGANIZATION string_ IDENTIFIED BY NUMBER_
     | DESCRIPTION string_
+    ;
+
+createType
+    : CREATE (OR REPLACE)? (NOFORCE | FORCE)? TYPE plsqlTypeSource (COMMENT string_)?
+    ;
+
+plsqlTypeSource
+    : typeName (objectBaseTypeDef | objectSubTypeDef)
+    ;
+
+objectBaseTypeDef
+    : (IS | AS) (objectTypeDef | varrayTypeSpec | nestedTableTypeSpec)
+    ;
+
+objectTypeDef
+    : OBJECT LP_ memberDecl (COMMA_ memberDecl)* RP_
+    ;
+
+memberDecl
+    : memberVarDecl | memberFuncDef
+    ;
+
+memberFuncDef
+    : (CONSTRUCTOR | STATIC | MEMBER) (procDef | funcDef)
+    ;
+
+varrayTypeSpec
+    : VARRAY LP_ NUMBER_ RP_ OF dataType
+    ;
+
+nestedTableTypeSpec
+    : TABLE OF dataType
+    ;
+
+objectSubTypeDef
+    : UNDER typeName LP_ memberDecl (COMMA_ memberDecl)* RP_
+    ;
+
+alterType
+    : CREATE (OR REPLACE)? (NOFORCE | FORCE)? TYPE BODY typeName (IS | AS) memberFuncDef (COMMA_ memberFuncDef)* END
+    ;
+
+dropType
+    : DROP TYPE typeName restrict?
     ;
 
 place
@@ -817,7 +889,12 @@ routineOption
     ;
 
 procedureParameter
-    : (IN | OUT | INOUT)? identifier dataType
+    : (IN | OUT | INOUT)? identifier (dataType | CURSOR | SYS_REFCURSOR)
+    | identifier (IN | OUT | IN OUT)? (dataType | CURSOR | SYS_REFCURSOR) ((DEFAULT | ASSIGNMENT_) simpleExpr)?
+    ;
+
+optAuthid
+    : AUTHID (DEFAULT | CURRENT_USER | DEFINER | USER)
     ;
 
 fileSizeLiteral
@@ -832,37 +909,74 @@ compoundStatement
     : beginStatement
     ;
 
+plsqlBlock
+    : (SIGNED_LEFT_SHIFT_ labelName SIGNED_RIGHT_SHIFT_ | labelName COLON_)* (DECLARE declareSection?)? beginStatement
+    ;
+
+declareSection
+    : (declareItem SEMI_)+
+    ;
+
+declareItem
+    : memberVarDecl
+    | declare
+    | exceptionDeclaration
+    | typeDefinition
+    | PRAGMA EXCEPTION_INIT LP_ name COMMA_ NUMBER_ RP_
+    ;
+
 validStatement
-    : (createTable | alterTable | dropTable | dropDatabase | truncateTable
-    | insert | replace | update | delete | select | call
+    : (SIGNED_LEFT_SHIFT_ labelName SIGNED_RIGHT_SHIFT_ | labelName COLON_)?
+    (createTable | alterTable | dropTable | dropDatabase | truncateTable
+    | insert | replace | update | delete | select | call | executeImmediateStatement
     | createView | prepare | executeStmt | commit | deallocate
-    | setVariable | beginStatement | declareStatement | flowControlStatement | cursorStatement | conditionHandlingStatement) SEMI_?
+    | setVariable | assignStatement | beginStatement | raiseStatement | declareStatement | flowControlStatement | cursorStatement | conditionHandlingStatement
+    | NULL | flashbackTable | purge | createProcedure | dropProcedure | createFunction | dropFunction ) SEMI_?
+    ;
+
+assignStatement
+    : assignStatementTarget ASSIGNMENT_ expr
+    ;
+
+assignStatementTarget
+    : call
+    | name
+    | expr
     ;
 
 beginStatement
-    : (labelName COLON_)? BEGIN validStatement* END labelName? SEMI_?
+    : (labelName COLON_)? BEGIN validStatement* (EXCEPTION (exceptionHandler)+ (FINALLY validStatement)?)? END labelName? SEMI_?
     ;
 
 declareStatement
     : DECLARE variable (COMMA_ variable)* dataType (DEFAULT simpleExpr)*
     ;
 
+exceptionHandler
+    : WHEN (identifier| NUMBER_ | OTHERS) THEN validStatement+
+    ;
+
+raiseStatement
+    : (THROW | RAISE) EXCEPTION? name? string_?
+    ;
+
 flowControlStatement
-    : caseStatement | ifStatement | iterateStatement | leaveStatement | loopStatement | repeatStatement | returnStatement | whileStatement
+    : caseStatement | ifStatement | iterateStatement | leaveStatement | loopStatement | repeatStatement | whileStatement
+    | forLoopStatement | forallStatement | continueStatement | exitStatement | gotoStatement | returnStatement
     ;
 
 caseStatement
     : CASE expr? 
       (WHEN expr THEN validStatement+)+ 
       (ELSE validStatement+)? 
-      END CASE
+      (ENDCASE | END CASE)
     ;
 
 ifStatement
     : IF expr THEN validStatement+
-      (ELSEIF expr THEN validStatement+)*
+      ((ELSIF | ELSEIF) expr THEN validStatement+)*
       (ELSE validStatement+)?
-      END IF
+      (ENDIF | END IF) labelName?
     ;
 
 iterateStatement
@@ -870,13 +984,13 @@ iterateStatement
     ;
 
 leaveStatement
-    : LEAVE labelName
+    : LEAVE labelName (WHEN expr)?
     ;
 
 loopStatement
     : (labelName COLON_)? LOOP
       validStatement+
-      END LOOP labelName?
+      (ENDLOOP | END LOOP) labelName?
     ;
 
 repeatStatement
@@ -887,33 +1001,135 @@ repeatStatement
     ;
 
 returnStatement
-    : RETURN expr
+    : RETURN expr?
     ;   
 
 whileStatement
     : (labelName COLON_)? WHILE expr DO
       validStatement+
       END WHILE labelName?
+    | (labelName COLON_)? WHILE expr LOOP
+      validStatement+
+      (ENDLOOP | END LOOP) labelName?
+    ;
+
+forLoopStatement
+    : FOR columnName IN (REVERSE? lowerBound RANGE_OPERATOR_ upperBound | identifier | select) LOOP validStatement+
+     (END (FOR | LOOP) | ENDLOOP | ENDFOR) labelName?
+    ;
+
+forallStatement
+    : FORALL columnName IN boundsClause (insert | call | update | delete)
+    ;
+
+boundsClause
+    : lowerBound RANGE_OPERATOR_ upperBound
+    | INDICES OF collection=name (BETWEEN lowerBound AND upperBound)?
+    | VALUES OF indexCollection=name
+    ;
+
+lowerBound
+    : expr
+    ;
+
+upperBound
+    : expr
+    ;
+
+continueStatement
+    : CONTINUE
+    ;
+
+exitStatement
+    : EXIT (WHEN expr)?
+    ;
+
+gotoStatement
+    : GOTO labelName
     ;
 
 cursorStatement
-    : cursorCloseStatement | cursorDeclareStatement | cursorFetchStatement | cursorOpenStatement 
+    : close | declare | cursor | fetch | open
     ;
 
-cursorCloseStatement
+close
     : CLOSE cursorName
     ;
 
-cursorDeclareStatement
-    : DECLARE cursorName CURSOR FOR select
+cursor
+    : DECLARE cursorName (LP_ cursorParameterDec (COMMA_ cursorParameterDec)* RP_)? CURSOR FOR (select | columnName) optParallel ? optWait ?
     ;
 
-cursorFetchStatement
-    : FETCH ((NEXT)? FROM)? cursorName INTO variable (COMMA_ variable)*
+memberVarDecl
+    : name (CONSTANT)? dataType (NOT NULL)? ((DEFAULT | ASSIGNMENT_) simpleExpr)?
     ;
 
-cursorOpenStatement
-    : OPEN cursorName
+
+declare
+    : CURSOR cursorName (LP_ cursorParameterDec (COMMA_ cursorParameterDec)* RP_)? (IS | AS) select optParallel ? optWait ?
+    | cursorName (SYS_REFCURSOR | REF CURSOR)
+    ;
+
+fetch
+    : FETCH ((NEXT)? FROM)? cursorName (BULK COLLECT)? (INTO variable (COMMA_ variable)*)? limitClause?
+    | FETCH NUMBER_ FROM cursorName
+    ;
+
+open
+    : OPEN cursorName (LP_ expr (COMMA_? expr)* RP_ | FOR ( expr | select ) plsqlUsingClause?)?
+    ;
+
+plsqlUsingClause
+    : USING (IN | OUT | IN OUT)? expr (COMMA_? (IN | OUT | IN OUT)? expr)*
+    ;
+
+cursorParameterDec
+    : identifier IN? dataType ((ASSIGNMENT_ | DEFAULT) expr)?
+    ;
+
+exceptionDeclaration
+    : identifier EXCEPTION
+    ;
+
+typeDefinition
+    : subtypeDefinition | recordTypeDefinition | collectionTypeDefinition | refCursorTypeDefinition
+    ;
+
+subtypeDefinition
+    : SUBTYPE identifier IS (dataType | recordTypeDef)
+    ;
+
+recordTypeDefinition
+    : TYPE identifier IS recordTypeDef
+    ;
+
+recordTypeDef
+    : RECORD LP_ columnDefinition (COMMA_ columnDefinition)* RP_
+    ;
+
+collectionTypeDefinition
+    : TYPE identifier IS (varrayTypeDef | nestedTableTypeDef | assocArrayTypeDef )
+    ;
+
+varrayTypeDef
+    : (VARRAY | (VARYING? ARRAY)) LP_ NUMBER_ RP_ OF dataType (NOT NULL)?
+    ;
+
+nestedTableTypeDef
+    : TABLE OF (dataType | recordTypeDef) (NOT NULL)?
+    ;
+
+assocArrayTypeDef
+    : TABLE OF dataType (NOT NULL)?
+    INDEX BY (PLS_INTEGER | BINARY_INTEGER | (VARCHAR2 | VARCHAR) (LP_ NUMBER_ RP_)? | rowtype)
+    ;
+
+refCursorTypeDefinition
+    : (TYPE identifier IS | identifier) (
+    rowtype (ARRAY (LBT_ NUMBER_ RBT_)?)?
+    | (ROWTYPE OF tableName| ROW TYPE OF tableName| TYPE OF (tableName DOT_)? columnName | TABLE OF tableName)
+    | REF CURSOR
+     )(NOT NULL)?
     ;
 
 conditionHandlingStatement
@@ -996,6 +1212,14 @@ prepare
 
 executeStmt
     : EXECUTE identifier (USING executeVarList)?
+
+executeImmediateStatement
+    : (CALL | EXECUTE | EXEC) IMMEDIATE expr optReturnIntoUsing? limitClause?
+    ;
+
+optReturnIntoUsing
+    : USING expr (COMMA_ expr)* (RETURNING | BULK COLLECT | RETURNING BULK COLLECT)? (INTO columnNames)?
+    | (RETURNING | BULK COLLECT | RETURNING BULK COLLECT)? INTO columnNames (USING expr (COMMA_ expr)*)?
     ;
 
 executeVarList
