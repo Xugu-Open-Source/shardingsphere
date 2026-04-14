@@ -1266,7 +1266,20 @@ public final class XuguDDLStatementVisitor extends XuguStatementVisitor implemen
 
     @Override
     public ASTNode visitPrepare(final PrepareContext ctx) {
-        return new XuguPrepareStatement();
+        XuguPrepareStatement result = new XuguPrepareStatement();
+        if (null != ctx.select()) {
+            result.setSelect((SelectStatement) visit(ctx.select()));
+        }
+        if (null != ctx.insert()) {
+            result.setInsert((InsertStatement) visit(ctx.insert()));
+        }
+        if (null != ctx.update()) {
+            result.setUpdate((UpdateStatement) visit(ctx.update()));
+        }
+        if (null != ctx.delete()) {
+            result.setDelete((DeleteStatement) visit(ctx.delete()));
+        }
+        return result;
     }
 
     @Override

@@ -1208,10 +1208,13 @@ signalInformationItem
 
 prepare
     : PREPARE identifier FROM (stringLiterals | userVariable)
+    | PREPARE identifier AS (insert | update | delete | select)
     ;
 
 executeStmt
     : EXECUTE identifier (USING executeVarList)?
+    | QUESTION_ identifier (AS CURSOR cursorName)? (RETURN NUMBER_)?
+    ;
 
 executeImmediateStatement
     : (CALL | EXECUTE | EXEC) IMMEDIATE expr optReturnIntoUsing? limitClause?
@@ -1227,7 +1230,7 @@ executeVarList
     ;
 
 deallocate
-    : (DEALLOCATE | DROP) PREPARE identifier
+    : (DEALLOCATE | DROP) PREPARE? identifier
     ;
 
 flashbackTable
