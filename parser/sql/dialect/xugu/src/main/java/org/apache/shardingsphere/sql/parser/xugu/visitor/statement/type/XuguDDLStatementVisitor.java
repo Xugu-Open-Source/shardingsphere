@@ -89,6 +89,8 @@ import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.DropServ
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.DropTableContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.DropTablespaceContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.DropTriggerContext;
+import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.CreateSynonymContext;
+import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.DropSynonymContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.DropTypeContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.DropViewContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.ExecuteStmtContext;
@@ -226,6 +228,8 @@ import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguDropServerSta
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguDropTableStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguDropTablespaceStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguDropTriggerStatement;
+import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguCreateSynonymStatement;
+import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguDropSynonymStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguDropTypeStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguDropViewStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguExecuteStatement;
@@ -1166,6 +1170,16 @@ public final class XuguDDLStatementVisitor extends XuguStatementVisitor implemen
     @Override
     public ASTNode visitDropTrigger(final DropTriggerContext ctx) {
         return new XuguDropTriggerStatement();
+    }
+
+    @Override
+    public ASTNode visitCreateSynonym(final CreateSynonymContext ctx) {
+        return new XuguCreateSynonymStatement();
+    }
+
+    @Override
+    public ASTNode visitDropSynonym(final DropSynonymContext ctx) {
+        return new XuguDropSynonymStatement();
     }
 
     @Override

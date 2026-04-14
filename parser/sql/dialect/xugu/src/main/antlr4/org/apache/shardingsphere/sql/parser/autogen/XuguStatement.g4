@@ -55,6 +55,8 @@ execute
     | createTrigger
     | dropTrigger
     | alterTrigger
+    | createSynonym
+    | dropSynonym
     | alterResourceGroup
     | createResourceGroup
     | dropResourceGroup

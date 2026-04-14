@@ -576,6 +576,14 @@ dropTrigger
     : DROP TRIGGER ifExists? (databaseName DOT_)? triggerName
     ;
 
+createSynonym
+    : CREATE (OR REPLACE)? (PUBLIC)? SYNONYM (schemaName DOT_)? synonymName FOR objectName
+    ;
+
+dropSynonym
+    : DROP PUBLIC? SYNONYM (schemaName DOT_)? synonymName
+    ;
+
 renameTable
     : RENAME (TABLE | TABLES) tableName TO tableName (COMMA_ tableName TO tableName)*
     ;

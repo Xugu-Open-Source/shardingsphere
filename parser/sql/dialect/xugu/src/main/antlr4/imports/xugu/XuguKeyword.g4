@@ -2267,6 +2267,10 @@ PROXY
     : P R O X Y
     ;
 
+PUBLIC
+    : P U B L I C
+    ;
+
 PURGE
     : P U R G E
     ;
@@ -2993,6 +2997,10 @@ SWAPS
 
 SWITCHES
     : S W I T C H E S
+    ;
+
+SYNONYM
+    : S Y N O N Y M
     ;
 
 SYSTEM

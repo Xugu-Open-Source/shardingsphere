@@ -469,6 +469,7 @@ identifierKeywordsUnambiguous
     | PROCESSLIST
     | PROFILES
     | PROFILE
+    | PUBLIC
     | QUALIFY
     | QUARTER
     | QUERY
@@ -583,6 +584,7 @@ identifierKeywordsUnambiguous
     | SUSPEND
     | SWAPS
     | SWITCHES
+    | SYNONYM
     | SYSTEM
     | TABLE
     | TABLES
@@ -941,19 +943,23 @@ procedureName
     ;
 
 packageName
-    : identifier (DOT_ identifier)?
+    : (owner DOT_)? identifier
     ;
 
 jobName
-    : identifier (DOT_ identifier)?
+    : (owner DOT_)? identifier
     ;
 
 objectName
-    : identifier (DOT_ identifier)?
+    : (owner DOT_)? identifier
     ;
 
 sequenceName
     : (owner DOT_)? identifier
+    ;
+
+synonymName
+    : identifier
     ;
 
 viewName
