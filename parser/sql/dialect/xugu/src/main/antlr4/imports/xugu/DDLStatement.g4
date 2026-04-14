@@ -558,6 +558,18 @@ dropLogfileGroup
 
 createTrigger
     :  CREATE ownerStatement? TRIGGER triggerName triggerTime triggerEvent ON tableName FOR EACH ROW triggerOrder? routineBody
+    | CREATE (OR REPLACE)? (NOFORCE | FORCE)? TRIGGER (ifNotExists)? triggerName triggerTime triggerEvent (OR triggerEvent)*
+        ON tableName optTrigParamAlias? FOR (EACH ROW | STATEMENT) (WHEN expr)? (COMMENT string_)? plsqlBlock triggerName?
+    ;
+
+optTrigParamAlias
+    : REFERENCING (
+        (OLD AS oldAlias = alias) | (NEW AS newAlias = alias)
+        | (OLD AS oldAlias = alias NEW AS newAlias = alias) | (NEW AS newAlias = alias OLD AS oldAlias = alias))
+    ;
+
+alterTrigger
+    : ALTER TRIGGER  triggerName ( ENABLE | DISABLE | RECOMPILE)
     ;
 
 dropTrigger

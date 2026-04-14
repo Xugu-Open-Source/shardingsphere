@@ -54,6 +54,7 @@ execute
     | dropView
     | createTrigger
     | dropTrigger
+    | alterTrigger
     | alterResourceGroup
     | createResourceGroup
     | dropResourceGroup

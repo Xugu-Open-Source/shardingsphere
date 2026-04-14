@@ -47,6 +47,7 @@ import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.AlterTab
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.AlterTablespaceContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.AlterTablespaceInnodbContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.AlterTablespaceNdbContext;
+import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.AlterTriggerContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.AlterTypeContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.AlterViewContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.BeginStatementContext;
@@ -191,6 +192,7 @@ import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguAlterProcedur
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguAlterServerStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguAlterTableStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguAlterTablespaceStatement;
+import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguAlterTriggerStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguAlterTypeStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguAlterViewStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguCloseStatement;
@@ -1155,7 +1157,12 @@ public final class XuguDDLStatementVisitor extends XuguStatementVisitor implemen
     public ASTNode visitCreateTrigger(final CreateTriggerContext ctx) {
         return new XuguCreateTriggerStatement();
     }
-    
+
+    @Override
+    public ASTNode visitAlterTrigger(final AlterTriggerContext ctx) {
+        return new XuguAlterTriggerStatement();
+    }
+
     @Override
     public ASTNode visitDropTrigger(final DropTriggerContext ctx) {
         return new XuguDropTriggerStatement();

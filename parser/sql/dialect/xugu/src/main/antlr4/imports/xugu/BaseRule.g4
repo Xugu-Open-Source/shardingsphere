@@ -1049,7 +1049,7 @@ triggerName
     ;
 
 triggerTime
-    : BEFORE | AFTER
+    : BEFORE | AFTER | INSTEAD OF
     ;
 
 tableOrTables
@@ -1073,7 +1073,7 @@ allOrPartitionNameList
     ;
 
 triggerEvent
-    : INSERT | UPDATE | DELETE
+    : INSERT | UPDATE | DELETE | UPDATE OF (columnNames | LP_ columnNames RP_)
     ;
 
 triggerOrder
