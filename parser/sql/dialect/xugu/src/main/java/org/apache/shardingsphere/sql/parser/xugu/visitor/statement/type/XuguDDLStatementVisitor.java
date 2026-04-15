@@ -41,6 +41,7 @@ import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.AlterLog
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.AlterPackageContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.AlterProcedureContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.AlterRenameTableContext;
+import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.AlterSequenceContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.AlterServerContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.AlterTableContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.AlterTableDropContext;
@@ -67,7 +68,9 @@ import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.CreateIn
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.CreateLikeClauseContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.CreateLogfileGroupContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.CreateProcedureContext;
+import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.CreateSequenceContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.CreateServerContext;
+import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.CreateSynonymContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.CreateTableContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.CreateTableOptionContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.CreateTableOptionsContext;
@@ -85,12 +88,12 @@ import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.DropInde
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.DropLogfileGroupContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.DropPackageContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.DropProcedureContext;
+import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.DropSequenceContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.DropServerContext;
+import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.DropSynonymContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.DropTableContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.DropTablespaceContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.DropTriggerContext;
-import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.CreateSynonymContext;
-import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.DropSynonymContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.DropTypeContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.DropViewContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.ExecuteStmtContext;
@@ -191,6 +194,7 @@ import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguAlterInstance
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguAlterLogfileGroupStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguAlterPackageStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguAlterProcedureStatement;
+import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguAlterSequenceStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguAlterServerStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguAlterTableStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguAlterTablespaceStatement;
@@ -207,8 +211,10 @@ import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguCreateLogfile
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguCreateNestedTableTypeStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguCreateObjectTypeStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguCreateProcedureStatement;
+import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguCreateSequenceStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguCreateServerStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguCreateSubTypeStatement;
+import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguCreateSynonymStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguCreateTableStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguCreateTablespaceStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguCreateTriggerStatement;
@@ -224,12 +230,12 @@ import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguDropIndexStat
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguDropLogfileGroupStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguDropPackageStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguDropProcedureStatement;
+import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguDropSequenceStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguDropServerStatement;
+import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguDropSynonymStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguDropTableStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguDropTablespaceStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguDropTriggerStatement;
-import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguCreateSynonymStatement;
-import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguDropSynonymStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguDropTypeStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguDropViewStatement;
 import org.apache.shardingsphere.sql.parser.statement.xugu.ddl.XuguExecuteStatement;
@@ -248,6 +254,7 @@ import org.apache.shardingsphere.sql.parser.statement.xugu.dml.XuguUpdateStateme
 import org.apache.shardingsphere.sql.parser.xugu.visitor.statement.XuguStatementVisitor;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -1345,6 +1352,27 @@ public final class XuguDDLStatementVisitor extends XuguStatementVisitor implemen
         if (null != ctx.renameToTable()) {
             result.setRenameTable((SimpleTableSegment) visit(ctx.renameToTable().tableName()));
         }
+        return result;
+    }
+
+    @Override
+    public ASTNode visitCreateSequence(final CreateSequenceContext ctx) {
+        XuguCreateSequenceStatement result = new XuguCreateSequenceStatement();
+        result.setSequenceName(ctx.sequenceName().getText());
+        return result;
+    }
+
+    @Override
+    public ASTNode visitAlterSequence(final AlterSequenceContext ctx) {
+        XuguAlterSequenceStatement result = new XuguAlterSequenceStatement();
+        result.setSequenceName(ctx.sequenceName().getText());
+        return result;
+    }
+
+    @Override
+    public ASTNode visitDropSequence(final DropSequenceContext ctx) {
+        XuguDropSequenceStatement result = new XuguDropSequenceStatement();
+        result.setSequenceNames(Collections.singleton(ctx.sequenceName().getText()));
         return result;
     }
 }

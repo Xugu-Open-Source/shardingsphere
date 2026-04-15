@@ -211,6 +211,7 @@ identifierKeywordsUnambiguous
     | CREATE
     | CURRENT
     | CURSOR_NAME
+    | CYCLE
     | DATABASE
     | DATAFILE
     | DATA
@@ -306,6 +307,7 @@ identifierKeywordsUnambiguous
     | IGNORE
     | IGNORE_SERVER_IDS
     | INACTIVE
+    | INCREMENT
     | INDEXES
     | INDEXTYPE
     | INDICES
@@ -389,6 +391,7 @@ identifierKeywordsUnambiguous
     | MICROSECOND
     | MIGRATE
     | MINUTE
+    | MINVALUE
     | MIN_ROWS
     | MODE
     | MODIFY
@@ -409,10 +412,13 @@ identifierKeywordsUnambiguous
     | NEVER
     | NEW
     | NEXT
+    | NOCACHE
     | NOCOMPRESS
     | NODE
     | NODEGROUP
     | NOFORCE
+    | NOMAXVALUE
+    | NOMINVALUE
     | NOWAIT
     | NO_WAIT
     | NULLS
@@ -724,6 +730,7 @@ identifierKeywordsAmbiguous2Labels
     | LIMIT
     | LOCK
     | NO
+    | NOCYCLE
     | NOT
     | NOTNULL
     | NULL
@@ -955,7 +962,7 @@ objectName
     ;
 
 sequenceName
-    : (owner DOT_)? identifier
+    : identifier
     ;
 
 synonymName

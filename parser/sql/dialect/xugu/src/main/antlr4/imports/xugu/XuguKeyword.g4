@@ -531,6 +531,10 @@ CURSOR_NAME
     : C U R S O R UL_ N A M E
     ;
 
+CYCLE
+    : C Y C L E
+    ;
+
 DATA
     : D A T A
     ;
@@ -1195,6 +1199,10 @@ INACTIVE
     : I N A C T I V E
     ;
 
+INCREMENT
+    : I N C R E M E N T
+    ;
+
 INDEX
     : I N D E X
     ;
@@ -1783,6 +1791,10 @@ MINUTE_SECOND
     : M I N U T E UL_ S E C O N D
     ;
 
+MINVALUE
+    : M I N V A L U E
+    ;
+
 MIN_ROWS
     : M I N UL_ R O W S
     ;
@@ -1903,8 +1915,16 @@ EXCLUSIVE
     : E X C L U S I V E
     ;
 
+NOCACHE
+    : N O C A C H E
+    ;
+
 NOCOMPRESS
     : N O C O M P R E S S
+    ;
+
+NOCYCLE
+    : N O C Y C L E
     ;
 
 NODE
@@ -1913,6 +1933,14 @@ NODE
 
 NOFORCE
     : N O F O R C E
+    ;
+
+NOMAXVALUE
+    : N O M A X V A L U E
+    ;
+
+NOMINVALUE
+    : N O M I N V A L U E
     ;
 
 NOPARALLEL

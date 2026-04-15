@@ -35,7 +35,7 @@ comment
     : COMMENT ON (
     | COLUMN (tableName | viewName) DOT_ columnName
     | PROCEDURE procedureName
-    | SEQUENCE sequenceName
+    | SEQUENCE (schemaName DOT_)? sequenceName
     | TRIGGER triggerName
     | PACKAGE packageName
     | JOB jobName
@@ -318,7 +318,7 @@ optWait
     ;
 
 createIndex
-    : CREATE createIndexSpecification? INDEX (IF NOT EXISTS)? indexName indexTypeClause? ON tableName keyListWithExpression indexOption?
+    : CREATE createIndexSpecification? INDEX ifNotExists? indexName indexTypeClause? ON tableName keyListWithExpression indexOption?
      optIndexType ? optIdxParti ? optOnline ? optParallel ? optWait ? algorithmOptionAndLockOption?
     ;
 
@@ -460,7 +460,7 @@ createView
       (ALGORITHM EQ_ (UNDEFINED | MERGE | TEMPTABLE))?
       ownerStatement?
       (SQL SECURITY (DEFINER | INVOKER))?
-      VIEW (IF NOT EXISTS)? viewName (LP_ columnNames RP_)?
+      VIEW ifNotExists? viewName (LP_ columnNames RP_)?
       AS select
       (WITH ((CASCADED | LOCAL)? CHECK OPTION | READ ONLY))?
       (COMMENT string_)?
@@ -1266,4 +1266,24 @@ purge
     | INDEX tableName DOT_ indexName
     | RECYCLEBIN
     | DBA_RECYCLEBIN)
+    ;
+
+createSequence
+    : CREATE SEQUENCE ifNotExists? (schemaName DOT_)? sequenceName sequenceOption* (COMMENT string_)?
+    ;
+
+sequenceOption
+    : (INCREMENT BY | START WITH | MINVALUE | MAXVALUE | CACHE) NUMBER_
+    | (NO? CYCLE | NOCYCLE)
+    | NOMINVALUE
+    | NOMAXVALUE
+    | NOCACHE
+    ;
+
+alterSequence
+    : ALTER SEQUENCE (schemaName DOT_)? sequenceName sequenceOption+
+    ;
+
+dropSequence
+    : DROP SEQUENCE ifNotExists? (schemaName DOT_)? sequenceName restrict?
     ;
