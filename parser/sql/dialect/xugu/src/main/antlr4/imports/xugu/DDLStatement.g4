@@ -65,9 +65,9 @@ partitionTypeDef
     : LINEAR? KEY partitionKeyAlgorithm? LP_ columnNames? RP_ (PARTITIONS NUMBER_)?
     | LINEAR? HASH LP_ bitExpr RP_ (PARTITIONS NUMBER_)?
     | (RANGE | LIST) (LP_ bitExpr RP_ | COLUMNS LP_ columnNames RP_ ) (PARTITIONS NUMBER_)?
-    | RANGE LP_ columnName (COMMA_ columnName)* RP_ optPartiInterval? PARTITIONS LP_ rangePartiItem (COMMA_ rangePartiItem)* RP_
-    | LIST LP_ columnName (COMMA_ columnName)* RP_ PARTITIONS  LP_ listPartiItem (COMMA_ listPartiItem)* RP_
-    | HASH LP_ columnName (COMMA_ columnName)* RP_ PARTITIONS (partiNum = NUMBER_ | LP_ partitionName (COMMA_ partitionName)* RP_)
+    | RANGE LP_ columnNames RP_ optPartiInterval? PARTITIONS LP_ rangePartiItem (COMMA_ rangePartiItem)* RP_
+    | LIST LP_ columnNames RP_ PARTITIONS  LP_ listPartiItem (COMMA_ listPartiItem)* RP_
+    | HASH LP_ columnNames RP_ PARTITIONS (partiNum = NUMBER_ | LP_ partitionName (COMMA_ partitionName)* RP_)
     ;
 
 optPartiInterval
@@ -75,18 +75,18 @@ optPartiInterval
     ;
 
 rangePartiItem
-    : (partitionName  VALUES LESS THAN)? LP_ (expr (COMMA_ expr)* | MAXVALUES) RP_
+    : (partitionName  VALUES LESS THAN)? LP_ (exprs | MAXVALUES) RP_
     ;
 
 listPartiItem
-    : (partitionName VALUES)? LP_ (expr (COMMA_ expr)* | OTHERVALUES) RP_
+    : (partitionName VALUES)? LP_ (exprs | OTHERVALUES) RP_
     ;
 
 subPartitions
     : SUBPARTITION BY LINEAR? ( HASH LP_ bitExpr RP_ | KEY partitionKeyAlgorithm? LP_ columnNames RP_ ) (SUBPARTITIONS NUMBER_)?
-    | SUBPARTITION BY HASH LP_ columnName (COMMA_ columnName)* RP_ SUBPARTITIONS (parti_num = NUMBER_| LP_ partitionName (COMMA_ partitionName)* RP_)
-    | SUBPARTITION BY LIST LP_ columnName (COMMA_ columnName)* RP_ SUBPARTITIONS LP_ listPartiItem (COMMA_ listPartiItem)* RP_
-    | SUBPARTITION BY RANGE LP_ columnName (COMMA_ columnName)* RP_ SUBPARTITIONS LP_ rangePartiItem (COMMA_ rangePartiItem)* RP_
+    | SUBPARTITION BY HASH LP_ columnNames RP_ SUBPARTITIONS (parti_num = NUMBER_| LP_ partitionName (COMMA_ partitionName)* RP_)
+    | SUBPARTITION BY LIST LP_ columnNames RP_ SUBPARTITIONS LP_ listPartiItem (COMMA_ listPartiItem)* RP_
+    | SUBPARTITION BY RANGE LP_ columnNames RP_ SUBPARTITIONS LP_ rangePartiItem (COMMA_ rangePartiItem)* RP_
     ;
 
 partitionKeyAlgorithm
@@ -844,17 +844,13 @@ partitionDefinitions
 
 partitionDefinition
     : PARTITION partitionName
-    (VALUES (LESS THAN partitionLessThanValue | IN LP_ partitionValueList RP_))?
+    (VALUES (LESS THAN partitionLessThanValue | IN LP_ exprs RP_))?
     partitionDefinitionOption*
     (LP_ subpartitionDefinition (COMMA_ subpartitionDefinition)* RP_)?
     ;
 
 partitionLessThanValue
-    : LP_ (expr | partitionValueList) RP_ | MAXVALUE
-    ;
-
-partitionValueList
-    : expr (COMMA_ expr)*
+    : LP_ (expr | exprs) RP_ | MAXVALUE
     ;
 
 partitionDefinitionOption
@@ -1241,8 +1237,8 @@ executeImmediateStatement
     ;
 
 optReturnIntoUsing
-    : USING expr (COMMA_ expr)* (RETURNING | BULK COLLECT | RETURNING BULK COLLECT)? (INTO columnNames)?
-    | (RETURNING | BULK COLLECT | RETURNING BULK COLLECT)? INTO columnNames (USING expr (COMMA_ expr)*)?
+    : USING exprs (RETURNING | BULK COLLECT | RETURNING BULK COLLECT)? (INTO columnNames)?
+    | (RETURNING | BULK COLLECT | RETURNING BULK COLLECT)? INTO columnNames (USING exprs)?
     ;
 
 executeVarList

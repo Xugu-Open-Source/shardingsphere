@@ -27,6 +27,7 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 import org.apache.shardingsphere.sql.parser.api.ASTNode;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementBaseVisitor;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.AggregationFunctionContext;
+import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.AliasClauseContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.AliasContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.AssignmentContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.AssignmentValueContext;
@@ -59,6 +60,7 @@ import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.Duplicat
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.EngineRefContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.EscapedTableReferenceContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.ExprContext;
+import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.ExprListContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.ExtractFunctionContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.FieldLengthContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.FieldsContext;
@@ -98,6 +100,7 @@ import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.OrderByC
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.OrderByItemContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.OwnerContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.ParameterMarkerContext;
+import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.PivotClauseContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.PositionFunctionContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.PrecisionContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.PredicateContext;
@@ -144,6 +147,7 @@ import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.TrimFunc
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.TypeDatetimePrecisionContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.TypeNameContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.UdfFunctionContext;
+import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.UnpivotClauseContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.UpdateContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.UserVariableContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.ValuesFunctionContext;
@@ -153,6 +157,9 @@ import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.ViewName
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.WeightStringFunctionContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.WhereClauseContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.WithClauseContext;
+import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.XmlTableColumnContext;
+import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.XmlTableFunctionContext;
+import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.XmlTableOptionsContext;
 import org.apache.shardingsphere.sql.parser.statement.core.enums.AggregationType;
 import org.apache.shardingsphere.sql.parser.statement.core.enums.CombineType;
 import org.apache.shardingsphere.sql.parser.statement.core.enums.JoinType;
@@ -215,6 +222,9 @@ import org.apache.shardingsphere.sql.parser.statement.core.segment.dml.paginatio
 import org.apache.shardingsphere.sql.parser.statement.core.segment.dml.predicate.HavingSegment;
 import org.apache.shardingsphere.sql.parser.statement.core.segment.dml.predicate.LockSegment;
 import org.apache.shardingsphere.sql.parser.statement.core.segment.dml.predicate.WhereSegment;
+import org.apache.shardingsphere.sql.parser.statement.core.segment.dml.xml.XmlTableColumnSegment;
+import org.apache.shardingsphere.sql.parser.statement.core.segment.dml.xml.XmlTableFunctionSegment;
+import org.apache.shardingsphere.sql.parser.statement.core.segment.dml.xml.XmlTableOptionsSegment;
 import org.apache.shardingsphere.sql.parser.statement.core.segment.generic.AliasSegment;
 import org.apache.shardingsphere.sql.parser.statement.core.segment.generic.DataTypeLengthSegment;
 import org.apache.shardingsphere.sql.parser.statement.core.segment.generic.DataTypeSegment;
@@ -222,6 +232,7 @@ import org.apache.shardingsphere.sql.parser.statement.core.segment.generic.Datab
 import org.apache.shardingsphere.sql.parser.statement.core.segment.generic.OwnerSegment;
 import org.apache.shardingsphere.sql.parser.statement.core.segment.generic.ParameterMarkerSegment;
 import org.apache.shardingsphere.sql.parser.statement.core.segment.generic.ParenthesesSegment;
+import org.apache.shardingsphere.sql.parser.statement.core.segment.generic.PivotSegment;
 import org.apache.shardingsphere.sql.parser.statement.core.segment.generic.WindowSegment;
 import org.apache.shardingsphere.sql.parser.statement.core.segment.generic.WithSegment;
 import org.apache.shardingsphere.sql.parser.statement.core.segment.generic.match.MatchAgainstExpression;
@@ -1000,12 +1011,19 @@ public abstract class XuguStatementVisitor extends XuguStatementBaseVisitor<ASTN
         result.getParameters().addAll(getExpressions(ctx.aggregationExpression().expr()));
         return result;
     }
-    
-    protected Collection<ExpressionSegment> getExpressions(final List<ExprContext> exprList) {
+
+    protected List<ExpressionSegment> getExpressions(final ExprListContext exprList) {
         if (null == exprList) {
             return Collections.emptyList();
         }
-        Collection<ExpressionSegment> result = new ArrayList<>(exprList.size());
+        return getExpressions(exprList.exprs().expr());
+    }
+
+    protected List<ExpressionSegment> getExpressions(final List<ExprContext> exprList) {
+        if (null == exprList) {
+            return Collections.emptyList();
+        }
+        List<ExpressionSegment> result = new ArrayList<>(exprList.size());
         for (ExprContext each : exprList) {
             result.add((ExpressionSegment) visit(each));
         }
@@ -1903,29 +1921,120 @@ public abstract class XuguStatementVisitor extends XuguStatementBaseVisitor<ASTN
             if (null != ctx.alias()) {
                 result.setAlias((AliasSegment) visit(ctx.alias()));
             }
+            if (null != ctx.pivotClause()) {
+                PivotSegment pivotClause = (PivotSegment) visit(ctx.pivotClause());
+                result.setPivot(pivotClause);
+            } else if (null != ctx.unpivotClause()) {
+                PivotSegment pivotClause = (PivotSegment) visit(ctx.unpivotClause());
+                result.setPivot(pivotClause);
+            }
             return result;
         }
         if (null != ctx.tableName()) {
             SimpleTableSegment result = (SimpleTableSegment) visit(ctx.tableName());
-            if (null != ctx.alias()) {
-                result.setAlias((AliasSegment) visit(ctx.alias()));
+            if (null != ctx.aliasClause()) {
+                result.setAlias((AliasSegment) visit(ctx.aliasClause()));
             }
             if (null != ctx.indexHintList()) {
                 ctx.indexHintList().indexHint().forEach(each -> result.getIndexHintSegments().add((IndexHintSegment) visit(each)));
             }
+            if (null != ctx.pivotClause()) {
+                PivotSegment pivotClause = (PivotSegment) visit(ctx.pivotClause());
+                result.setPivot(pivotClause);
+            } else if (null != ctx.unpivotClause()) {
+                PivotSegment pivotClause = (PivotSegment) visit(ctx.unpivotClause());
+                result.setPivot(pivotClause);
+            }
             return result;
         }
-        if (null != ctx.expr()) {
-            ExpressionSegment exprSegment = (ExpressionSegment) visit(ctx.expr());
-            FunctionTableSegment result = new FunctionTableSegment(exprSegment.getStartIndex(), exprSegment.getStopIndex(), exprSegment);
+        if (null != ctx.regularFunction()) {
+            FunctionSegment functionSegment = (FunctionSegment) visit(ctx.regularFunction());
+            FunctionTableSegment result = new FunctionTableSegment(functionSegment.getStartIndex(), functionSegment.getStopIndex(), functionSegment);
             if (null != ctx.alias()) {
                 result.setAlias((AliasSegment) visit(ctx.alias()));
+            }
+            return result;
+        }
+        if (null != ctx.xmlTableFunction()) {
+            XmlTableFunctionSegment functionSegment = (XmlTableFunctionSegment) visit(ctx.xmlTableFunction());
+            FunctionTableSegment result = new FunctionTableSegment(ctx.start.getStartIndex(), ctx.stop.getStopIndex(), functionSegment);
+            if (null != ctx.aliasClause()) {
+                result.setAlias((AliasSegment) visit(ctx.aliasClause()));
             }
             return result;
         }
         return visit(ctx.tableReferences());
     }
-    
+
+    @Override
+    public ASTNode visitAliasClause(final AliasClauseContext ctx) {
+        return visit(ctx.tableAlias);
+    }
+
+    @Override
+    public ASTNode visitPivotClause(final PivotClauseContext ctx) {
+        ColumnSegment pivotForColumn = ctx.pivotForClause().columnName() != null
+                ? (ColumnSegment) visitColumnName(ctx.pivotForClause().columnName())
+                : ((CollectionValue<ColumnSegment>) visitColumnNames(ctx.pivotForClause().columnNames())).getValue().iterator().next();
+        Collection<ColumnSegment> pivotInColumns = new LinkedList<>();
+        if (null != ctx.pivotInClause()) {
+            ctx.pivotInClause().pivotInClauseExpr().forEach(each -> {
+                ExpressionSegment expr = (ExpressionSegment) visit(each.expr());
+                String columnName = null != each.alias() && null != each.alias().textOrIdentifier().identifier()
+                        ? each.alias().textOrIdentifier().identifier().IDENTIFIER_().getText() : expr.getText();
+                ColumnSegment columnSegment = new ColumnSegment(each.getStart().getStartIndex(), each.getStop().getStopIndex(), new IdentifierValue(columnName));
+                pivotInColumns.add(columnSegment);
+            });
+        }
+        return new PivotSegment(ctx.getStart().getStartIndex(), ctx.getStop().getStopIndex(), pivotForColumn, pivotInColumns);
+    }
+
+    @Override
+    public ASTNode visitUnpivotClause(final UnpivotClauseContext ctx) {
+        ColumnSegment unpivotColumn = ctx.columnName() != null
+                ? (ColumnSegment) visitColumnName(ctx.columnName())
+                : ((CollectionValue<ColumnSegment>) visitColumnNames(ctx.columnNames())).getValue().iterator().next();
+        ColumnSegment unpivotForColumn = ctx.pivotForClause().columnName() != null
+                ? (ColumnSegment) visitColumnName(ctx.pivotForClause().columnName())
+                : ((CollectionValue<ColumnSegment>) visitColumnNames(ctx.pivotForClause().columnNames())).getValue().iterator().next();
+        Collection<ColumnSegment> unpivotInColumns = new LinkedList<>();
+        if (null != ctx.unpivotInClause()) {
+            ctx.unpivotInClause().unpivotInClauseExpr().forEach(each -> unpivotInColumns.add(
+                    each.columnName() != null
+                            ? (ColumnSegment) visit(each.columnName())
+                            : ((CollectionValue<ColumnSegment>) visit(each.columnNames())).getValue().iterator().next()
+            ));
+        }
+        PivotSegment result = new PivotSegment(ctx.getStart().getStartIndex(), ctx.getStop().getStopIndex(), unpivotForColumn, unpivotInColumns, true);
+        result.setUnpivotColumn(unpivotColumn);
+        return result;
+    }
+
+    @Override
+    public ASTNode visitXmlTableFunction(final XmlTableFunctionContext ctx) {
+        return new XmlTableFunctionSegment(ctx.start.getStartIndex(), ctx.stop.getStopIndex(), ctx.XMLTABLE().getText(),
+                null, ctx.string_().getText(), (XmlTableOptionsSegment) visit(ctx.xmlTableOptions()), getOriginalText(ctx));
+    }
+
+    @Override
+    public ASTNode visitXmlTableOptions(final XmlTableOptionsContext ctx) {
+        XmlTableOptionsSegment result = new XmlTableOptionsSegment(ctx.start.getStartIndex(), ctx.stop.getStopIndex(), getOriginalText(ctx));
+        Collection<ExpressionSegment> expressionSegments = null == ctx.expr() ? Collections.emptyList()
+                : Collections.singleton((ExpressionSegment) visit(ctx.expr()));
+        Collection<XmlTableColumnSegment> xmlTableColumnSegments = null == ctx.xmlTableColumn() ? Collections.emptyList()
+                : ctx.xmlTableColumn().stream().map(each -> (XmlTableColumnSegment) visit(each)).collect(Collectors.toList());
+        result.getParameters().addAll(expressionSegments);
+        result.getXmlTableColumnSegments().addAll(xmlTableColumnSegments);
+        return result;
+    }
+
+    @Override
+    public ASTNode visitXmlTableColumn(final XmlTableColumnContext ctx) {
+        String dataType = ctx.dataType().getText();
+        String path = ctx.string_().getText();
+        return new XmlTableColumnSegment(ctx.start.getStartIndex(), ctx.stop.getStopIndex(), ctx.columnName().getText(), dataType, path, null, getOriginalText(ctx));
+    }
+
     private JoinTableSegment visitJoinedTable(final JoinedTableContext ctx, final TableSegment tableSegment) {
         JoinTableSegment result = new JoinTableSegment();
         result.setLeft(tableSegment);
@@ -1943,7 +2052,9 @@ public abstract class XuguStatementVisitor extends XuguStatementBaseVisitor<ASTN
             return JoinType.INNER.name();
         }
         if (null != ctx.outerJoinType()) {
-            return null == ctx.outerJoinType().LEFT() ? JoinType.RIGHT.name() : JoinType.LEFT.name();
+            return null == ctx.outerJoinType().LEFT()
+                    ? null == ctx.outerJoinType().RIGHT() ? JoinType.FULL.name() : JoinType.RIGHT.name()
+                    : JoinType.LEFT.name();
         }
         if (null != ctx.naturalJoinType()) {
             return getNaturalJoinType(ctx.naturalJoinType());
@@ -1957,6 +2068,9 @@ public abstract class XuguStatementVisitor extends XuguStatementBaseVisitor<ASTN
         }
         if (null != ctx.RIGHT()) {
             return JoinType.RIGHT.name();
+        }
+        if (null != ctx.FULL()) {
+            return JoinType.FULL.name();
         }
         return JoinType.INNER.name();
     }

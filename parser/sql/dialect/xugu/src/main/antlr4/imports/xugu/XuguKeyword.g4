@@ -155,6 +155,14 @@ ASSIGN_GTIDS_TO_ANONYMOUS_TRANSACTIONS
     : A S S I G N UL_ G T I D S UL_ T O UL_ A N O N Y M O U S UL_ T R A N S A C T I O N S
     ;
 
+BIT_AND
+    : B I T UL_ A N D
+    ;
+
+BIT_OR
+    : B I T UL_ O R
+    ;
+
 BIT_XOR
     : B I T UL_ X O R
     ;
@@ -1199,6 +1207,10 @@ INACTIVE
     : I N A C T I V E
     ;
 
+INCLUDE
+    : I N C L U D E
+    ;
+
 INCREMENT
     : I N C R E M E N T
     ;
@@ -2159,6 +2171,10 @@ PARTITIONS
     : P A R T I T I O N S
     ;
 
+PASSING
+    : P A S S I N G
+    ;
+
 PASSWORD
     : P A S S W O R D
     ;
@@ -2197,6 +2213,10 @@ PHASE
 
 PIPELINED
     : P I P E L I N E D
+    ;
+
+PIVOT
+    : P I V O T
     ;
 
 PLSQL
@@ -3251,6 +3271,10 @@ TO
     : T O
     ;
 
+TOP
+    : T O P
+    ;
+
 TRAILING
     : T R A I L I N G
     ;
@@ -3333,6 +3357,10 @@ UNKNOWN
 
 UNLOCK
     : U N L O C K
+    ;
+
+UNPIVOT
+    : U N P I V O T
     ;
 
 UNSIGNED
@@ -3525,6 +3553,10 @@ XID
 
 XML
     : X M L
+    ;
+
+XMLTABLE
+    : X M L T A B L E
     ;
 
 XOR

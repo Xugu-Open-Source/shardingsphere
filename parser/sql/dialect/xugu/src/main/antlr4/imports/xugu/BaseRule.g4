@@ -61,6 +61,8 @@ customKeyword
     | LAST_VALUE
     | PRIMARY
     | MAXVALUE
+    | BIT_AND
+    | BIT_OR
     | BIT_XOR
     | MYSQL_MAIN
     | RANGE
@@ -307,6 +309,7 @@ identifierKeywordsUnambiguous
     | IGNORE
     | IGNORE_SERVER_IDS
     | INACTIVE
+    | INCLUDE
     | INCREMENT
     | INDEXES
     | INDEXTYPE
@@ -453,6 +456,7 @@ identifierKeywordsUnambiguous
     | PARSE_TREE
     | PARTITIONING
     | PARTITIONS
+    | PASSING
     | PASSWORD
     | PASSWORD_LOCK_TIME
     | PATH
@@ -460,6 +464,7 @@ identifierKeywordsUnambiguous
     | PCTUSED
     | PHASE
     | PIPELINED
+    | PIVOT
     | PLUGINS
     | PLUGIN_DIR
     | PLUGIN
@@ -623,6 +628,7 @@ identifierKeywordsUnambiguous
     | UNDO_BUFFER_SIZE
     | UNKNOWN
     | UNLOCK
+    | UNPIVOT
     | UNTIL
     | UPGRADE
     | URL
@@ -765,6 +771,7 @@ identifierKeywordsAmbiguous2Labels
     | THEN
     | TIMESTAMPDIFF
     | TO
+    | TOP
     | TRAILING
     | TRIGGER
     | TRUE
@@ -891,6 +898,10 @@ databasePair
 
 tableName
     : (owner DOT_)? name
+    ;
+
+dblinkName
+    : identifier
     ;
 
 columnName
@@ -1093,6 +1104,14 @@ triggerOrder
     : (FOLLOWS | PRECEDES) triggerName
     ;
 
+exprs
+    : expr (COMMA_ expr)*
+    ;
+
+exprList
+    : LP_ exprs RP_
+    ;
+
 expr
     : booleanPrimary
     | expr andOperator expr
@@ -1257,7 +1276,7 @@ jsonFunctionName
     ;
 
 aggregationFunctionName
-    : MAX | MIN | SUM | COUNT | AVG | BIT_XOR | GROUP_CONCAT
+    : MAX | MIN | SUM | COUNT | AVG | BIT_AND | BIT_OR | BIT_XOR | GROUP_CONCAT
     ;
 
 distinct
@@ -1489,6 +1508,18 @@ orderByItem
     : (numberLiterals | expr) direction?
     ;
 
+xmlTableFunction
+    : XMLTABLE LP_ string_ xmlTableOptions RP_
+    ;
+
+xmlTableOptions
+    : PASSING expr COLUMNS xmlTableColumn (COMMA_ xmlTableColumn)*
+    ;
+
+xmlTableColumn
+    : columnName dataType PATH string_
+    ;
+
 dataType
     : dataTypeName = (INTEGER | INT | TINYINT | SMALLINT | MIDDLEINT | MEDIUMINT | BIGINT) fieldLength? fieldOptions?
     | (dataTypeName = REAL | dataTypeName = DOUBLE PRECISION?) precision? fieldOptions?
@@ -1525,6 +1556,7 @@ dataType
     | dataTypeName = ENUM stringList charsetWithOptBinary?
     | dataTypeName = SET stringList charsetWithOptBinary?
     | dataTypeName = (SERIAL | JSON | GEOMETRY | GEOMCOLLECTION | GEOMETRYCOLLECTION | POINT | MULTIPOINT | LINESTRING | MULTILINESTRING | POLYGON | MULTIPOLYGON)
+    | dataTypeName = XML
     | rowtype
     | dataTypeName = IDENTIFIER_
     ;

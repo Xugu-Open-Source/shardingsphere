@@ -159,11 +159,19 @@ queryPrimary
     ;
 
 querySpecification
-    : SELECT selectSpecification* projections selectIntoExpression? fromClause? whereClause? groupByClause? havingClause? windowClause?
+    : SELECT hint? top? selectSpecification* projections selectIntoExpression? fromClause? whereClause? groupByClause? havingClause? windowClause?
+    ;
+
+hint
+    : BLOCK_COMMENT | INLINE_COMMENT
+    ;
+
+top
+    : TOP NUMBER_
     ;
 
 call
-    : (CALL | EXECUTE | EXEC)? (owner DOT_)? (identifier | functionName) (LP_ (expr (COMMA_ expr)*)? RP_)?
+    : (CALL | EXECUTE | EXEC)? (owner DOT_)? (identifier | functionName) (LP_ exprs? RP_)?
     ;
 
 doStatement
@@ -288,15 +296,50 @@ tableReference
     ;
 
 tableFactor
-    : tableName partitionNames? (AS? alias)? indexHintList?
-    | subquery AS? alias (LP_ columnNames RP_)?
-    | expr (AS? alias)?
-    | LATERAL subquery AS? alias (LP_ columnNames RP_)?
+    : tableName (partitionNames | AT_ dblinkName)? aliasClause? (pivotClause | unpivotClause)? indexHintList?
+    | LATERAL? subquery (AS? alias)? (LP_ columnNames RP_)? (pivotClause | unpivotClause)?
+    | regularFunction (AS? alias)?
+    | xmlTableFunction aliasClause?
     | LP_ tableReferences RP_
     ;
 
 partitionNames
-    : PARTITION LP_ identifier (COMMA_ identifier)* RP_
+    : (PARTITION | SUBPARTITION) LP_ identifier (COMMA_ identifier)* RP_
+    ;
+
+aliasClause
+    : AS? tableAlias = alias (LP_ alias (COMMA_ alias)* RP_)?
+    ;
+
+pivotClause
+    : PIVOT XML?
+    LP_ aggregationFunction (AS? alias)? (COMMA_ aggregationFunction (AS? alias)?)* pivotForClause pivotInClause RP_ aliasClause?
+    ;
+
+pivotForClause
+    : FOR (columnName | LP_ columnNames RP_)
+    ;
+
+pivotInClause
+    : IN LP_ (pivotInClauseExpr (COMMA_ pivotInClauseExpr)*
+    | queryExpression
+    | ANY (COMMA_ ANY)*) RP_
+    ;
+
+pivotInClauseExpr
+    : (expr | exprList) (AS? alias)?
+    ;
+
+unpivotClause
+    : UNPIVOT ((INCLUDE | EXCLUDE) NULLS)? LP_ (columnName | LP_ columnNames RP_) pivotForClause unpivotInClause RP_ aliasClause?
+    ;
+
+unpivotInClause
+    : IN LP_ unpivotInClauseExpr (COMMA_ unpivotInClauseExpr)* RP_
+    ;
+
+unpivotInClauseExpr
+    : (columnName | LP_ columnNames RP_) (AS (literals | LP_ literals (COMMA_ literals)* RP_))?
     ;
 
 indexHintList
@@ -317,8 +360,8 @@ indexNameList
     ;
 
 joinedTable
-    : innerJoinType tableReference joinSpecification?
-    | outerJoinType tableReference joinSpecification
+    : innerJoinType tableReference joinSpecification? (pivotClause | unpivotClause)?
+    | outerJoinType tableReference joinSpecification (pivotClause | unpivotClause)?
     | naturalJoinType tableFactor
     ;
 
@@ -328,12 +371,12 @@ innerJoinType
     ;
 
 outerJoinType
-    : (LEFT | RIGHT) OUTER? JOIN
+    : (FULL | LEFT | RIGHT) OUTER? JOIN
     ;
 
 naturalJoinType
     : NATURAL INNER? JOIN
-    | NATURAL (LEFT | RIGHT) OUTER? JOIN
+    | NATURAL (LEFT | RIGHT | FULL) OUTER? JOIN
     ;
 
 joinSpecification
