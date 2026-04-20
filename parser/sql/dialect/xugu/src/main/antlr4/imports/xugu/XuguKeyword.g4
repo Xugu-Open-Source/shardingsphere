@@ -2791,6 +2791,10 @@ SHUTDOWN
     : S H U T D O W N
     ;
 
+SIBLINGS
+    : S I B L I N G S
+    ;
+
 SIGNAL
     : S I G N A L
     ;

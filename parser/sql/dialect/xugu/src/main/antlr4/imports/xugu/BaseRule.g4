@@ -561,6 +561,7 @@ identifierKeywordsUnambiguous
     | SETS
     | SHARE
     | SHOW
+    | SIBLINGS
     | SIMPLE
     | SKIP_SYMBOL
     | SLOW
@@ -1503,11 +1504,11 @@ subquery
     ;
 
 orderByClause
-    : ORDER BY orderByItem (COMMA_ orderByItem)*
+    : ORDER SIBLINGS? BY orderByItem (COMMA_ orderByItem)*
     ;
 
 orderByItem
-    : (numberLiterals | expr) direction?
+    : (numberLiterals | expr) direction? (NULLS FIRST | NULLS LAST)?
     ;
 
 xmlTableFunction
