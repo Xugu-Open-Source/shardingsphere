@@ -1791,6 +1791,10 @@ MIGRATE
     : M I G R A T E
     ;
 
+MINUS
+    : M I N U S
+    ;
+
 MINUTE
     : M I N U T E
     ;
@@ -2769,6 +2773,10 @@ SESSION
 
 SET
     : S E T
+    ;
+
+SETS
+    : S E T S
     ;
 
 SHARE

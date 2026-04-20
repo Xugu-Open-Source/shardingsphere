@@ -558,6 +558,7 @@ identifierKeywordsUnambiguous
     | SERIALIZABLE
     | SERIAL
     | SERVER
+    | SETS
     | SHARE
     | SHOW
     | SIMPLE
@@ -735,6 +736,7 @@ identifierKeywordsAmbiguous2Labels
     | LIKE
     | LIMIT
     | LOCK
+    | MINUS
     | NO
     | NOCYCLE
     | NOT

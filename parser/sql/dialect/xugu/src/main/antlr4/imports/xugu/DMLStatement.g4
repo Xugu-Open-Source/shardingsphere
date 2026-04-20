@@ -145,7 +145,7 @@ queryExpressionBody
 combineClause
     : INTERSECT combineOption? (queryPrimary | queryExpressionParens)
     | UNION combineOption? (queryPrimary | queryExpressionParens)
-    | EXCEPT combineOption? (queryPrimary | queryExpressionParens)
+    | (EXCEPT | MINUS) combineOption? (queryPrimary | queryExpressionParens)
     ;
 
 queryExpressionParens
@@ -388,7 +388,21 @@ whereClause
     ;
 
 groupByClause
-    : GROUP BY orderByItem (COMMA_ orderByItem)* (WITH ROLLUP)?
+    : GROUP BY groupByItem (COMMA_ groupByItem)*
+    ;
+
+groupByItem
+    : expr
+    | cubeRollupGroupingSetsClause
+    | emptyGroupingSet
+    ;
+
+cubeRollupGroupingSetsClause
+    : (CUBE | ROLLUP | GROUPING SETS) LP_ groupByItem (COMMA_ groupByItem)* RP_
+    ;
+
+emptyGroupingSet
+    : LP_ (expr (COMMA_ expr)*)? RP_
     ;
 
 havingClause

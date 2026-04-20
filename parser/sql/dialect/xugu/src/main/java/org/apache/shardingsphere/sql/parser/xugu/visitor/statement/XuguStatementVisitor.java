@@ -51,12 +51,14 @@ import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.Complete
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.ConstraintNameContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.ConvertFunctionContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.CteClauseContext;
+import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.CubeRollupGroupingSetsClauseContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.CurrentUserFunctionContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.CursorNameContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.DataTypeContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.DatabaseNameContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.DeleteContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.DuplicateSpecificationContext;
+import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.EmptyGroupingSetContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.EngineRefContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.EscapedTableReferenceContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.ExprContext;
@@ -68,6 +70,7 @@ import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.FromClau
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.FunctionCallContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.FunctionNameContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.GroupByClauseContext;
+import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.GroupByItemContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.GroupConcatFunctionContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.HavingClauseContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.HexadecimalLiteralsContext;
@@ -825,6 +828,8 @@ public abstract class XuguStatementVisitor extends XuguStatementBaseVisitor<ASTN
         CombineType combineType;
         if (null != ctx.EXCEPT()) {
             combineType = CombineType.EXCEPT;
+        } else if (null != ctx.MINUS()) {
+            combineType = CombineType.MINUS;
         } else if (null != ctx.INTERSECT()) {
             combineType = CombineType.INTERSECT;
         } else {
@@ -2095,12 +2100,57 @@ public abstract class XuguStatementVisitor extends XuguStatementBaseVisitor<ASTN
     @Override
     public ASTNode visitGroupByClause(final GroupByClauseContext ctx) {
         Collection<OrderByItemSegment> items = new LinkedList<>();
-        for (OrderByItemContext each : ctx.orderByItem()) {
-            items.add((OrderByItemSegment) visit(each));
+        for (GroupByItemContext each : ctx.groupByItem()) {
+            items.addAll(generateOrderByItemsFromGroupByItem(each));
         }
         return new GroupBySegment(ctx.getStart().getStartIndex(), ctx.getStop().getStopIndex(), items);
     }
-    
+
+    private Collection<OrderByItemSegment> generateOrderByItemsFromGroupByItem(final GroupByItemContext ctx) {
+        Collection<OrderByItemSegment> result = new LinkedList<>();
+        if (null != ctx.expr()) {
+            OrderByItemSegment item = (OrderByItemSegment) extractValueFromGroupByItemExpression(ctx.expr());
+            result.add(item);
+        } else if (null != ctx.cubeRollupGroupingSetsClause()) {
+            result.addAll(generateOrderByItemSegmentsFromExtensionClause(ctx.cubeRollupGroupingSetsClause()));
+        } else {
+            result.addAll(generateOrderByItemSegmentsFromEmptyGroupingSet(ctx.emptyGroupingSet()));
+        }
+        return result;
+    }
+
+    private ASTNode extractValueFromGroupByItemExpression(final ExprContext ctx) {
+        ASTNode expression = visit(ctx);
+        if (expression instanceof ColumnSegment) {
+            ColumnSegment column = (ColumnSegment) expression;
+            return new ColumnOrderByItemSegment(column, OrderDirection.ASC, null);
+        }
+        if (expression instanceof LiteralExpressionSegment) {
+            LiteralExpressionSegment literalExpression = (LiteralExpressionSegment) expression;
+            return new IndexOrderByItemSegment(literalExpression.getStartIndex(), literalExpression.getStopIndex(),
+                    SQLUtils.getExactlyNumber(literalExpression.getLiterals().toString(), 10).intValue(), OrderDirection.ASC, null);
+        }
+        return new ExpressionOrderByItemSegment(ctx.getStart().getStartIndex(), ctx.getStop().getStopIndex(), getOriginalText(ctx), OrderDirection.ASC, null, (ExpressionSegment) expression);
+    }
+
+    private Collection<OrderByItemSegment> generateOrderByItemSegmentsFromExtensionClause(final CubeRollupGroupingSetsClauseContext ctx) {
+        Collection<OrderByItemSegment> items = new LinkedList<>();
+        for (GroupByItemContext each : ctx.groupByItem()) {
+            items.addAll(generateOrderByItemsFromGroupByItem(each));
+        }
+        return items;
+    }
+
+    private Collection<OrderByItemSegment> generateOrderByItemSegmentsFromEmptyGroupingSet(final EmptyGroupingSetContext ctx) {
+        Collection<OrderByItemSegment> result = new LinkedList<>();
+        if (null != ctx.expr()) {
+            for (ExprContext each : ctx.expr()) {
+                result.add((OrderByItemSegment) extractValueFromGroupByItemExpression(each));
+            }
+        }
+        return result;
+    }
+
     @Override
     public ASTNode visitLimitClause(final LimitClauseContext ctx) {
         if (null == ctx.limitOffset()) {
