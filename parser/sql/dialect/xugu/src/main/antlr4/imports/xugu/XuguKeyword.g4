@@ -439,8 +439,20 @@ CONDITION
     : C O N D I T I O N
     ;
 
+CONNECT
+    : C O N N E C T
+    ;
+
 CONNECTION
     : C O N N E C T I O N
+    ;
+
+CONNECT_BY_ISLEAF
+    :C O N N E C T UL_ B Y UL_ I S L E A F
+    ;
+
+CONNECT_BY_ISCYCLE
+    :C O N N E C T UL_ B Y UL_ I S C Y C L E
     ;
 
 CONSISTENT
@@ -2285,6 +2297,10 @@ PREV
 
 PRIMARY
     : P R I M A R Y
+    ;
+
+PRIOR
+    : P R I O R
     ;
 
 PRIVILEGES

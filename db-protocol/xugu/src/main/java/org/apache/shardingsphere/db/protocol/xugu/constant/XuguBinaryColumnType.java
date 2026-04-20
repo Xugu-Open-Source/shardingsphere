@@ -133,6 +133,7 @@ public enum XuguBinaryColumnType implements BinaryColumnType {
         JDBC_TYPE_AND_COLUMN_TYPE_MAP.put(Types.CLOB, VAR_STRING);
         JDBC_TYPE_AND_COLUMN_TYPE_MAP.put(Types.BOOLEAN, TINY);
         // com.xugu.cloudjdbc.Types
+        JDBC_TYPE_AND_COLUMN_TYPE_MAP.put(Types.ROWID, VAR_STRING);
         JDBC_TYPE_AND_COLUMN_TYPE_MAP.put(3001, LONG);
         JDBC_TYPE_AND_COLUMN_TYPE_MAP.put(3002, LONG);
         JDBC_TYPE_AND_COLUMN_TYPE_MAP.put(3003, LONG);

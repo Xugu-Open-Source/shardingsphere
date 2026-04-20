@@ -203,6 +203,8 @@ identifierKeywordsUnambiguous
     | COMPRESSION
     | CONCURRENT
     | CONNECTION
+    | CONNECT_BY_ISLEAF
+    | CONNECT_BY_ISCYCLE
     | CONSISTENT
     | CONSTRAINTS
     | CONSTRAINT_CATALOG
@@ -688,6 +690,7 @@ identifierKeywordsAmbiguous2Labels
     | COMMENT
     | COMMIT
     | COMPRESS
+    | CONNECT
     | CONSTANT
     | CONSTRAINT
     | CONTAINS
@@ -752,6 +755,7 @@ identifierKeywordsAmbiguous2Labels
     | PRAGMA
     | PRECEDES
     | PREPARE
+    | PRIOR
     | PROCEDURE
     | RECYCLEBIN
     | REFERENCES
@@ -1137,6 +1141,7 @@ notOperator
 
 booleanPrimary
     : booleanPrimary IS NOT? (TRUE | FALSE | UNKNOWN | NULL)
+    | (PRIOR | DISTINCT) predicate
     | booleanPrimary SAFE_EQ_ predicate
     | booleanPrimary MEMBER OF LP_ (expr) RP_
     | booleanPrimary comparisonOperator predicate

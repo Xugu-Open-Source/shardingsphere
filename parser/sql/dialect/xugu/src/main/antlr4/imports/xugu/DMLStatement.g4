@@ -159,7 +159,7 @@ queryPrimary
     ;
 
 querySpecification
-    : SELECT hint? top? selectSpecification* projections selectIntoExpression? fromClause? whereClause? groupByClause? havingClause? windowClause?
+    : SELECT hint? top? selectSpecification* projections selectIntoExpression? fromClause? whereClause? hierarchicalQueryClause? groupByClause? havingClause? windowClause?
     ;
 
 hint
@@ -385,6 +385,11 @@ joinSpecification
 
 whereClause
     : WHERE expr
+    ;
+
+hierarchicalQueryClause
+    : CONNECT BY NOCYCLE? expr (START WITH expr)? (KEEP expr)?
+    | START WITH expr CONNECT BY NOCYCLE? expr (KEEP expr)?
     ;
 
 groupByClause
