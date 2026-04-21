@@ -60,6 +60,7 @@ import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.CursorNa
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.DataTypeContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.DatabaseNameContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.DeleteContext;
+import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.DmlTableClauseContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.DuplicateSpecificationContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.EmptyGroupingSetContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.EngineRefContext;
@@ -125,7 +126,6 @@ import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.QuerySpe
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.RegularFunctionContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.ReplaceContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.ReplaceSelectClauseContext;
-import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.ReplaceValuesClauseContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.RowConstructorListContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.SchemaNameContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.SelectContext;
@@ -1475,12 +1475,7 @@ public abstract class XuguStatementVisitor extends XuguStatementBaseVisitor<ASTN
         if (null != ctx.onDuplicateKeyClause()) {
             result.setOnDuplicateKeyColumns((OnDuplicateKeyColumnsSegment) visit(ctx.onDuplicateKeyClause()));
         }
-        SimpleTableSegment tableSegment = (SimpleTableSegment) visit(ctx.tableName());
-        if (null != ctx.AT_() && null != ctx.dblinkName()) {
-            tableSegment.setAt(new IdentifierValue(ctx.AT_().getText()));
-            tableSegment.setDbLink(new IdentifierValue(ctx.dblinkName().identifier().getText()));
-        }
-        result.setTable(tableSegment);
+        result.setTable((SimpleTableSegment) visit(ctx.dmlTableClause()));
         result.addParameterMarkerSegments(getParameterMarkerSegments());
         if (null != ctx.returningClause()) {
             result.setReturningSegment((ReturningSegment) visit(ctx.returningClause()));
@@ -1583,12 +1578,7 @@ public abstract class XuguStatementVisitor extends XuguStatementBaseVisitor<ASTN
     @Override
     public ASTNode visitInsertIntoClause(final InsertIntoClauseContext ctx) {
         XuguInsertStatement result = new XuguInsertStatement();
-        SimpleTableSegment tableSegment = (SimpleTableSegment) visit(ctx.tableName());
-        if (null != ctx.AT_() && null != ctx.dblinkName()) {
-            tableSegment.setAt(new IdentifierValue(ctx.AT_().getText()));
-            tableSegment.setDbLink(new IdentifierValue(ctx.dblinkName().identifier().getText()));
-        }
-        result.setTable(tableSegment);
+        result.setTable((SimpleTableSegment) visit(ctx.dmlTableClause()));
         if (null != ctx.LP_()) {
             result.setInsertColumns(new InsertColumnsSegment(ctx.LP_().getSymbol().getStartIndex(), ctx.RP_().getSymbol().getStopIndex(), createInsertColumns(ctx.fields())));
         } else {
@@ -1631,24 +1621,36 @@ public abstract class XuguStatementVisitor extends XuguStatementBaseVisitor<ASTN
 
     @Override
     public ASTNode visitReplace(final ReplaceContext ctx) {
-        // TODO :FIXME, since there is no segment for replaceValuesClause, ReplaceStatement is created by sub rule.
+        // TODO :FIXME, since there is no segment for insertValuesClause, ReplaceStatement is created by sub rule.
         XuguInsertStatement result;
-        if (null != ctx.replaceValuesClause()) {
-            result = (XuguInsertStatement) visit(ctx.replaceValuesClause());
+        if (null != ctx.insertValuesClause()) {
+            result = (XuguInsertStatement) visit(ctx.insertValuesClause());
         } else if (null != ctx.replaceSelectClause()) {
             result = (XuguInsertStatement) visit(ctx.replaceSelectClause());
+        } else if (null != ctx.insertDefaultValue()) {
+            result = (XuguInsertStatement) visit(ctx.insertDefaultValue());
         } else {
             result = new XuguInsertStatement();
             result.setSetAssignment((SetAssignmentSegment) visit(ctx.setAssignmentsClause()));
         }
-        result.setTable((SimpleTableSegment) visit(ctx.tableName()));
+        result.setTable((SimpleTableSegment) visit(ctx.dmlTableClause()));
         result.addParameterMarkerSegments(getParameterMarkerSegments());
         if (null != ctx.returningClause()) {
             result.setReturningSegment((ReturningSegment) visit(ctx.returningClause()));
         }
         return result;
     }
-    
+
+    @Override
+    public ASTNode visitDmlTableClause(final DmlTableClauseContext ctx) {
+        SimpleTableSegment tableSegment = (SimpleTableSegment) visit(ctx.tableName());
+        if (null != ctx.AT_() && null != ctx.dblinkName()) {
+            tableSegment.setAt(new IdentifierValue(ctx.AT_().getText()));
+            tableSegment.setDbLink(new IdentifierValue(ctx.dblinkName().identifier().getText()));
+        }
+        return tableSegment;
+    }
+
     @Override
     public ASTNode visitReplaceSelectClause(final ReplaceSelectClauseContext ctx) {
         XuguInsertStatement result = new XuguInsertStatement();
@@ -1668,22 +1670,6 @@ public abstract class XuguStatementVisitor extends XuguStatementBaseVisitor<ASTN
     private SubquerySegment createReplaceSelectSegment(final ReplaceSelectClauseContext ctx) {
         XuguSelectStatement selectStatement = (XuguSelectStatement) visit(ctx.select());
         return new SubquerySegment(ctx.select().start.getStartIndex(), ctx.select().stop.getStopIndex(), selectStatement, getOriginalText(ctx.select()));
-    }
-    
-    @Override
-    public ASTNode visitReplaceValuesClause(final ReplaceValuesClauseContext ctx) {
-        XuguInsertStatement result = new XuguInsertStatement();
-        if (null != ctx.LP_()) {
-            if (null != ctx.fields()) {
-                result.setInsertColumns(new InsertColumnsSegment(ctx.LP_().getSymbol().getStartIndex(), ctx.RP_().getSymbol().getStopIndex(), createInsertColumns(ctx.fields())));
-            } else {
-                result.setInsertColumns(new InsertColumnsSegment(ctx.LP_().getSymbol().getStartIndex(), ctx.RP_().getSymbol().getStopIndex(), Collections.emptyList()));
-            }
-        } else {
-            result.setInsertColumns(new InsertColumnsSegment(ctx.start.getStartIndex() - 1, ctx.start.getStartIndex() - 1, Collections.emptyList()));
-        }
-        result.getValues().addAll(createInsertValuesSegments(ctx.assignmentValues()));
-        return result;
     }
     
     private List<ColumnSegment> createInsertColumns(final FieldsContext fields) {
@@ -2047,12 +2033,8 @@ public abstract class XuguStatementVisitor extends XuguStatementBaseVisitor<ASTN
             }
             return result;
         }
-        if (null != ctx.tableName()) {
-            SimpleTableSegment result = (SimpleTableSegment) visit(ctx.tableName());
-            if (null != ctx.AT_() && null != ctx.dblinkName()) {
-                result.setAt(new IdentifierValue(ctx.AT_().getText()));
-                result.setDbLink(new IdentifierValue(ctx.dblinkName().identifier().getText()));
-            }
+        if (null != ctx.dmlTableClause()) {
+            SimpleTableSegment result = (SimpleTableSegment) visit(ctx.dmlTableClause());
             if (null != ctx.aliasClause()) {
                 result.setAlias((AliasSegment) visit(ctx.aliasClause()));
             }

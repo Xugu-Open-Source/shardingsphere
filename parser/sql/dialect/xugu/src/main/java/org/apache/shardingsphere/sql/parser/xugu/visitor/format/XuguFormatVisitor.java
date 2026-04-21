@@ -242,12 +242,8 @@ public final class XuguFormatVisitor extends XuguStatementBaseVisitor<String> im
             visit(ctx.INTO());
             formatPrint(' ');
         }
-        visit(ctx.tableName());
+        visit(ctx.dmlTableClause());
         formatPrint(' ');
-        if (null != ctx.partitionNames()) {
-            formatPrintln();
-            visit(ctx.partitionNames());
-        }
         if (null != ctx.insertValuesClause()) {
             visit(ctx.insertValuesClause());
         } else if (null != ctx.insertSelectClause()) {

@@ -24,7 +24,7 @@ insert
     ;
 
 insertSingleTable
-    : insertSpecification INTO? tableName (partitionNames | AT_ dblinkName)? (insertValuesClause | setAssignmentsClause | insertSelectClause | insertDefaultValue) onDuplicateKeyClause? returningClause?
+    : insertSpecification INTO? dmlTableClause (insertValuesClause | setAssignmentsClause | insertSelectClause | insertDefaultValue) onDuplicateKeyClause? returningClause?
     ;
 
 insertMultiTable
@@ -44,7 +44,11 @@ conditionalInsertElsePart
     ;
 
 insertIntoClause
-    : INTO tableName (partitionNames | AT_ dblinkName)? ((LP_ fields RP_)? (VALUES assignmentValues) | LP_ fields RP_)
+    : INTO dmlTableClause ((LP_ fields RP_)? (VALUES assignmentValues) | LP_ fields RP_)
+    ;
+
+dmlTableClause
+    : tableName (partitionNames | AT_ dblinkName)?
     ;
 
 insertSpecification
@@ -52,7 +56,7 @@ insertSpecification
     ;
 
 insertValuesClause
-    : (LP_ fields? RP_ )? (VALUES | VALUE) (assignmentValues (COMMA_? assignmentValues)* | rowConstructorList | expr) valueReference?
+    : (LP_ fields? RP_)? (VALUES | VALUE) (assignmentValues (COMMA_? assignmentValues)* | rowConstructorList | expr) valueReference?
     ;
 
 fields
@@ -88,15 +92,11 @@ derivedColumns
     ;
 
 replace
-    : REPLACE replaceSpecification? INTO? tableName partitionNames? (replaceValuesClause | setAssignmentsClause | replaceSelectClause) returningClause?
+    : REPLACE replaceSpecification? INTO? dmlTableClause (insertValuesClause | setAssignmentsClause | replaceSelectClause | insertDefaultValue) returningClause?
     ;
 
 replaceSpecification
     : LOW_PRIORITY | DELAYED
-    ;
-
-replaceValuesClause
-    : (LP_ fields? RP_)? (VALUES | VALUE) (assignmentValues (COMMA_ assignmentValues)* | rowConstructorList) valueReference?
     ;
 
 replaceSelectClause
@@ -324,7 +324,7 @@ tableReference
     ;
 
 tableFactor
-    : tableName (partitionNames | AT_ dblinkName)? aliasClause? (pivotClause | unpivotClause)? indexHintList?
+    : dmlTableClause aliasClause? (pivotClause | unpivotClause)? indexHintList?
     | LATERAL? subquery (AS? alias)? (LP_ columnNames RP_)? (pivotClause | unpivotClause)?
     | regularFunction (AS? alias)?
     | xmlTableFunction aliasClause?
