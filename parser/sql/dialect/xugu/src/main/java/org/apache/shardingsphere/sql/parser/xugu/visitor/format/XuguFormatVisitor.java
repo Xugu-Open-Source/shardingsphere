@@ -41,6 +41,7 @@ import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.FieldLen
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.IdentifierContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.InsertContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.InsertSelectClauseContext;
+import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.InsertSingleTableContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.InsertValuesClauseContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.LiteralsContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.NumberLiteralsContext;
@@ -220,11 +221,21 @@ public final class XuguFormatVisitor extends XuguStatementBaseVisitor<String> im
         visit(ctx.tableName());
         return formattedSQL.toString();
     }
-    
+
     @Override
     public String visitInsert(final InsertContext ctx) {
         visit(ctx.INSERT());
         formatPrint(' ');
+        if (ctx.insertSingleTable() != null) {
+            visit(ctx.insertSingleTable());
+        } else {
+            visit(ctx.insertMultiTable());
+        }
+        return formattedSQL.toString();
+    }
+
+    @Override
+    public String visitInsertSingleTable(final InsertSingleTableContext ctx) {
         visit(ctx.insertSpecification());
         formatPrint(' ');
         if (null != ctx.INTO()) {

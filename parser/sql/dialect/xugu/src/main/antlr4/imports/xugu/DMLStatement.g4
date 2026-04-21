@@ -20,7 +20,31 @@ grammar DMLStatement;
 import BaseRule;
 
 insert
-    : INSERT insertSpecification INTO? tableName partitionNames? (insertValuesClause | setAssignmentsClause | insertSelectClause) onDuplicateKeyClause? returningClause?
+    : INSERT (insertSingleTable | insertMultiTable)
+    ;
+
+insertSingleTable
+    : insertSpecification INTO? tableName (partitionNames | AT_ dblinkName)? (insertValuesClause | setAssignmentsClause | insertSelectClause | insertDefaultValue) onDuplicateKeyClause? returningClause?
+    ;
+
+insertMultiTable
+    : (ALL insertIntoClause+ | conditionalInsertClause) select
+    ;
+
+conditionalInsertClause
+    : (ALL | FIRST)? conditionalInsertWhenPart+ conditionalInsertElsePart?
+    ;
+
+conditionalInsertWhenPart
+    : WHEN expr THEN insertIntoClause+
+    ;
+
+conditionalInsertElsePart
+    : ELSE insertIntoClause+
+    ;
+
+insertIntoClause
+    : INTO tableName (partitionNames | AT_ dblinkName)? ((LP_ fields RP_)? (VALUES assignmentValues) | LP_ fields RP_)
     ;
 
 insertSpecification
@@ -28,7 +52,7 @@ insertSpecification
     ;
 
 insertValuesClause
-    : (LP_ fields? RP_ )? (VALUES | VALUE) (assignmentValues (COMMA_? assignmentValues)* | rowConstructorList) valueReference?
+    : (LP_ fields? RP_ )? (VALUES | VALUE) (assignmentValues (COMMA_? assignmentValues)* | rowConstructorList | expr) valueReference?
     ;
 
 fields
@@ -45,6 +69,10 @@ tableWild
 
 insertSelectClause
     : valueReference? (LP_ fields? RP_)? select
+    ;
+
+insertDefaultValue
+    : DEFAULT VALUES
     ;
 
 onDuplicateKeyClause
@@ -481,7 +509,7 @@ tableAliasRefList
     ;
 
 returningClause
-    : RETURNING targetList
+    : RETURNING targetList (BULK COLLECT)? INTO expr (COMMA_ expr )*
     ;
 
 targetList

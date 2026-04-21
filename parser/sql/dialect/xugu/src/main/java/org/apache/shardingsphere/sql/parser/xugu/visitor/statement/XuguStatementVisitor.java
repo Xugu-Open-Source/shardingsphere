@@ -48,6 +48,9 @@ import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.ColumnNa
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.ColumnRefContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.CombineClauseContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.CompleteRegularFunctionContext;
+import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.ConditionalInsertClauseContext;
+import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.ConditionalInsertElsePartContext;
+import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.ConditionalInsertWhenPartContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.ConstraintNameContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.ConvertFunctionContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.CteClauseContext;
@@ -77,8 +80,12 @@ import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.Hexadeci
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.IdentifierContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.IndexNameContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.InsertContext;
+import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.InsertDefaultValueContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.InsertIdentifierContext;
+import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.InsertIntoClauseContext;
+import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.InsertMultiTableContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.InsertSelectClauseContext;
+import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.InsertSingleTableContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.InsertValuesClauseContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.IntervalExpressionContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.JoinSpecificationContext;
@@ -225,6 +232,12 @@ import org.apache.shardingsphere.sql.parser.statement.core.segment.dml.paginatio
 import org.apache.shardingsphere.sql.parser.statement.core.segment.dml.predicate.HavingSegment;
 import org.apache.shardingsphere.sql.parser.statement.core.segment.dml.predicate.LockSegment;
 import org.apache.shardingsphere.sql.parser.statement.core.segment.dml.predicate.WhereSegment;
+import org.apache.shardingsphere.sql.parser.statement.core.segment.dml.table.MultiTableConditionalIntoElseSegment;
+import org.apache.shardingsphere.sql.parser.statement.core.segment.dml.table.MultiTableConditionalIntoSegment;
+import org.apache.shardingsphere.sql.parser.statement.core.segment.dml.table.MultiTableConditionalIntoThenSegment;
+import org.apache.shardingsphere.sql.parser.statement.core.segment.dml.table.MultiTableConditionalIntoWhenThenSegment;
+import org.apache.shardingsphere.sql.parser.statement.core.segment.dml.table.MultiTableInsertIntoSegment;
+import org.apache.shardingsphere.sql.parser.statement.core.segment.dml.table.MultiTableInsertType;
 import org.apache.shardingsphere.sql.parser.statement.core.segment.dml.xml.XmlTableColumnSegment;
 import org.apache.shardingsphere.sql.parser.statement.core.segment.dml.xml.XmlTableFunctionSegment;
 import org.apache.shardingsphere.sql.parser.statement.core.segment.dml.xml.XmlTableOptionsSegment;
@@ -247,6 +260,7 @@ import org.apache.shardingsphere.sql.parser.statement.core.segment.generic.table
 import org.apache.shardingsphere.sql.parser.statement.core.segment.generic.table.SubqueryTableSegment;
 import org.apache.shardingsphere.sql.parser.statement.core.segment.generic.table.TableNameSegment;
 import org.apache.shardingsphere.sql.parser.statement.core.segment.generic.table.TableSegment;
+import org.apache.shardingsphere.sql.parser.statement.core.statement.dml.InsertStatement;
 import org.apache.shardingsphere.sql.parser.statement.core.util.SQLUtils;
 import org.apache.shardingsphere.sql.parser.statement.core.value.collection.CollectionValue;
 import org.apache.shardingsphere.sql.parser.statement.core.value.identifier.IdentifierValue;
@@ -1442,11 +1456,18 @@ public abstract class XuguStatementVisitor extends XuguStatementBaseVisitor<ASTN
     @Override
     public ASTNode visitInsert(final InsertContext ctx) {
         // TODO :FIXME, since there is no segment for insertValuesClause, InsertStatement is created by sub rule.
+        return null == ctx.insertSingleTable() ? visit(ctx.insertMultiTable()) : visit(ctx.insertSingleTable());
+    }
+
+    @Override
+    public ASTNode visitInsertSingleTable(final InsertSingleTableContext ctx) {
         XuguInsertStatement result;
         if (null != ctx.insertValuesClause()) {
             result = (XuguInsertStatement) visit(ctx.insertValuesClause());
         } else if (null != ctx.insertSelectClause()) {
             result = (XuguInsertStatement) visit(ctx.insertSelectClause());
+        } else if (null != ctx.insertDefaultValue()) {
+            result = (XuguInsertStatement) visit(ctx.insertDefaultValue());
         } else {
             result = new XuguInsertStatement();
             result.setSetAssignment((SetAssignmentSegment) visit(ctx.setAssignmentsClause()));
@@ -1454,14 +1475,19 @@ public abstract class XuguStatementVisitor extends XuguStatementBaseVisitor<ASTN
         if (null != ctx.onDuplicateKeyClause()) {
             result.setOnDuplicateKeyColumns((OnDuplicateKeyColumnsSegment) visit(ctx.onDuplicateKeyClause()));
         }
-        result.setTable((SimpleTableSegment) visit(ctx.tableName()));
+        SimpleTableSegment tableSegment = (SimpleTableSegment) visit(ctx.tableName());
+        if (null != ctx.AT_() && null != ctx.dblinkName()) {
+            tableSegment.setAt(new IdentifierValue(ctx.AT_().getText()));
+            tableSegment.setDbLink(new IdentifierValue(ctx.dblinkName().identifier().getText()));
+        }
+        result.setTable(tableSegment);
         result.addParameterMarkerSegments(getParameterMarkerSegments());
         if (null != ctx.returningClause()) {
             result.setReturningSegment((ReturningSegment) visit(ctx.returningClause()));
         }
         return result;
     }
-    
+
     @Override
     public ASTNode visitInsertSelectClause(final InsertSelectClauseContext ctx) {
         XuguInsertStatement result = new XuguInsertStatement();
@@ -1477,7 +1503,7 @@ public abstract class XuguStatementVisitor extends XuguStatementBaseVisitor<ASTN
         }
         return result;
     }
-    
+
     private SubquerySegment createInsertSelectSegment(final InsertSelectClauseContext ctx) {
         XuguSelectStatement selectStatement = (XuguSelectStatement) visit(ctx.select());
         selectStatement.getParameterMarkerSegments().addAll(getParameterMarkerSegments());
@@ -1507,7 +1533,16 @@ public abstract class XuguStatementVisitor extends XuguStatementBaseVisitor<ASTN
         }
         return result;
     }
-    
+
+    @Override
+    public ASTNode visitInsertDefaultValue(final InsertDefaultValueContext ctx) {
+        XuguInsertStatement result = new XuguInsertStatement();
+        InsertColumnsSegment insertColumnsSegment = new InsertColumnsSegment(ctx.start.getStartIndex() - 1,
+                ctx.start.getStartIndex() - 1, Collections.emptyList());
+        result.setInsertColumns(insertColumnsSegment);
+        return result;
+    }
+
     @Override
     public ASTNode visitOnDuplicateKeyClause(final OnDuplicateKeyClauseContext ctx) {
         Collection<ColumnAssignmentSegment> columns = new LinkedList<>();
@@ -1516,7 +1551,84 @@ public abstract class XuguStatementVisitor extends XuguStatementBaseVisitor<ASTN
         }
         return new OnDuplicateKeyColumnsSegment(ctx.getStart().getStartIndex(), ctx.getStop().getStopIndex(), columns);
     }
-    
+
+    @Override
+    public ASTNode visitInsertMultiTable(final InsertMultiTableContext ctx) {
+        XuguInsertStatement result = new XuguInsertStatement();
+        result.setMultiTableInsertType(null != ctx.conditionalInsertClause() && null != ctx.conditionalInsertClause().FIRST() ? MultiTableInsertType.FIRST : MultiTableInsertType.ALL);
+        List<InsertIntoClauseContext> insertIntoClauseContextContexts = ctx.insertIntoClause();
+        if (null != insertIntoClauseContextContexts && !insertIntoClauseContextContexts.isEmpty()) {
+            MultiTableInsertIntoSegment multiTableInsertIntoSegment = new MultiTableInsertIntoSegment(
+                    insertIntoClauseContextContexts.get(0).getStart().getStartIndex(), insertIntoClauseContextContexts.get(insertIntoClauseContextContexts.size() - 1).getStop().getStopIndex());
+            multiTableInsertIntoSegment.getInsertStatements().addAll(createInsertIntoSegments(insertIntoClauseContextContexts));
+            result.setMultiTableInsertIntoSegment(multiTableInsertIntoSegment);
+        } else {
+            result.setMultiTableConditionalIntoSegment((MultiTableConditionalIntoSegment) visit(ctx.conditionalInsertClause()));
+        }
+        result.setInsertSelect(new SubquerySegment(ctx.select().start.getStartIndex(), ctx.select().stop.getStopIndex(), (XuguSelectStatement) visit(ctx.select()),
+                getOriginalText(ctx.select())));
+        result.addParameterMarkerSegments(getParameterMarkerSegments());
+        return result;
+    }
+
+    private Collection<InsertStatement> createInsertIntoSegments(final List<InsertIntoClauseContext> ctx) {
+        Collection<InsertStatement> result = new LinkedList<>();
+        for (InsertIntoClauseContext each : ctx) {
+            XuguInsertStatement xuguInsertStatement = (XuguInsertStatement) visit(each);
+            result.add(xuguInsertStatement);
+        }
+        return result;
+    }
+
+    @Override
+    public ASTNode visitInsertIntoClause(final InsertIntoClauseContext ctx) {
+        XuguInsertStatement result = new XuguInsertStatement();
+        SimpleTableSegment tableSegment = (SimpleTableSegment) visit(ctx.tableName());
+        if (null != ctx.AT_() && null != ctx.dblinkName()) {
+            tableSegment.setAt(new IdentifierValue(ctx.AT_().getText()));
+            tableSegment.setDbLink(new IdentifierValue(ctx.dblinkName().identifier().getText()));
+        }
+        result.setTable(tableSegment);
+        if (null != ctx.LP_()) {
+            result.setInsertColumns(new InsertColumnsSegment(ctx.LP_().getSymbol().getStartIndex(), ctx.RP_().getSymbol().getStopIndex(), createInsertColumns(ctx.fields())));
+        } else {
+            result.setInsertColumns(new InsertColumnsSegment(ctx.start.getStartIndex() - 1, ctx.start.getStartIndex() - 1, Collections.emptyList()));
+        }
+        if (ctx.assignmentValues() != null) {
+            result.getValues().add((InsertValuesSegment) visit(ctx.assignmentValues()));
+        }
+        result.addParameterMarkerSegments(getParameterMarkerSegments());
+        return result;
+    }
+
+    @Override
+    public ASTNode visitConditionalInsertClause(final ConditionalInsertClauseContext ctx) {
+        Collection<MultiTableConditionalIntoWhenThenSegment> whenThenSegments = new LinkedList<>();
+        for (ConditionalInsertWhenPartContext each : ctx.conditionalInsertWhenPart()) {
+            whenThenSegments.add((MultiTableConditionalIntoWhenThenSegment) visit(each));
+        }
+        MultiTableConditionalIntoSegment result = new MultiTableConditionalIntoSegment(ctx.start.getStartIndex(), ctx.stop.getStopIndex());
+        result.getWhenThenSegments().addAll(whenThenSegments);
+        if (null != ctx.conditionalInsertElsePart()) {
+            result.setElseSegment((MultiTableConditionalIntoElseSegment) visit(ctx.conditionalInsertElsePart()));
+        }
+        return result;
+    }
+
+    @Override
+    public ASTNode visitConditionalInsertWhenPart(final ConditionalInsertWhenPartContext ctx) {
+        List<InsertIntoClauseContext> insertIntoClauseContextContexts = ctx.insertIntoClause();
+        MultiTableConditionalIntoThenSegment thenSegment = new MultiTableConditionalIntoThenSegment(insertIntoClauseContextContexts.get(0).start.getStartIndex(),
+                insertIntoClauseContextContexts.get(insertIntoClauseContextContexts.size() - 1).stop.getStopIndex(), createInsertIntoSegments(insertIntoClauseContextContexts));
+        return new MultiTableConditionalIntoWhenThenSegment(ctx.start.getStartIndex(), ctx.stop.getStopIndex(), (ExpressionSegment) visit(ctx.expr()), thenSegment);
+    }
+
+    @Override
+    public ASTNode visitConditionalInsertElsePart(final ConditionalInsertElsePartContext ctx) {
+        List<InsertIntoClauseContext> insertIntoClauseContextContexts = ctx.insertIntoClause();
+        return new MultiTableConditionalIntoElseSegment(ctx.start.getStartIndex(), ctx.stop.getStopIndex(), createInsertIntoSegments(insertIntoClauseContextContexts));
+    }
+
     @Override
     public ASTNode visitReplace(final ReplaceContext ctx) {
         // TODO :FIXME, since there is no segment for replaceValuesClause, ReplaceStatement is created by sub rule.
@@ -1937,6 +2049,10 @@ public abstract class XuguStatementVisitor extends XuguStatementBaseVisitor<ASTN
         }
         if (null != ctx.tableName()) {
             SimpleTableSegment result = (SimpleTableSegment) visit(ctx.tableName());
+            if (null != ctx.AT_() && null != ctx.dblinkName()) {
+                result.setAt(new IdentifierValue(ctx.AT_().getText()));
+                result.setDbLink(new IdentifierValue(ctx.dblinkName().identifier().getText()));
+            }
             if (null != ctx.aliasClause()) {
                 result.setAlias((AliasSegment) visit(ctx.aliasClause()));
             }
