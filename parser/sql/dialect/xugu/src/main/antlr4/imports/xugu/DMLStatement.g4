@@ -145,11 +145,11 @@ deleteSpecification
     ;
 
 singleTableClause
-    : FROM tableName (AS? alias)? partitionNames?
+    : FROM? tableName (AS? alias)? partitionNames?
     ;
 
 multipleTablesClause
-    : tableAliasRefList FROM tableReferences | FROM tableAliasRefList USING tableReferences
+    : FROM? tableAliasRefList (FROM | USING) tableReferences
     ;
 
 select
@@ -505,7 +505,7 @@ tableLockingList
     ;
 
 tableIdentOptWild
-    : tableName DOT_ASTERISK_?
+    : tableName (AS? alias)? DOT_ASTERISK_?
     ;
 
 tableAliasRefList
