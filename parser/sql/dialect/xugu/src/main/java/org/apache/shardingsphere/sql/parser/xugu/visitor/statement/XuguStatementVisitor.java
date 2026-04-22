@@ -159,6 +159,7 @@ import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.TypeName
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.UdfFunctionContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.UnpivotClauseContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.UpdateContext;
+import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.UpdateSetColumnClauseContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.UserVariableContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.ValuesFunctionContext;
 import org.apache.shardingsphere.sql.parser.autogen.XuguStatementParser.VariableContext;
@@ -1685,7 +1686,14 @@ public abstract class XuguStatementVisitor extends XuguStatementBaseVisitor<ASTN
         XuguUpdateStatement result = new XuguUpdateStatement();
         TableSegment tableSegment = (TableSegment) visit(ctx.tableReferences());
         result.setTable(tableSegment);
-        result.setSetAssignment((SetAssignmentSegment) visit(ctx.setAssignmentsClause()));
+        if (null != ctx.setAssignmentsClause()) {
+            result.setSetAssignment((SetAssignmentSegment) visit(ctx.setAssignmentsClause()));
+        } else {
+            result.setSetAssignment((SetAssignmentSegment) visit(ctx.updateSetColumnClause()));
+        }
+        if (null != ctx.fromClause()) {
+            result.setFrom((TableSegment) visit(ctx.fromClause()));
+        }
         if (null != ctx.whereClause()) {
             result.setWhere((WhereSegment) visit(ctx.whereClause()));
         }
@@ -1710,7 +1718,22 @@ public abstract class XuguStatementVisitor extends XuguStatementBaseVisitor<ASTN
         }
         return new SetAssignmentSegment(ctx.getStart().getStartIndex(), ctx.getStop().getStopIndex(), assignments);
     }
-    
+
+    @Override
+    public ASTNode visitUpdateSetColumnClause(final UpdateSetColumnClauseContext ctx) {
+        List<ColumnSegment> columnSegments = new LinkedList<>();
+        for (ColumnRefContext each : ctx.columnRef()) {
+            columnSegments.add((ColumnSegment) visit(each));
+        }
+        SubquerySegment subquerySegment = new SubquerySegment(ctx.select().start.getStartIndex(), ctx.select().stop.getStopIndex(),
+                (XuguSelectStatement) visit(ctx.select()), getOriginalText(ctx.select()));
+        SubqueryExpressionSegment value = new SubqueryExpressionSegment(subquerySegment);
+        ColumnAssignmentSegment columnAssignmentSegment = new ColumnAssignmentSegment(ctx.getStart().getStartIndex(), ctx.getStop().getStopIndex(), columnSegments, value);
+        Collection<ColumnAssignmentSegment> assignments = new LinkedList<>();
+        assignments.add(columnAssignmentSegment);
+        return new SetAssignmentSegment(ctx.getStart().getStartIndex(), ctx.getStop().getStopIndex(), assignments);
+    }
+
     @Override
     public ASTNode visitAssignmentValues(final AssignmentValuesContext ctx) {
         List<ExpressionSegment> segments = new LinkedList<>();

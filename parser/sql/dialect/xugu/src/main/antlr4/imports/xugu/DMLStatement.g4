@@ -104,7 +104,7 @@ replaceSelectClause
     ;
 
 update
-    : withClause? UPDATE updateSpecification_ tableReferences setAssignmentsClause whereClause? orderByClause? limitClause?
+    : withClause? UPDATE updateSpecification_ tableReferences (setAssignmentsClause fromClause?| updateSetColumnClause) whereClause? returningClause? orderByClause? limitClause?
     ;
 
 updateSpecification_
@@ -117,6 +117,10 @@ assignment
 
 setAssignmentsClause
     : valueReference? SET assignment (COMMA_ assignment)*
+    ;
+
+updateSetColumnClause
+    : SET LP_ columnRef (COMMA_ columnRef)* RP_ EQ_ LP_ select RP_
     ;
 
 assignmentValues
