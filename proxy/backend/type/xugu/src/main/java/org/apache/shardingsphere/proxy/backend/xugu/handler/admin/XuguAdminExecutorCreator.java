@@ -108,6 +108,11 @@ public final class XuguAdminExecutorCreator implements DatabaseAdminExecutorCrea
         if (!selectStatement.getFrom().isPresent()) {
             return findAdminExecutorForSelectWithoutFrom(sql, databaseName, selectStatement);
         }
+        // Try to handle system table queries regardless of database name
+        Optional<DatabaseAdminExecutor> result = XuguSysdbaSchemaExecutorFactory.newInstance(selectStatement, sql, parameters);
+        if (result.isPresent()) {
+            return result;
+        }
         if (isQuerySysdbaSchema(databaseName)) {
             return XuguSysdbaSchemaExecutorFactory.newInstance(selectStatement, sql, parameters);
         }

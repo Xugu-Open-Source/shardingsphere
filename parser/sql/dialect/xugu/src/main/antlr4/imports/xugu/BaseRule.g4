@@ -129,6 +129,7 @@ identifier
     | DOUBLE_QUOTED_TEXT
     | UNDERSCORE_CHARSET
     | BQUOTA_STRING
+    | SINGLE_C
     ;
 
 identifierKeywordsUnambiguous
