@@ -81,7 +81,8 @@ public final class BaselineSupport {
                 props.getProperty("jdbc.url"),
                 props.getProperty("jdbc.user"),
                 props.getProperty("jdbc.password"))) {
-            // reachable
+            // Control-plane integration gate: stdout marker proves a real engine connection.
+            System.out.println("XUGU_ENGINE_CONNECTED");
         } catch (Exception ex) {
             Assumptions.assumeTrue(false, "XuGu IT host unreachable: " + ex.getMessage());
         }
